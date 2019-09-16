@@ -21,7 +21,7 @@ namespace properTech.Models
         public bool isComplete { get; set; }
         [Display(Name = "Current Maintenance Status")]
         public string maintenanceStatus { get; set; }
-        public object Video { get; set; }
+
         [Display(Name = "Feedback Message")]
         public  string feedbackMessage { get; set; }
 

@@ -24,8 +24,5 @@ namespace properTech.Models
         public double monthlyRent { get; set; }
         public bool isOccupied { get; set; }
 
-        [ForeignKey("Resident")]
-        public int residentId { get; set; }
-        public Resident resident { get; set; }
     }
 }

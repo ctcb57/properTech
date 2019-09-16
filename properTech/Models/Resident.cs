@@ -21,8 +21,7 @@ namespace properTech.Models
         public DateTime leaseSEnd { get; set; }
         [Display(Name = "Lease Renewed")]
         public bool renewedLease { get; set; }
-        [Display(Name = "Lease Agreement")]
-        public object leaseDocument { get; set; }
+
         [Display(Name ="Payment Due Date")]
         public DateTime paymentDueDate { get; set; }
         [Display(Name = "Late Payment")]

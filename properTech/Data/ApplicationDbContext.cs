@@ -13,6 +13,12 @@ namespace properTech.Data
             : base(options)
         {
         }
-        DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
+        public DbSet<Manager> Manager { get; set; }
+
+        public DbSet<Resident> Resident { get; set; }
+
+        public DbSet<MaintenanceTech> maintenanceTeches { get; set; }
     }
 }

@@ -185,6 +185,181 @@ namespace properTech.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("properTech.Models.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("Country");
+
+                    b.Property<string>("State");
+
+                    b.Property<string>("streetAddress");
+
+                    b.Property<int>("zipCode");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("properTech.Models.Building", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("addressId");
+
+                    b.Property<string>("buildingName");
+
+                    b.Property<int?>("unitId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("addressId");
+
+                    b.HasIndex("unitId");
+
+                    b.ToTable("Building");
+                });
+
+            modelBuilder.Entity("properTech.Models.MaintenanceTech", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("firstName");
+
+                    b.Property<string>("lastName");
+
+                    b.Property<int>("residentId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("residentId");
+
+                    b.ToTable("maintenanceTeches");
+                });
+
+            modelBuilder.Entity("properTech.Models.Manager", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("firstName");
+
+                    b.Property<string>("lastName");
+
+                    b.Property<int>("propertyId");
+
+                    b.Property<int>("residentId");
+
+                    b.Property<string>("userId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("propertyId");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("Manager");
+                });
+
+            modelBuilder.Entity("properTech.Models.Property", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("addressId");
+
+                    b.Property<int?>("buildingId");
+
+                    b.Property<string>("propertyName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("addressId");
+
+                    b.HasIndex("buildingId");
+
+                    b.ToTable("Property");
+                });
+
+            modelBuilder.Entity("properTech.Models.Resident", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ManagerId");
+
+                    b.Property<double>("balance");
+
+                    b.Property<string>("firstName");
+
+                    b.Property<string>("lastName");
+
+                    b.Property<bool>("latePayment");
+
+                    b.Property<DateTime>("leaseSEnd");
+
+                    b.Property<DateTime>("leaseStart");
+
+                    b.Property<DateTime>("paymentDueDate");
+
+                    b.Property<bool>("renewedLease");
+
+                    b.Property<int>("unitId");
+
+                    b.Property<int>("userId");
+
+                    b.Property<string>("userId1");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ManagerId");
+
+                    b.HasIndex("unitId");
+
+                    b.HasIndex("userId1");
+
+                    b.ToTable("Resident");
+                });
+
+            modelBuilder.Entity("properTech.Models.Unit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("addressId");
+
+                    b.Property<int>("bathroomCount");
+
+                    b.Property<bool>("isOccupied");
+
+                    b.Property<double>("monthlyRent");
+
+                    b.Property<int>("roomCount");
+
+                    b.Property<int>("squareFootage");
+
+                    b.Property<int>("unitNumber");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("addressId");
+
+                    b.ToTable("Unit");
+                });
+
             modelBuilder.Entity("properTech.Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -237,6 +412,71 @@ namespace properTech.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("properTech.Models.Building", b =>
+                {
+                    b.HasOne("properTech.Models.Address", "address")
+                        .WithMany()
+                        .HasForeignKey("addressId");
+
+                    b.HasOne("properTech.Models.Unit", "unit")
+                        .WithMany()
+                        .HasForeignKey("unitId");
+                });
+
+            modelBuilder.Entity("properTech.Models.MaintenanceTech", b =>
+                {
+                    b.HasOne("properTech.Models.Resident", "resident")
+                        .WithMany()
+                        .HasForeignKey("residentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("properTech.Models.Manager", b =>
+                {
+                    b.HasOne("properTech.Models.Property", "property")
+                        .WithMany()
+                        .HasForeignKey("propertyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("properTech.Models.ApplicationUser", "user")
+                        .WithMany()
+                        .HasForeignKey("userId");
+                });
+
+            modelBuilder.Entity("properTech.Models.Property", b =>
+                {
+                    b.HasOne("properTech.Models.Address", "address")
+                        .WithMany()
+                        .HasForeignKey("addressId");
+
+                    b.HasOne("properTech.Models.Building", "building")
+                        .WithMany()
+                        .HasForeignKey("buildingId");
+                });
+
+            modelBuilder.Entity("properTech.Models.Resident", b =>
+                {
+                    b.HasOne("properTech.Models.Manager")
+                        .WithMany("residentsList")
+                        .HasForeignKey("ManagerId");
+
+                    b.HasOne("properTech.Models.Unit", "unit")
+                        .WithMany()
+                        .HasForeignKey("unitId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("properTech.Models.ApplicationUser", "user")
+                        .WithMany()
+                        .HasForeignKey("userId1");
+                });
+
+            modelBuilder.Entity("properTech.Models.Unit", b =>
+                {
+                    b.HasOne("properTech.Models.Address", "address")
+                        .WithMany()
+                        .HasForeignKey("addressId");
                 });
 #pragma warning restore 612, 618
         }
