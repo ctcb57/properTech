@@ -15,9 +15,5 @@ namespace properTech.Models
         public string firstName { get; set; }
         [Display(Name = "Last Name")]
         public string lastName { get; set; }
-
-        [ForeignKey("Resident")]
-        public int residentId { get; set; }
-        public Resident resident { get; set; }
     }
 }

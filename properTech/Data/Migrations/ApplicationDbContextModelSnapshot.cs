@@ -237,11 +237,7 @@ namespace properTech.Data.Migrations
 
                     b.Property<string>("lastName");
 
-                    b.Property<int>("residentId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("residentId");
 
                     b.ToTable("maintenanceTeches");
                 });
@@ -423,14 +419,6 @@ namespace properTech.Data.Migrations
                     b.HasOne("properTech.Models.Unit", "unit")
                         .WithMany()
                         .HasForeignKey("unitId");
-                });
-
-            modelBuilder.Entity("properTech.Models.MaintenanceTech", b =>
-                {
-                    b.HasOne("properTech.Models.Resident", "resident")
-                        .WithMany()
-                        .HasForeignKey("residentId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("properTech.Models.Manager", b =>

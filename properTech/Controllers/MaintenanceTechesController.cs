@@ -22,8 +22,7 @@ namespace properTech.Controllers
         // GET: MaintenanceTeches
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.maintenanceTeches.Include(m => m.resident);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.maintenanceTeches.ToListAsync());
         }
 
         // GET: MaintenanceTeches/Details/5
@@ -35,7 +34,6 @@ namespace properTech.Controllers
             }
 
             var maintenanceTech = await _context.maintenanceTeches
-                .Include(m => m.resident)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (maintenanceTech == null)
             {
@@ -48,7 +46,6 @@ namespace properTech.Controllers
         // GET: MaintenanceTeches/Create
         public IActionResult Create()
         {
-            ViewData["residentId"] = new SelectList(_context.Resident, "Id", "Id");
             return View();
         }
 
@@ -57,7 +54,7 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,firstName,lastName,residentId")] MaintenanceTech maintenanceTech)
+        public async Task<IActionResult> Create([Bind("Id,firstName,lastName")] MaintenanceTech maintenanceTech)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +62,6 @@ namespace properTech.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["residentId"] = new SelectList(_context.Resident, "Id", "Id", maintenanceTech.residentId);
             return View(maintenanceTech);
         }
 
@@ -82,7 +78,6 @@ namespace properTech.Controllers
             {
                 return NotFound();
             }
-            ViewData["residentId"] = new SelectList(_context.Resident, "Id", "Id", maintenanceTech.residentId);
             return View(maintenanceTech);
         }
 
@@ -91,7 +86,7 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,firstName,lastName,residentId")] MaintenanceTech maintenanceTech)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,firstName,lastName")] MaintenanceTech maintenanceTech)
         {
             if (id != maintenanceTech.Id)
             {
@@ -118,7 +113,6 @@ namespace properTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["residentId"] = new SelectList(_context.Resident, "Id", "Id", maintenanceTech.residentId);
             return View(maintenanceTech);
         }
 
@@ -131,7 +125,6 @@ namespace properTech.Controllers
             }
 
             var maintenanceTech = await _context.maintenanceTeches
-                .Include(m => m.resident)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (maintenanceTech == null)
             {
