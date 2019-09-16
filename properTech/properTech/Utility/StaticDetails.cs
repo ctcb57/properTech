@@ -9,5 +9,8 @@ namespace properTech.Utility
     {
         public const string AdminEndUser = "Admin";
         public const string SuperAdminEndUser = "Super Admin";
+        public const string Manager = "Manager";
+        public const string Maintenance = "Maintenance";
+        public const string Resident = "Resident";
     }
 }
