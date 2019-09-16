@@ -54,6 +54,9 @@ namespace properTech.Areas.Identity.Pages.Account
             [Display(Name = "Super Admin")]
             public bool isSuperAdmin { get; set; }
 
+            [Display(Name = "Roles")]
+            public StaticDetails staticDetails { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -92,6 +95,18 @@ namespace properTech.Areas.Identity.Pages.Account
                     if (!await _roleManager.RoleExistsAsync(StaticDetails.SuperAdminEndUser))
                     {
                         await _roleManager.CreateAsync(new IdentityRole(StaticDetails.SuperAdminEndUser));
+                    }
+                    if (!await _roleManager.RoleExistsAsync(StaticDetails.Manager))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(StaticDetails.Manager));
+                    }
+                    if (!await _roleManager.RoleExistsAsync(StaticDetails.Maintenance))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(StaticDetails.Maintenance));
+                    }
+                    if (!await _roleManager.RoleExistsAsync(StaticDetails.Resident))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(StaticDetails.Resident));
                     }
 
                     if (Input.isSuperAdmin)

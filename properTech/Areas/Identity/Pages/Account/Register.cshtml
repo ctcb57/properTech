@@ -38,6 +38,14 @@
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Input.staticDetails"></label>
+                <select asp-for="Input.staticDetails">
+                    <option value="Manager">Manager</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Resident">Resident</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label asp-for="Input.isSuperAdmin"></label>
                 <input asp-for="Input.isSuperAdmin" class="form-control" />
                 <span asp-validation-for="Input.isSuperAdmin" class="text-danger"></span>
