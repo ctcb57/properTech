@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,10 +24,10 @@ namespace properTech.Controllers
 
 
         // GET: Managers
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             Manager manager = _context.Manager.Where(m => m.ApplicationUserId == User.FindFirst(ClaimTypes.NameIdentifier).ToString()).Single();
-            return View(await _context.Property.Where(p => p.ManagerId == manager.ManagerId).ToListAsync());
+            return View(manager);
         }
 
         // GET: Managers/Details/5

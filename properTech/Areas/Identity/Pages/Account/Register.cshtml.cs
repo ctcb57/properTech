@@ -138,19 +138,16 @@ namespace properTech.Areas.Identity.Pages.Account
 
                     if (user.Role == "Manager")
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
                         await _userManager.AddToRoleAsync(user, StaticDetails.Manager);
                         return RedirectToAction("Create", "Managers", new { id = user.Id });
                     }
                     if(user.Role == "Resident")
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
                         await _userManager.AddToRoleAsync(user, StaticDetails.Resident);
                         return RedirectToAction("Create", "Residents", new { id = user.Id });
                     }
                     if(user.Role == "MaintenanceTech")
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
                         await _userManager.AddToRoleAsync(user, StaticDetails.Maintenance);
                         return RedirectToAction("Create", "MaintenanceTeches", new { id = user.Id });
                     }
