@@ -31,5 +31,7 @@ namespace properTech.Models
 
         [ForeignKey("Unit")]
         public int UnitId { get; set; }
+        [ForeignKey("User Id")]
+        public string ApplicationUserId { get; set; }
     }
 }

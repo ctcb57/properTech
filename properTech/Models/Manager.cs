@@ -15,6 +15,9 @@ namespace properTech.Models
        public string FirstName { get; set; }
        [Display(Name = "Last Name")]
        public string LastName { get; set; }
+       
+       [ForeignKey("UserId")]
+       public string ApplicationUserId { get; set; }
 
    }
 }

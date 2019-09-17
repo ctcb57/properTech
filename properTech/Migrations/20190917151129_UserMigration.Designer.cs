@@ -10,8 +10,8 @@ using properTech.Data;
 namespace properTech.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190917135248_test")]
-    partial class test
+    [Migration("20190917151129_UserMigration")]
+    partial class UserMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -207,6 +207,8 @@ namespace properTech.Migrations
                     b.Property<int>("ManagerId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId");
 
                     b.Property<string>("FirstName");
 
