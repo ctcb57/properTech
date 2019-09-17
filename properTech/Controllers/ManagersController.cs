@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -24,8 +25,8 @@ namespace properTech.Controllers
         // GET: Managers
         public async Task<IActionResult> Index(int id)
         {
-            //GET USER ID
-            return View(await _context.Property.Where(p => p.ManagerId == id).ToListAsync());
+            Manager manager = _context.Manager.Where(m => m.ApplicationUserId == User.FindFirst(ClaimTypes.NameIdentifier).ToString()).Single();
+            return View(manager);
         }
 
         // GET: Managers/Details/5
@@ -50,7 +51,8 @@ namespace properTech.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            Manager manager = new Manager();
+            return View(manager);
         }
 
         // POST: Managers/Create
@@ -62,9 +64,11 @@ namespace properTech.Controllers
         {
             if (ModelState.IsValid)
             {
+                manager.ApplicationUserId = User.FindFirst(ClaimTypes.NameIdentifier).ToString();
                 _context.Add(manager);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                int managerToPass = manager.ManagerId;
+                return RedirectToAction("Create", "Properties", new { id = managerToPass });
             }
             return View(manager);
         }

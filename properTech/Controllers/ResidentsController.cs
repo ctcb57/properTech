@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,9 +21,10 @@ namespace properTech.Controllers
         }
 
         // GET: Residents
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int id)
         {
-            return View(await _context.Resident.ToListAsync());
+            Resident resident = _context.Resident.Where(m => m.ResidentId == id).Single();
+            return View(resident);
         }
 
         // GET: Residents/Details/5
@@ -44,9 +46,10 @@ namespace properTech.Controllers
         }
 
         // GET: Residents/Create
-        public IActionResult Create(string id)
+        public IActionResult Create()
         {
-            return View();
+            Resident resident = new Resident();
+            return View(resident);
         }
 
         // POST: Residents/Create
@@ -58,10 +61,10 @@ namespace properTech.Controllers
         {
             if (ModelState.IsValid)
             {
-                resident.ApplicationUserId = id;
+                resident.ApplicationUserId = id ;
                 _context.Add(resident);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = resident.ResidentId });
             }
             return View(resident);
         }

@@ -1,64 +1,18 @@
-<<<<<<< HEAD
-﻿@model IEnumerable<properTech.Models.Manager>
-=======
-﻿@model IEnumerable<properTech.Models.Property>
->>>>>>> 1381c539f0ba111328975e6a12f7c060d844c8ca
-
+@model properTech.Models.Manager
 @{
     ViewData["Title"] = "Index";
 }
 
-<<<<<<< HEAD
-<h1>Index</h1>
+<h1>Home Page</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-=======
-<h1>Your Properties</h1>
+<h3>Welcome @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h3>
 
->>>>>>> 1381c539f0ba111328975e6a12f7c060d844c8ca
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-<<<<<<< HEAD
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-=======
-                @Html.DisplayNameFor(model => model.PropertyName)
->>>>>>> 1381c539f0ba111328975e6a12f7c060d844c8ca
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-<<<<<<< HEAD
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ManagerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ManagerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ManagerId">Delete</a>
-=======
-                <a asp-action="Index" asp-route-id="@item.PropertyId">@item.PropertyName.</a>
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PropertyId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PropertyId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PropertyId">Delete</a> |
-                <a asp-action="Create" asp-route-id="@item.ManagerId">Create New Property</a>
->>>>>>> 1381c539f0ba111328975e6a12f7c060d844c8ca
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <img src="https://ar.rdcpix.com/170984055/af6bda9ff49eb2683dba587a1b4d96c2c-f0xd-w480_h480_q80.jpg" alt="apartment" />
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
