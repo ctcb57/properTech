@@ -2,34 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using properTech.Data;
 using properTech.Models;
 
-
 namespace properTech.Controllers
 {
-    public class ManagersController : Controller
+    public class MaintenanceTechesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ManagersController(ApplicationDbContext context)
+        public MaintenanceTechesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-
-        // GET: Managers
-        public async Task<IActionResult> Index(int id)
+        // GET: MaintenanceTeches
+        public async Task<IActionResult> Index()
         {
-            //GET USER ID
-            return View(await _context.Property.Where(p => p.ManagerId == id).ToListAsync());
+            return View(await _context.maintenanceTeches.ToListAsync());
         }
 
-        // GET: Managers/Details/5
+        // GET: MaintenanceTeches/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,40 +33,40 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Manager
-                .FirstOrDefaultAsync(m => m.ManagerId == id);
-            if (manager == null)
+            var maintenanceTech = await _context.maintenanceTeches
+                .FirstOrDefaultAsync(m => m.MaintenanceTechId == id);
+            if (maintenanceTech == null)
             {
                 return NotFound();
             }
 
-            return View(manager);
+            return View(maintenanceTech);
         }
 
-        // GET: Managers/Create
-
-        public IActionResult Create()
+        // GET: MaintenanceTeches/Create
+        public IActionResult Create(string id)
         {
             return View();
         }
 
-        // POST: Managers/Create
+        // POST: MaintenanceTeches/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManagerId,FirstName,LastName")] Manager manager)
+        public async Task<IActionResult> Create([Bind("MaintenanceTechId,FirstName,LastName,ApplicationUserId")] MaintenanceTech maintenanceTech, string id)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(manager);
+                maintenanceTech.ApplicationUserId = id;
+                _context.Add(maintenanceTech);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(manager);
+            return View(maintenanceTech);
         }
 
-        // GET: Managers/Edit/5
+        // GET: MaintenanceTeches/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,23 +74,22 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Manager.FindAsync(id);
-            if (manager == null)
+            var maintenanceTech = await _context.maintenanceTeches.FindAsync(id);
+            if (maintenanceTech == null)
             {
                 return NotFound();
             }
-            return View(manager);
+            return View(maintenanceTech);
         }
 
-        // POST: Managers/Edit/5
+        // POST: MaintenanceTeches/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        public async Task<IActionResult> Edit(int id, [Bind("ManagerId,FirstName,LastName")] Manager manager)
+        public async Task<IActionResult> Edit(int id, [Bind("MaintenanceTechId,FirstName,LastName")] MaintenanceTech maintenanceTech)
         {
-            if (id != manager.ManagerId)
+            if (id != maintenanceTech.MaintenanceTechId)
             {
                 return NotFound();
             }
@@ -103,12 +98,12 @@ namespace properTech.Controllers
             {
                 try
                 {
-                    _context.Update(manager);
+                    _context.Update(maintenanceTech);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ManagerExists(manager.ManagerId))
+                    if (!MaintenanceTechExists(maintenanceTech.MaintenanceTechId))
                     {
                         return NotFound();
                     }
@@ -119,10 +114,10 @@ namespace properTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(manager);
+            return View(maintenanceTech);
         }
 
-        // GET: Managers/Delete/5
+        // GET: MaintenanceTeches/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,30 +125,30 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Manager
-                .FirstOrDefaultAsync(m => m.ManagerId == id);
-            if (manager == null)
+            var maintenanceTech = await _context.maintenanceTeches
+                .FirstOrDefaultAsync(m => m.MaintenanceTechId == id);
+            if (maintenanceTech == null)
             {
                 return NotFound();
             }
 
-            return View(manager);
+            return View(maintenanceTech);
         }
 
-        // POST: Managers/Delete/5
+        // POST: MaintenanceTeches/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var manager = await _context.Manager.FindAsync(id);
-            _context.Manager.Remove(manager);
+            var maintenanceTech = await _context.maintenanceTeches.FindAsync(id);
+            _context.maintenanceTeches.Remove(maintenanceTech);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ManagerExists(int id)
+        private bool MaintenanceTechExists(int id)
         {
-            return _context.Manager.Any(e => e.ManagerId == id);
+            return _context.maintenanceTeches.Any(e => e.MaintenanceTechId == id);
         }
     }
 }
