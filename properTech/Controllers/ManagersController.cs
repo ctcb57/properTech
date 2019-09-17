@@ -61,7 +61,7 @@ namespace properTech.Controllers
             {
                 _context.Add(manager);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Create", "Property", new { id = manager.ManagerId });
             }
             return View(manager);
         }

@@ -34,7 +34,7 @@ namespace properTech.Controllers
             }
 
             var unit = await _context.Unit
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.UnitId == id);
             if (unit == null)
             {
                 return NotFound();
@@ -46,7 +46,7 @@ namespace properTech.Controllers
         // GET: Units/Create
         public IActionResult Create(int id)
         {
-            Building building = _context.Building.Where(b => b.Id == id).Single();
+            Building building = _context.Building.Where(b => b.BuildingId == id).Single();
             return View(building);
         }
 
@@ -55,14 +55,14 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UnitNumber,RoomCount,BathroomCount,SquareFootage,MonthlyRent,IsOccupied,BuildingId")] Unit unit, Building building)
+        public async Task<IActionResult> Create([Bind("UnitId,UnitNumber,RoomCount,BathroomCount,SquareFootage,MonthlyRent,IsOccupied,BuildingId")] Unit unit, Building building)
         {
             if (ModelState.IsValid)
             {
-                unit.BuildingId = building.Id;
+                unit.BuildingId = building.BuildingId;
                 _context.Add(unit);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Buildings", new { id = building.Id });
+                return RedirectToAction("Index", "Buildings", new { id = building.BuildingId });
             }
             return View(unit);
         }
@@ -88,9 +88,9 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,unitNumber,roomCount,bathroomCount,squareFootage,monthlyRent,isOccupied,buildingId")] Unit unit)
+        public async Task<IActionResult> Edit(int id, [Bind("UnitId,UnitNumber,RoomCount,BathroomCount,SquareFootage,MonthlyRent,IsOccupied,BuildingId")] Unit unit)
         {
-            if (id != unit.Id)
+            if (id != unit.UnitId)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace properTech.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UnitExists(unit.Id))
+                    if (!UnitExists(unit.UnitId))
                     {
                         return NotFound();
                     }
@@ -127,7 +127,7 @@ namespace properTech.Controllers
             }
 
             var unit = await _context.Unit
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.UnitId == id);
             if (unit == null)
             {
                 return NotFound();
@@ -149,7 +149,7 @@ namespace properTech.Controllers
 
         private bool UnitExists(int id)
         {
-            return _context.Unit.Any(e => e.Id == id);
+            return _context.Unit.Any(e => e.UnitId == id);
         }
     }
 }
