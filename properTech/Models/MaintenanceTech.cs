@@ -10,10 +10,10 @@ namespace properTech.Models
     public class MaintenanceTech
     {
         [Key]
-        public int Id { get; set; }
+        public int MaintenanceTechId { get; set; }
         [Display(Name = "First Name")]
-        public string firstName { get; set; }
+        public string FirstName { get; set; }
         [Display(Name = "Last Name")]
-        public string lastName { get; set; }
+        public string LastName { get; set; }
     }
 }

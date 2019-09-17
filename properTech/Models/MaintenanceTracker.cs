@@ -10,9 +10,9 @@ namespace properTech.Models
     public class MaintenanceTracker
     {
         [Key]
-        public int Id { get; set; }
+        public int TrackerId { get; set; }
         [ForeignKey("MaintenanceRequest")]
-        public int requestId { get; set; }
-        public MaintenanceRequest request { get; set; }
+        public int RequestId { get; set; }
+        public MaintenanceRequest Request { get; set; }
     }
 }

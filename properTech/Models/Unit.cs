@@ -10,19 +10,21 @@ namespace properTech.Models
     public class Unit
     {
         [Key]
-        public int Id { get; set; }
-        public Address address { get; set; }
+        public int UnitId { get; set; }
+        public Address Address { get; set; }
         [Display(Name = "Unit Number")]
-        public int unitNumber { get; set; }
+        public int UnitNumber { get; set; }
         [Display(Name = "Number of Bedrooms")]
-        public int roomCount { get; set; }
+        public int RoomCount { get; set; }
         [Display(Name = "Number of Bathrooms")]
-        public int bathroomCount { get; set; }
+        public int BathroomCount { get; set; }
         [Display(Name = "Unit Size (ft2)")]
-        public int squareFootage { get; set; }
+        public int SquareFootage { get; set; }
         [Display(Name ="Monthly Rent Charge")]
-        public double monthlyRent { get; set; }
+        public double MonthlyRent { get; set; }
         public bool isOccupied { get; set; }
+        [ForeignKey("BuildingId")]
+        public int BuildingId { get; set; }
 
     }
 }

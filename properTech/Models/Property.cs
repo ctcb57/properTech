@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,11 +10,13 @@ namespace properTech.Models
     public class Property
     {
         [Key]
-        public int Id { get; set; }
+        public int PropertyId { get; set; }
         [Display(Name = "Property Name")]
-        public string propertyName { get; set; }
-        public Building building { get; set; }
-        public Address address { get; set; }
+        public string PropertyName { get; set; }
+        public Building Building { get; set; }
+        public Address Address { get; set; }
+        [ForeignKey("ManagerId")]
+        public int ManagerId { get; set; }
 
     }
 }
