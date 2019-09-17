@@ -13,7 +13,6 @@ namespace properTech.Models
         public int Id { get; set; }
 
         [ForeignKey("Unit")]
-        public int unitId { get; set; }
-        public Unit unit { get; set; }
+        public int UnitId { get; set; }
     }
 }

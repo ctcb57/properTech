@@ -16,11 +16,11 @@ namespace properTech.Models
         [NotMapped]
         public double  Latitude { get; set; }
         [Display(Name ="Street Address")]
-        public string streetAddress { get; set; }
+        public string StreetAddress { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         [Display(Name = "Zip Code")]
-        public int zipCode { get; set; }
+        public int ZipCode { get; set; }
         public string Country { get; set; }
     }
 }

@@ -10,23 +10,22 @@ using properTech.Models;
 
 namespace properTech.Controllers
 {
-    public class ResidentsController : Controller
+    public class UnitsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ResidentsController(ApplicationDbContext context)
+        public UnitsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Residents
+        // GET: Units index should just go to details of that specific unit
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Resident.Include(r => r.unit);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Unit.ToListAsync());
         }
 
-        // GET: Residents/Details/5
+        // GET: Units/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +33,41 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var resident = await _context.Resident
-                .Include(r => r.unit)
+            var unit = await _context.Unit
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (resident == null)
+            if (unit == null)
             {
                 return NotFound();
             }
 
-            return View(resident);
+            return View(unit);
         }
 
-        // GET: Residents/Create
-        public IActionResult Create()
+        // GET: Units/Create
+        public IActionResult Create(int id)
         {
-            ViewData["unitId"] = new SelectList(_context.Set<Unit>(), "Id", "Id");
-            return View();
+            Building building = _context.Building.Where(b => b.Id == id).Single();
+            return View(building);
         }
 
-        // POST: Residents/Create
+        // POST: Units/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,firstName,lastName,leaseStart,leaseSEnd,renewedLease,paymentDueDate,latePayment,balance,userId,unitId")] Resident resident)
+        public async Task<IActionResult> Create([Bind("Id,UnitNumber,RoomCount,BathroomCount,SquareFootage,MonthlyRent,IsOccupied,BuildingId")] Unit unit, Building building)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(resident);
+                unit.BuildingId = building.Id;
+                _context.Add(unit);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Buildings", new { id = building.Id });
             }
-            ViewData["unitId"] = new SelectList(_context.Set<Unit>(), "Id", "Id", resident.unitId);
-            return View(resident);
+            return View(unit);
         }
 
-        // GET: Residents/Edit/5
+        // GET: Units/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +75,22 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var resident = await _context.Resident.FindAsync(id);
-            if (resident == null)
+            var unit = await _context.Unit.FindAsync(id);
+            if (unit == null)
             {
                 return NotFound();
             }
-            ViewData["unitId"] = new SelectList(_context.Set<Unit>(), "Id", "Id", resident.unitId);
-            return View(resident);
+            return View(unit);
         }
 
-        // POST: Residents/Edit/5
+        // POST: Units/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,firstName,lastName,leaseStart,leaseSEnd,renewedLease,paymentDueDate,latePayment,balance,userId,unitId")] Resident resident)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,unitNumber,roomCount,bathroomCount,squareFootage,monthlyRent,isOccupied,buildingId")] Unit unit)
         {
-            if (id != resident.Id)
+            if (id != unit.Id)
             {
                 return NotFound();
             }
@@ -102,12 +99,12 @@ namespace properTech.Controllers
             {
                 try
                 {
-                    _context.Update(resident);
+                    _context.Update(unit);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ResidentExists(resident.Id))
+                    if (!UnitExists(unit.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +115,10 @@ namespace properTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["unitId"] = new SelectList(_context.Set<Unit>(), "Id", "Id", resident.unitId);
-            return View(resident);
+            return View(unit);
         }
 
-        // GET: Residents/Delete/5
+        // GET: Units/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +126,30 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var resident = await _context.Resident
-                .Include(r => r.unit)
+            var unit = await _context.Unit
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (resident == null)
+            if (unit == null)
             {
                 return NotFound();
             }
 
-            return View(resident);
+            return View(unit);
         }
 
-        // POST: Residents/Delete/5
+        // POST: Units/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var resident = await _context.Resident.FindAsync(id);
-            _context.Resident.Remove(resident);
+            var unit = await _context.Unit.FindAsync(id);
+            _context.Unit.Remove(unit);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ResidentExists(int id)
+        private bool UnitExists(int id)
         {
-            return _context.Resident.Any(e => e.Id == id);
+            return _context.Unit.Any(e => e.Id == id);
         }
     }
 }

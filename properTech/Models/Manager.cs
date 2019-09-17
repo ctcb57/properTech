@@ -12,19 +12,11 @@ namespace properTech.Models
        [Key]
        public int Id { get; set; }
        [Display(Name ="First Name")]
-       public string firstName { get; set; }
+       public string FirstName { get; set; }
        [Display(Name = "Last Name")]
-       public string lastName { get; set; }
+       public string LastName { get; set; }
        [Display(Name = "Current Residents")]
-       public List<Resident> residentsList { get; set; }
 
-
-       [ForeignKey("Property")]
-        public int propertyId { get; set; }
-        public Property property { get; set; }
-
-       [ForeignKey("Users")]
-        public int residentId { get; set; }
-        public ApplicationUser user { get; set; }
+        public int ResidentId { get; set; }
    }
 }

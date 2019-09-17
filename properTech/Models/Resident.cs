@@ -12,30 +12,24 @@ namespace properTech.Models
         [Key]
         public int Id { get; set; }
         [Display(Name = "First Name")]
-        public string firstName { get; set; }
+        public string FirstName { get; set; }
         [Display(Name = "Last Name")]
-        public string lastName { get; set; }
+        public string LastName { get; set; }
         [Display(Name = "Lease Start Date")]
-        public DateTime leaseStart { get; set; }
+        public DateTime LeaseStart { get; set; }
         [Display(Name = "Lease End Date")]
-        public DateTime leaseSEnd { get; set; }
+        public DateTime LeaseSEnd { get; set; }
         [Display(Name = "Lease Renewed")]
-        public bool renewedLease { get; set; }
+        public bool RenewedLease { get; set; }
 
         [Display(Name ="Payment Due Date")]
-        public DateTime paymentDueDate { get; set; }
+        public DateTime PaymentDueDate { get; set; }
         [Display(Name = "Late Payment")]
-        public bool latePayment { get; set; }
+        public bool LatePayment { get; set; }
         [Display(Name = "Current Balance Due")]
-        public double balance { get; set; }
-
-        [ForeignKey("Users")]
-        public int userId { get; set; }
-        public ApplicationUser user { get; set; }
+        public double Balance { get; set; }
 
         [ForeignKey("Unit")]
-        public int unitId { get; set; }
-
-        public Unit unit { get; set; }
+        public int UnitId { get; set; }
     }
 }

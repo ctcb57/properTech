@@ -10,22 +10,22 @@ using properTech.Models;
 
 namespace properTech.Controllers
 {
-    public class MaintenanceTechesController : Controller
+    public class BuildingsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MaintenanceTechesController(ApplicationDbContext context)
+        public BuildingsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: MaintenanceTeches
-        public async Task<IActionResult> Index()
+        // GET: Buildings
+        public async Task<IActionResult> Index(int id)
         {
-            return View(await _context.maintenanceTeches.ToListAsync());
+            return View(await _context.Unit.Where(u => u.BuildingId == id).ToListAsync());
         }
 
-        // GET: MaintenanceTeches/Details/5
+        // GET: Buildings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,41 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceTech = await _context.maintenanceTeches
+            var building = await _context.Building
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (maintenanceTech == null)
+            if (building == null)
             {
                 return NotFound();
             }
 
-            return View(maintenanceTech);
+            return View(building);
         }
 
-        // GET: MaintenanceTeches/Create
-        public IActionResult Create()
+        // GET: Buildings/Create
+        public IActionResult Create(int id)
         {
-            return View();
+            Property property = _context.Property.Where(p => p.Id == id).Single();
+            return View(property);
         }
 
-        // POST: MaintenanceTeches/Create
+        // POST: Buildings/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,firstName,lastName")] MaintenanceTech maintenanceTech)
+        public async Task<IActionResult> Create([Bind("Id,buildingName,address,propertyId")] Building building, Property property)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(maintenanceTech);
+                building.PropertyId = property.Id;
+                _context.Add(building);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Create", "Unit", new { id = building.Id });
             }
-            return View(maintenanceTech);
+            return View(building);
         }
 
-        // GET: MaintenanceTeches/Edit/5
+        // GET: Buildings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +75,22 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceTech = await _context.maintenanceTeches.FindAsync(id);
-            if (maintenanceTech == null)
+            var building = await _context.Building.FindAsync(id);
+            if (building == null)
             {
                 return NotFound();
             }
-            return View(maintenanceTech);
+            return View(building);
         }
 
-        // POST: MaintenanceTeches/Edit/5
+        // POST: Buildings/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,firstName,lastName")] MaintenanceTech maintenanceTech)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,buildingName,unitId,propertyId")] Building building)
         {
-            if (id != maintenanceTech.Id)
+            if (id != building.Id)
             {
                 return NotFound();
             }
@@ -97,12 +99,12 @@ namespace properTech.Controllers
             {
                 try
                 {
-                    _context.Update(maintenanceTech);
+                    _context.Update(building);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MaintenanceTechExists(maintenanceTech.Id))
+                    if (!BuildingExists(building.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +115,10 @@ namespace properTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(maintenanceTech);
+            return View(building);
         }
 
-        // GET: MaintenanceTeches/Delete/5
+        // GET: Buildings/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +126,30 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceTech = await _context.maintenanceTeches
+            var building = await _context.Building
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (maintenanceTech == null)
+            if (building == null)
             {
                 return NotFound();
             }
 
-            return View(maintenanceTech);
+            return View(building);
         }
 
-        // POST: MaintenanceTeches/Delete/5
+        // POST: Buildings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var maintenanceTech = await _context.maintenanceTeches.FindAsync(id);
-            _context.maintenanceTeches.Remove(maintenanceTech);
+            var building = await _context.Building.FindAsync(id);
+            _context.Building.Remove(building);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MaintenanceTechExists(int id)
+        private bool BuildingExists(int id)
         {
-            return _context.maintenanceTeches.Any(e => e.Id == id);
+            return _context.Building.Any(e => e.Id == id);
         }
     }
 }
