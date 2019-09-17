@@ -22,8 +22,8 @@ namespace properTech.Models
         public int SquareFootage { get; set; }
         [Display(Name ="Monthly Rent Charge")]
         public double MonthlyRent { get; set; }
-        public bool isOccupied { get; set; }
-        [ForeignKey("BuildingId")]
+        public bool IsOccupied { get; set; }
+        [ForeignKey ("Building Id")]
         public int BuildingId { get; set; }
 
     }

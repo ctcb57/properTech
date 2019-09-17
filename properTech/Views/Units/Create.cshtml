@@ -1,0 +1,65 @@
+﻿@model properTech.Models.Unit
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Unit</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UnitId" />
+            <input type="hidden" asp-for="BuildingId" />
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitNumber" class="control-label"></label>
+                <input asp-for="UnitNumber" class="form-control" />
+                <span asp-validation-for="UnitNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomCount" class="control-label"></label>
+                <input asp-for="RoomCount" class="form-control" />
+                <span asp-validation-for="RoomCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BathroomCount" class="control-label"></label>
+                <input asp-for="BathroomCount" class="form-control" />
+                <span asp-validation-for="BathroomCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SquareFootage" class="control-label"></label>
+                <input asp-for="SquareFootage" class="form-control" />
+                <span asp-validation-for="SquareFootage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MonthlyRent" class="control-label"></label>
+                <input asp-for="MonthlyRent" class="form-control" />
+                <span asp-validation-for="MonthlyRent" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsOccupied" /> @Html.DisplayNameFor(model => model.IsOccupied)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
