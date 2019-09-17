@@ -4,10 +4,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace properTech.Migrations
 {
-    public partial class test : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Address",
+                columns: table => new
+                {
+                    AddressId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    StreetAddress = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    ZipCode = table.Column<int>(nullable: false),
+                    Country = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.AddressId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -98,6 +115,74 @@ namespace properTech.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Resident", x => x.ResidentId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Building",
+                columns: table => new
+                {
+                    BuildingId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    BuildingName = table.Column<string>(nullable: true),
+                    AddressId = table.Column<int>(nullable: true),
+                    PropertyId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Building", x => x.BuildingId);
+                    table.ForeignKey(
+                        name: "FK_Building_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Property",
+                columns: table => new
+                {
+                    PropertyId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PropertyName = table.Column<string>(nullable: true),
+                    AddressId = table.Column<int>(nullable: true),
+                    ManagerId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Property", x => x.PropertyId);
+                    table.ForeignKey(
+                        name: "FK_Property_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Unit",
+                columns: table => new
+                {
+                    UnitId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AddressId = table.Column<int>(nullable: true),
+                    UnitNumber = table.Column<int>(nullable: false),
+                    RoomCount = table.Column<int>(nullable: false),
+                    BathroomCount = table.Column<int>(nullable: false),
+                    SquareFootage = table.Column<int>(nullable: false),
+                    MonthlyRent = table.Column<double>(nullable: false),
+                    IsOccupied = table.Column<bool>(nullable: false),
+                    BuildingId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Unit", x => x.UnitId);
+                    table.ForeignKey(
+                        name: "FK_Unit_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -244,6 +329,21 @@ namespace properTech.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Building_AddressId",
+                table: "Building",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Property_AddressId",
+                table: "Property",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Unit_AddressId",
+                table: "Unit",
+                column: "AddressId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -264,19 +364,31 @@ namespace properTech.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Building");
+
+            migrationBuilder.DropTable(
                 name: "maintenanceTeches");
 
             migrationBuilder.DropTable(
                 name: "Manager");
 
             migrationBuilder.DropTable(
+                name: "Property");
+
+            migrationBuilder.DropTable(
                 name: "Resident");
+
+            migrationBuilder.DropTable(
+                name: "Unit");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Address");
         }
     }
 }

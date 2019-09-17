@@ -185,6 +185,46 @@ namespace properTech.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("properTech.Models.Address", b =>
+                {
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("Country");
+
+                    b.Property<string>("State");
+
+                    b.Property<string>("StreetAddress");
+
+                    b.Property<int>("ZipCode");
+
+                    b.HasKey("AddressId");
+
+                    b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("properTech.Models.Building", b =>
+                {
+                    b.Property<int>("BuildingId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AddressId");
+
+                    b.Property<string>("BuildingName");
+
+                    b.Property<int>("PropertyId");
+
+                    b.HasKey("BuildingId");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("Building");
+                });
+
             modelBuilder.Entity("properTech.Models.MaintenanceTech", b =>
                 {
                     b.Property<int>("MaintenanceTechId")
@@ -215,6 +255,25 @@ namespace properTech.Migrations
                     b.ToTable("Manager");
                 });
 
+            modelBuilder.Entity("properTech.Models.Property", b =>
+                {
+                    b.Property<int>("PropertyId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AddressId");
+
+                    b.Property<int>("ManagerId");
+
+                    b.Property<string>("PropertyName");
+
+                    b.HasKey("PropertyId");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("Property");
+                });
+
             modelBuilder.Entity("properTech.Models.Resident", b =>
                 {
                     b.Property<int>("ResidentId")
@@ -242,6 +301,35 @@ namespace properTech.Migrations
                     b.HasKey("ResidentId");
 
                     b.ToTable("Resident");
+                });
+
+            modelBuilder.Entity("properTech.Models.Unit", b =>
+                {
+                    b.Property<int>("UnitId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AddressId");
+
+                    b.Property<int>("BathroomCount");
+
+                    b.Property<int>("BuildingId");
+
+                    b.Property<bool>("IsOccupied");
+
+                    b.Property<double>("MonthlyRent");
+
+                    b.Property<int>("RoomCount");
+
+                    b.Property<int>("SquareFootage");
+
+                    b.Property<int>("UnitNumber");
+
+                    b.HasKey("UnitId");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("Unit");
                 });
 
             modelBuilder.Entity("properTech.Models.ApplicationUser", b =>
@@ -300,6 +388,27 @@ namespace properTech.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("properTech.Models.Building", b =>
+                {
+                    b.HasOne("properTech.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+                });
+
+            modelBuilder.Entity("properTech.Models.Property", b =>
+                {
+                    b.HasOne("properTech.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+                });
+
+            modelBuilder.Entity("properTech.Models.Unit", b =>
+                {
+                    b.HasOne("properTech.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
                 });
 #pragma warning restore 612, 618
         }
