@@ -20,6 +20,12 @@ namespace properTech.Controllers
             return View();
         }
 
+        //Get all information on Vacancies 
+        public IActionResult Vacancies()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
