@@ -25,5 +25,11 @@ namespace properTech.Data
         public DbSet<Resident> Resident { get; set; }
 
         public DbSet<MaintenanceTech> maintenanceTeches { get; set; }
+
+        public DbSet<properTech.Models.Property> Property { get; set; }
+
+        public DbSet<properTech.Models.Building> Building { get; set; }
+
+        public DbSet<properTech.Models.Unit> Unit { get; set; }
     }
 }

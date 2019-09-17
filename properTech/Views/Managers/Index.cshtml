@@ -1,22 +1,35 @@
+<<<<<<< HEAD
 ﻿@model IEnumerable<properTech.Models.Manager>
+=======
+﻿@model IEnumerable<properTech.Models.Property>
+>>>>>>> 1381c539f0ba111328975e6a12f7c060d844c8ca
 
 @{
     ViewData["Title"] = "Index";
 }
 
+<<<<<<< HEAD
 <h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+=======
+<h1>Your Properties</h1>
+
+>>>>>>> 1381c539f0ba111328975e6a12f7c060d844c8ca
 <table class="table">
     <thead>
         <tr>
             <th>
+<<<<<<< HEAD
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LastName)
+=======
+                @Html.DisplayNameFor(model => model.PropertyName)
+>>>>>>> 1381c539f0ba111328975e6a12f7c060d844c8ca
             </th>
             <th></th>
         </tr>
@@ -25,6 +38,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+<<<<<<< HEAD
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
             <td>
@@ -34,6 +48,15 @@
                 <a asp-action="Edit" asp-route-id="@item.ManagerId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ManagerId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ManagerId">Delete</a>
+=======
+                <a asp-action="Index" asp-route-id="@item.PropertyId">@item.PropertyName.</a>
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PropertyId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PropertyId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PropertyId">Delete</a> |
+                <a asp-action="Create" asp-route-id="@item.ManagerId">Create New Property</a>
+>>>>>>> 1381c539f0ba111328975e6a12f7c060d844c8ca
             </td>
         </tr>
 }

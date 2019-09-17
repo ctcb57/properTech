@@ -8,27 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using properTech.Data;
 using properTech.Models;
 
-
 namespace properTech.Controllers
 {
-    public class ManagersController : Controller
+    public class PropertiesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ManagersController(ApplicationDbContext context)
+        public PropertiesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-
-        // GET: Managers
+        // GET: Properties
         public async Task<IActionResult> Index(int id)
         {
-            //GET USER ID
-            return View(await _context.Property.Where(p => p.ManagerId == id).ToListAsync());
+            return View(await _context.Building.Where(b => b.PropertyId == id).ToListAsync());
         }
 
-        // GET: Managers/Details/5
+        // GET: Properties/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,40 +33,41 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Manager
-                .FirstOrDefaultAsync(m => m.ManagerId == id);
-            if (manager == null)
+            var @property = await _context.Property
+                .FirstOrDefaultAsync(m => m.PropertyId == id);
+            if (@property == null)
             {
                 return NotFound();
             }
 
+            return View(@property);
+        }
+
+        // GET: Properties/Create
+        public IActionResult Create(int id)
+        {
+            Manager manager = _context.Manager.Where(m => m.ManagerId == id).Single();
             return View(manager);
         }
 
-        // GET: Managers/Create
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Managers/Create
+        // POST: Properties/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManagerId,FirstName,LastName")] Manager manager)
+        public async Task<IActionResult> Create([Bind("PropertyId,PropertyName,Address,ManagerId")] Property @property, Manager manager)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(manager);
+                property.ManagerId = manager.ManagerId;
+                _context.Add(@property);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Create", "Buildings", new { id = property.PropertyId });
             }
-            return View(manager);
+            return View(@property);
         }
 
-        // GET: Managers/Edit/5
+        // GET: Properties/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +75,22 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Manager.FindAsync(id);
-            if (manager == null)
+            var @property = await _context.Property.FindAsync(id);
+            if (@property == null)
             {
                 return NotFound();
             }
-            return View(manager);
+            return View(@property);
         }
 
-        // POST: Managers/Edit/5
+        // POST: Properties/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        public async Task<IActionResult> Edit(int id, [Bind("ManagerId,FirstName,LastName")] Manager manager)
+        public async Task<IActionResult> Edit(int id, [Bind("PropertyId,PropertyName,Address,ManagerId")] Property @property)
         {
-            if (id != manager.ManagerId)
+            if (id != @property.PropertyId)
             {
                 return NotFound();
             }
@@ -102,12 +99,12 @@ namespace properTech.Controllers
             {
                 try
                 {
-                    _context.Update(manager);
+                    _context.Update(@property);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ManagerExists(manager.ManagerId))
+                    if (!PropertyExists(@property.PropertyId))
                     {
                         return NotFound();
                     }
@@ -118,10 +115,10 @@ namespace properTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(manager);
+            return View(@property);
         }
 
-        // GET: Managers/Delete/5
+        // GET: Properties/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,30 +126,30 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Manager
-                .FirstOrDefaultAsync(m => m.ManagerId == id);
-            if (manager == null)
+            var @property = await _context.Property
+                .FirstOrDefaultAsync(m => m.PropertyId == id);
+            if (@property == null)
             {
                 return NotFound();
             }
 
-            return View(manager);
+            return View(@property);
         }
 
-        // POST: Managers/Delete/5
+        // POST: Properties/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var manager = await _context.Manager.FindAsync(id);
-            _context.Manager.Remove(manager);
+            var @property = await _context.Property.FindAsync(id);
+            _context.Property.Remove(@property);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ManagerExists(int id)
+        private bool PropertyExists(int id)
         {
-            return _context.Manager.Any(e => e.ManagerId == id);
+            return _context.Property.Any(e => e.PropertyId == id);
         }
     }
 }

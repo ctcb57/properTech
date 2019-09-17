@@ -8,27 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using properTech.Data;
 using properTech.Models;
 
-
 namespace properTech.Controllers
 {
-    public class ManagersController : Controller
+    public class UnitsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ManagersController(ApplicationDbContext context)
+        public UnitsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-
-        // GET: Managers
-        public async Task<IActionResult> Index(int id)
+        // GET: Units index should just go to details of that specific unit
+        public async Task<IActionResult> Index()
         {
-            //GET USER ID
-            return View(await _context.Property.Where(p => p.ManagerId == id).ToListAsync());
+            return View(await _context.Unit.ToListAsync());
         }
 
-        // GET: Managers/Details/5
+        // GET: Units/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,40 +33,41 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Manager
-                .FirstOrDefaultAsync(m => m.ManagerId == id);
-            if (manager == null)
+            var unit = await _context.Unit
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (unit == null)
             {
                 return NotFound();
             }
 
-            return View(manager);
+            return View(unit);
         }
 
-        // GET: Managers/Create
-
-        public IActionResult Create()
+        // GET: Units/Create
+        public IActionResult Create(int id)
         {
-            return View();
+            Building building = _context.Building.Where(b => b.Id == id).Single();
+            return View(building);
         }
 
-        // POST: Managers/Create
+        // POST: Units/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManagerId,FirstName,LastName")] Manager manager)
+        public async Task<IActionResult> Create([Bind("Id,UnitNumber,RoomCount,BathroomCount,SquareFootage,MonthlyRent,IsOccupied,BuildingId")] Unit unit, Building building)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(manager);
+                unit.BuildingId = building.Id;
+                _context.Add(unit);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Buildings", new { id = building.Id });
             }
-            return View(manager);
+            return View(unit);
         }
 
-        // GET: Managers/Edit/5
+        // GET: Units/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +75,22 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Manager.FindAsync(id);
-            if (manager == null)
+            var unit = await _context.Unit.FindAsync(id);
+            if (unit == null)
             {
                 return NotFound();
             }
-            return View(manager);
+            return View(unit);
         }
 
-        // POST: Managers/Edit/5
+        // POST: Units/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        public async Task<IActionResult> Edit(int id, [Bind("ManagerId,FirstName,LastName")] Manager manager)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,unitNumber,roomCount,bathroomCount,squareFootage,monthlyRent,isOccupied,buildingId")] Unit unit)
         {
-            if (id != manager.ManagerId)
+            if (id != unit.Id)
             {
                 return NotFound();
             }
@@ -102,12 +99,12 @@ namespace properTech.Controllers
             {
                 try
                 {
-                    _context.Update(manager);
+                    _context.Update(unit);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ManagerExists(manager.ManagerId))
+                    if (!UnitExists(unit.Id))
                     {
                         return NotFound();
                     }
@@ -118,10 +115,10 @@ namespace properTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(manager);
+            return View(unit);
         }
 
-        // GET: Managers/Delete/5
+        // GET: Units/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,30 +126,30 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Manager
-                .FirstOrDefaultAsync(m => m.ManagerId == id);
-            if (manager == null)
+            var unit = await _context.Unit
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (unit == null)
             {
                 return NotFound();
             }
 
-            return View(manager);
+            return View(unit);
         }
 
-        // POST: Managers/Delete/5
+        // POST: Units/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var manager = await _context.Manager.FindAsync(id);
-            _context.Manager.Remove(manager);
+            var unit = await _context.Unit.FindAsync(id);
+            _context.Unit.Remove(unit);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ManagerExists(int id)
+        private bool UnitExists(int id)
         {
-            return _context.Manager.Any(e => e.ManagerId == id);
+            return _context.Unit.Any(e => e.Id == id);
         }
     }
 }

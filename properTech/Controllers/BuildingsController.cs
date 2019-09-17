@@ -8,27 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using properTech.Data;
 using properTech.Models;
 
-
 namespace properTech.Controllers
 {
-    public class ManagersController : Controller
+    public class BuildingsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ManagersController(ApplicationDbContext context)
+        public BuildingsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-
-        // GET: Managers
+        // GET: Buildings
         public async Task<IActionResult> Index(int id)
         {
-            //GET USER ID
-            return View(await _context.Property.Where(p => p.ManagerId == id).ToListAsync());
+            return View(await _context.Unit.Where(u => u.BuildingId == id).ToListAsync());
         }
 
-        // GET: Managers/Details/5
+        // GET: Buildings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,40 +33,41 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Manager
-                .FirstOrDefaultAsync(m => m.ManagerId == id);
-            if (manager == null)
+            var building = await _context.Building
+                .FirstOrDefaultAsync(m => m.BuildingId == id);
+            if (building == null)
             {
                 return NotFound();
             }
 
-            return View(manager);
+            return View(building);
         }
 
-        // GET: Managers/Create
-
-        public IActionResult Create()
+        // GET: Buildings/Create
+        public IActionResult Create(int id)
         {
-            return View();
+            Property property = _context.Property.Where(p => p.PropertyId == id).Single();
+            return View(property);
         }
 
-        // POST: Managers/Create
+        // POST: Buildings/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManagerId,FirstName,LastName")] Manager manager)
+        public async Task<IActionResult> Create([Bind("BuildingId,BuildingName,Address,PropertyId")] Building building, Property property)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(manager);
+                building.PropertyId = property.PropertyId;
+                _context.Add(building);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Create", "Unit", new { id = building.BuildingId });
             }
-            return View(manager);
+            return View(building);
         }
 
-        // GET: Managers/Edit/5
+        // GET: Buildings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +75,22 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Manager.FindAsync(id);
-            if (manager == null)
+            var building = await _context.Building.FindAsync(id);
+            if (building == null)
             {
                 return NotFound();
             }
-            return View(manager);
+            return View(building);
         }
 
-        // POST: Managers/Edit/5
+        // POST: Buildings/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        public async Task<IActionResult> Edit(int id, [Bind("ManagerId,FirstName,LastName")] Manager manager)
+        public async Task<IActionResult> Edit(int id, [Bind("BuildingId,BuildingName,UnitId,PropertyId")] Building building)
         {
-            if (id != manager.ManagerId)
+            if (id != building.BuildingId)
             {
                 return NotFound();
             }
@@ -102,12 +99,12 @@ namespace properTech.Controllers
             {
                 try
                 {
-                    _context.Update(manager);
+                    _context.Update(building);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ManagerExists(manager.ManagerId))
+                    if (!BuildingExists(building.BuildingId))
                     {
                         return NotFound();
                     }
@@ -118,10 +115,10 @@ namespace properTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(manager);
+            return View(building);
         }
 
-        // GET: Managers/Delete/5
+        // GET: Buildings/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,30 +126,30 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var manager = await _context.Manager
-                .FirstOrDefaultAsync(m => m.ManagerId == id);
-            if (manager == null)
+            var building = await _context.Building
+                .FirstOrDefaultAsync(m => m.BuildingId == id);
+            if (building == null)
             {
                 return NotFound();
             }
 
-            return View(manager);
+            return View(building);
         }
 
-        // POST: Managers/Delete/5
+        // POST: Buildings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var manager = await _context.Manager.FindAsync(id);
-            _context.Manager.Remove(manager);
+            var building = await _context.Building.FindAsync(id);
+            _context.Building.Remove(building);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ManagerExists(int id)
+        private bool BuildingExists(int id)
         {
-            return _context.Manager.Any(e => e.ManagerId == id);
+            return _context.Building.Any(e => e.BuildingId == id);
         }
     }
 }

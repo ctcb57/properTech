@@ -13,7 +13,6 @@ namespace properTech.Models
         public int PropertyId { get; set; }
         [Display(Name = "Property Name")]
         public string PropertyName { get; set; }
-        public Building Building { get; set; }
         public Address Address { get; set; }
         [ForeignKey("ManagerId")]
         public int ManagerId { get; set; }

@@ -14,9 +14,7 @@ namespace properTech.Models
         [Display(Name = "Building Name")]
         public string BuildingName { get; set; }
         public Address Address { get; set; }
-        public Unit Unit { get; set; }
         [ForeignKey("Property")]
         public int PropertyId { get; set; }
-
     }
 }
