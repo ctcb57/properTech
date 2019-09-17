@@ -10,7 +10,7 @@ namespace properTech.Models
     public class Resident
     {
         [Key]
-        public int Id { get; set; }
+        public int ResidentId { get; set; }
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
@@ -18,7 +18,7 @@ namespace properTech.Models
         [Display(Name = "Lease Start Date")]
         public DateTime LeaseStart { get; set; }
         [Display(Name = "Lease End Date")]
-        public DateTime LeaseSEnd { get; set; }
+        public DateTime LeaseEnd { get; set; }
         [Display(Name = "Lease Renewed")]
         public bool RenewedLease { get; set; }
 

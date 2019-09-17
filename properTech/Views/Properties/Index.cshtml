@@ -20,12 +20,12 @@
         {
             <tr>
                 <td>
-                    <a asp-action="Index" asp-route-id="@item.Id">@item.BuildingName.</a>
+                    <a asp-action="Index" asp-route-id="@item.BuildingId">@item.BuildingName.</a>
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a asp-action="Edit" asp-route-id="@item.BuildingId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.BuildingId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.BuildingId">Delete</a> |
                     <a asp-action="Create" asp-route-id="@item.PropertyId">Create New</a>
                 </td>
             </tr>

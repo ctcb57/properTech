@@ -10,7 +10,7 @@ namespace properTech.Models
     public class Building
     {
         [Key]
-        public int Id { get; set; }
+        public int BuildingId { get; set; }
         [Display(Name = "Building Name")]
         public string BuildingName { get; set; }
         public Address Address { get; set; }

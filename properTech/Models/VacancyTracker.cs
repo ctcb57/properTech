@@ -10,7 +10,7 @@ namespace properTech.Models
     public class VacancyTracker
     {
         [Key]
-        public int Id { get; set; }
+        public int VacancyId { get; set; }
 
         [ForeignKey("Unit")]
         public int UnitId { get; set; }

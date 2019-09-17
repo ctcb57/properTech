@@ -34,7 +34,7 @@ namespace properTech.Controllers
             }
 
             var @property = await _context.Property
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.PropertyId == id);
             if (@property == null)
             {
                 return NotFound();
@@ -46,7 +46,7 @@ namespace properTech.Controllers
         // GET: Properties/Create
         public IActionResult Create(int id)
         {
-            Manager manager = _context.Manager.Where(m => m.Id == id).Single();
+            Manager manager = _context.Manager.Where(m => m.ManagerId == id).Single();
             return View(manager);
         }
 
@@ -55,14 +55,14 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PropertyName,Address,ManagerId")] Property @property, Manager manager)
+        public async Task<IActionResult> Create([Bind("PropertyId,PropertyName,Address,ManagerId")] Property @property, Manager manager)
         {
             if (ModelState.IsValid)
             {
-                property.ManagerId = manager.Id;
+                property.ManagerId = manager.ManagerId;
                 _context.Add(@property);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "Buildings", new { id = property.Id });
+                return RedirectToAction("Create", "Buildings", new { id = property.PropertyId });
             }
             return View(@property);
         }
@@ -88,9 +88,9 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,propertyName,buildingId,managerId")] Property @property)
+        public async Task<IActionResult> Edit(int id, [Bind("PropertyId,PropertyName,Address,ManagerId")] Property @property)
         {
-            if (id != @property.Id)
+            if (id != @property.PropertyId)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace properTech.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PropertyExists(@property.Id))
+                    if (!PropertyExists(@property.PropertyId))
                     {
                         return NotFound();
                     }
@@ -127,7 +127,7 @@ namespace properTech.Controllers
             }
 
             var @property = await _context.Property
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.PropertyId == id);
             if (@property == null)
             {
                 return NotFound();
@@ -149,7 +149,7 @@ namespace properTech.Controllers
 
         private bool PropertyExists(int id)
         {
-            return _context.Property.Any(e => e.Id == id);
+            return _context.Property.Any(e => e.PropertyId == id);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace properTech.Controllers
             }
 
             var manager = await _context.Manager
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.ManagerId == id);
             if (manager == null)
             {
                 return NotFound();
@@ -55,7 +55,7 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName")] Manager manager)
+        public async Task<IActionResult> Create([Bind("ManagerId,FirstName,LastName")] Manager manager)
         {
             if (ModelState.IsValid)
             {
@@ -87,9 +87,9 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,firstName,lastName,propertyId,residentId")] Manager manager)
+        public async Task<IActionResult> Edit(int id, [Bind("ManagerId,FirstName,LastName,PropertyId")] Manager manager)
         {
-            if (id != manager.Id)
+            if (id != manager.ManagerId)
             {
                 return NotFound();
             }
@@ -103,7 +103,7 @@ namespace properTech.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ManagerExists(manager.Id))
+                    if (!ManagerExists(manager.ManagerId))
                     {
                         return NotFound();
                     }
@@ -126,7 +126,7 @@ namespace properTech.Controllers
             }
 
             var manager = await _context.Manager
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.ManagerId == id);
             if (manager == null)
             {
                 return NotFound();
@@ -148,7 +148,7 @@ namespace properTech.Controllers
 
         private bool ManagerExists(int id)
         {
-            return _context.Manager.Any(e => e.Id == id);
+            return _context.Manager.Any(e => e.ManagerId == id);
         }
     }
 }

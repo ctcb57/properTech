@@ -10,7 +10,7 @@ namespace properTech.Models
     public class Address
     {
         [Key]
-        public int Id { get; set; }
+        public int AddressId { get; set; }
         [NotMapped]
         public double Longitude { get; set; }
         [NotMapped]

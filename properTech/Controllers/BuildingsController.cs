@@ -34,7 +34,7 @@ namespace properTech.Controllers
             }
 
             var building = await _context.Building
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.BuildingId == id);
             if (building == null)
             {
                 return NotFound();
@@ -46,7 +46,7 @@ namespace properTech.Controllers
         // GET: Buildings/Create
         public IActionResult Create(int id)
         {
-            Property property = _context.Property.Where(p => p.Id == id).Single();
+            Property property = _context.Property.Where(p => p.PropertyId == id).Single();
             return View(property);
         }
 
@@ -55,14 +55,14 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,buildingName,address,propertyId")] Building building, Property property)
+        public async Task<IActionResult> Create([Bind("BuildingId,BuildingName,Address,PropertyId")] Building building, Property property)
         {
             if (ModelState.IsValid)
             {
-                building.PropertyId = property.Id;
+                building.PropertyId = property.PropertyId;
                 _context.Add(building);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "Unit", new { id = building.Id });
+                return RedirectToAction("Create", "Unit", new { id = building.BuildingId });
             }
             return View(building);
         }
@@ -88,9 +88,9 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,buildingName,unitId,propertyId")] Building building)
+        public async Task<IActionResult> Edit(int id, [Bind("BuildingId,BuildingName,UnitId,PropertyId")] Building building)
         {
-            if (id != building.Id)
+            if (id != building.BuildingId)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace properTech.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BuildingExists(building.Id))
+                    if (!BuildingExists(building.BuildingId))
                     {
                         return NotFound();
                     }
@@ -127,7 +127,7 @@ namespace properTech.Controllers
             }
 
             var building = await _context.Building
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.BuildingId == id);
             if (building == null)
             {
                 return NotFound();
@@ -149,7 +149,7 @@ namespace properTech.Controllers
 
         private bool BuildingExists(int id)
         {
-            return _context.Building.Any(e => e.Id == id);
+            return _context.Building.Any(e => e.BuildingId == id);
         }
     }
 }

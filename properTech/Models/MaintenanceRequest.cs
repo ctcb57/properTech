@@ -10,20 +10,20 @@ namespace properTech.Models
     public class MaintenanceRequest
     {
         [Key]
-        public int Id { get; set; }
+        public int RequestId { get; set; }
         [Display(Name ="Date of Request")]
-        public DateTime dateOfRequest { get; set; }
+        public DateTime DateOfRequest { get; set; }
         [Display(Name ="Estimated Date of Completion")]
-        public DateTime estimatedCompletionDate { get; set; }
+        public DateTime EstimatedCompletionDate { get; set; }
         [Display(Name = "Actual Date of Completion")]
-        public DateTime actualCompletionDate { get; set; }
+        public DateTime ActualCompletionDate { get; set; }
         [Display(Name ="Maintenance Complete")]
         public bool isComplete { get; set; }
         [Display(Name = "Current Maintenance Status")]
-        public string maintenanceStatus { get; set; }
+        public string MaintenanceStatus { get; set; }
 
         [Display(Name = "Feedback Message")]
-        public  string feedbackMessage { get; set; }
+        public  string FeedbackMessage { get; set; }
 
         [ForeignKey("Resident")]
         public int residentId { get; set; }

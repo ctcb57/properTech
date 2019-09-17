@@ -10,7 +10,7 @@ namespace properTech.Models
     public class Unit
     {
         [Key]
-        public int Id { get; set; }
+        public int UnitId { get; set; }
         public Address Address { get; set; }
         [Display(Name = "Unit Number")]
         public int UnitNumber { get; set; }

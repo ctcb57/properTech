@@ -10,7 +10,7 @@ namespace properTech.Models
     public class Property
     {
         [Key]
-        public int Id { get; set; }
+        public int PropertyId { get; set; }
         [Display(Name = "Property Name")]
         public string PropertyName { get; set; }
         public Address Address { get; set; }
