@@ -1,18 +1,16 @@
-﻿@model IEnumerable<properTech.Models.Property>
+@model IEnumerable<properTech.Models.Property>
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Your Properties</h1>
-
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.PropertyName)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>

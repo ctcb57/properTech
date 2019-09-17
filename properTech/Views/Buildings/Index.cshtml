@@ -53,10 +53,10 @@
                     @Html.DisplayFor(modelItem => item.IsOccupied)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.UnitId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.UnitId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.UnitId">Delete</a> |
-                    <a asp-action="Create" asp-route-id="@item.BuildingId">Create New</a>
+                    <a asp-controller="Units" asp-action="Edit" asp-route-id="@item.UnitId">Edit</a> |
+                    <a asp-controller="Units" asp-action="Details" asp-route-id="@item.UnitId">Details</a> |
+                    <a asp-controller="Units" asp-action="Delete" asp-route-id="@item.UnitId">Delete</a> |
+                    <a asp-controller="Units" asp-action="Create" asp-route-id="@item.BuildingId">Create New Unit</a>
                 </td>
             </tr>
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,22 +10,22 @@ using properTech.Models;
 
 namespace properTech.Controllers
 {
-    public class UnitsController : Controller
+    public class MaintenanceTechesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public UnitsController(ApplicationDbContext context)
+        public MaintenanceTechesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Units index should just go to details of that specific unit
+        // GET: MaintenanceTeches
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Unit.ToListAsync());
+            return View(await _context.maintenanceTeches.ToListAsync());
         }
 
-        // GET: Units/Details/5
+        // GET: MaintenanceTeches/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +33,40 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.Unit
-                .FirstOrDefaultAsync(m => m.UnitId == id);
-            if (unit == null)
+            var maintenanceTech = await _context.maintenanceTeches
+                .FirstOrDefaultAsync(m => m.MaintenanceTechId == id);
+            if (maintenanceTech == null)
             {
                 return NotFound();
             }
 
-            return View(unit);
+            return View(maintenanceTech);
         }
 
-        // GET: Units/Create
-        public IActionResult Create()
+        // GET: MaintenanceTeches/Create
+        public IActionResult Create(string id)
         {
-            Unit unit = new Unit();
-            return View(unit);
+            return View();
         }
 
-        // POST: Units/Create
+        // POST: MaintenanceTeches/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UnitId,UnitNumber,RoomCount,BathroomCount,SquareFootage,MonthlyRent,IsOccupied,BuildingId")] Unit unit, int id)
+        public async Task<IActionResult> Create([Bind("MaintenanceTechId,FirstName,LastName,ApplicationUserId")] MaintenanceTech maintenanceTech, string id)
         {
             if (ModelState.IsValid)
             {
-                Building building = _context.Building.Where(b => b.BuildingId == id).Single();
-                unit.BuildingId = building.BuildingId;
-                _context.Add(unit);
+                maintenanceTech.ApplicationUserId = id;
+                _context.Add(maintenanceTech);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Managers", new { id = User.FindFirst(ClaimTypes.NameIdentifier).ToString() });
+                return RedirectToAction(nameof(Index));
             }
-            return View(unit);
+            return View(maintenanceTech);
         }
 
-        // GET: Units/Edit/5
+        // GET: MaintenanceTeches/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,22 +74,22 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.Unit.FindAsync(id);
-            if (unit == null)
+            var maintenanceTech = await _context.maintenanceTeches.FindAsync(id);
+            if (maintenanceTech == null)
             {
                 return NotFound();
             }
-            return View(unit);
+            return View(maintenanceTech);
         }
 
-        // POST: Units/Edit/5
+        // POST: MaintenanceTeches/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UnitId,UnitNumber,RoomCount,BathroomCount,SquareFootage,MonthlyRent,IsOccupied,BuildingId")] Unit unit)
+        public async Task<IActionResult> Edit(int id, [Bind("MaintenanceTechId,FirstName,LastName")] MaintenanceTech maintenanceTech)
         {
-            if (id != unit.UnitId)
+            if (id != maintenanceTech.MaintenanceTechId)
             {
                 return NotFound();
             }
@@ -101,12 +98,12 @@ namespace properTech.Controllers
             {
                 try
                 {
-                    _context.Update(unit);
+                    _context.Update(maintenanceTech);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UnitExists(unit.UnitId))
+                    if (!MaintenanceTechExists(maintenanceTech.MaintenanceTechId))
                     {
                         return NotFound();
                     }
@@ -117,10 +114,10 @@ namespace properTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(unit);
+            return View(maintenanceTech);
         }
 
-        // GET: Units/Delete/5
+        // GET: MaintenanceTeches/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -128,30 +125,30 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.Unit
-                .FirstOrDefaultAsync(m => m.UnitId == id);
-            if (unit == null)
+            var maintenanceTech = await _context.maintenanceTeches
+                .FirstOrDefaultAsync(m => m.MaintenanceTechId == id);
+            if (maintenanceTech == null)
             {
                 return NotFound();
             }
 
-            return View(unit);
+            return View(maintenanceTech);
         }
 
-        // POST: Units/Delete/5
+        // POST: MaintenanceTeches/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var unit = await _context.Unit.FindAsync(id);
-            _context.Unit.Remove(unit);
+            var maintenanceTech = await _context.maintenanceTeches.FindAsync(id);
+            _context.maintenanceTeches.Remove(maintenanceTech);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UnitExists(int id)
+        private bool MaintenanceTechExists(int id)
         {
-            return _context.Unit.Any(e => e.UnitId == id);
+            return _context.maintenanceTeches.Any(e => e.MaintenanceTechId == id);
         }
     }
 }

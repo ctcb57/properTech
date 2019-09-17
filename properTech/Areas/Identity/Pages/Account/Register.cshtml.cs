@@ -130,20 +130,31 @@ namespace properTech.Areas.Identity.Pages.Account
                     {
                         await _roleManager.CreateAsync(new IdentityRole(StaticDetails.Resident));
                     }
-                    await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    if(user.Role == "Manager")
+                    foreach (var error in result.Errors)
                     {
-                        return RedirectToAction("Create", "Managers");
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+
+                    if (user.Role == "Manager")
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _userManager.AddToRoleAsync(user, StaticDetails.Manager);
+                        return RedirectToAction("Create", "Managers", new { id = user.Id });
                     }
                     if(user.Role == "Resident")
                     {
-                        return RedirectToAction("Create", "Residents");
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _userManager.AddToRoleAsync(user, StaticDetails.Resident);
+                        return RedirectToAction("Create", "Residents", new { id = user.Id });
                     }
                     if(user.Role == "MaintenanceTech")
                     {
-                        return RedirectToAction("Create", "MaintenanceTeches");
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _userManager.AddToRoleAsync(user, StaticDetails.Maintenance);
+                        return RedirectToAction("Create", "MaintenanceTeches", new { id = user.Id });
                     }
+                    await _signInManager.SignInAsync(user, isPersistent: false);
 
                     //if (Input.isSuperAdmin)
                     //{
@@ -168,10 +179,7 @@ namespace properTech.Areas.Identity.Pages.Account
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     //return LocalRedirect(returnUrl);
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+
             }
 
             // If we got this far, something failed, redisplay form

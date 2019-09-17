@@ -44,10 +44,10 @@ namespace properTech.Controllers
         }
 
         // GET: Buildings/Create
-        public IActionResult Create(int id)
+        public IActionResult Create()
         {
-            Property property = _context.Property.Where(p => p.PropertyId == id).Single();
-            return View(property);
+            Building building = new Building();
+            return View(building);
         }
 
         // POST: Buildings/Create
@@ -55,14 +55,15 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BuildingId,BuildingName,Address,PropertyId")] Building building, Property property)
+        public async Task<IActionResult> Create([Bind("BuildingId,BuildingName,Address,PropertyId")] Building building, int id)
         {
             if (ModelState.IsValid)
             {
+                Property property = _context.Property.Where(p => p.PropertyId == id).Single();
                 building.PropertyId = property.PropertyId;
                 _context.Add(building);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "Unit", new { id = building.BuildingId });
+                return RedirectToAction("Create", "Units", new { id = building.BuildingId });
             }
             return View(building);
         }

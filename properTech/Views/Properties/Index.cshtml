@@ -23,10 +23,10 @@
                     <a asp-action="Index" asp-route-id="@item.BuildingId">@item.BuildingName.</a>
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.BuildingId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.BuildingId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.BuildingId">Delete</a> |
-                    <a asp-action="Create" asp-route-id="@item.PropertyId">Create New</a>
+                    <a asp-controller="Building" asp-action="Edit" asp-route-id="@item.BuildingId">Edit</a> |
+                    <a asp-controller="Building" asp-action="Details" asp-route-id="@item.BuildingId">Details</a> |
+                    <a asp-controller="Building" asp-action="Delete" asp-route-id="@item.BuildingId">Delete</a> |
+                    <a asp-controller="Building" asp-action="Create" asp-route-id="@item.PropertyId">Create New Building</a>
                 </td>
             </tr>
         }

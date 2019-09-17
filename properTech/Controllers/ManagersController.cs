@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using properTech.Data;
 using properTech.Models;
+
 
 namespace properTech.Controllers
 {
@@ -19,11 +21,12 @@ namespace properTech.Controllers
             _context = context;
         }
 
+
         // GET: Managers
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index()
         {
-            //GET USER ID
-            return View(await _context.Property.Where(p => p.ManagerId == id).ToListAsync());
+            Manager manager = _context.Manager.Where(m => m.ApplicationUserId == User.FindFirst(ClaimTypes.NameIdentifier).ToString()).Single();
+            return View(await _context.Property.Where(p => p.ManagerId == manager.ManagerId).ToListAsync());
         }
 
         // GET: Managers/Details/5
@@ -45,9 +48,11 @@ namespace properTech.Controllers
         }
 
         // GET: Managers/Create
+
         public IActionResult Create()
         {
-            return View();
+            Manager manager = new Manager();
+            return View(manager);
         }
 
         // POST: Managers/Create
@@ -55,13 +60,15 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManagerId,FirstName,LastName")] Manager manager)
+        public async Task<IActionResult> Create([Bind("ManagerId,FirstName,LastName,ApplicationUserId")] Manager manager)
         {
             if (ModelState.IsValid)
             {
+                manager.ApplicationUserId = User.FindFirst(ClaimTypes.NameIdentifier).ToString();
                 _context.Add(manager);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "Property", new { id = manager.ManagerId });
+                int managerToPass = manager.ManagerId;
+                return RedirectToAction("Create", "Properties", new { id = managerToPass });
             }
             return View(manager);
         }
@@ -87,7 +94,8 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ManagerId,FirstName,LastName,PropertyId")] Manager manager)
+
+        public async Task<IActionResult> Edit(int id, [Bind("ManagerId,FirstName,LastName")] Manager manager)
         {
             if (id != manager.ManagerId)
             {

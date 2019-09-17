@@ -15,5 +15,7 @@ namespace properTech.Models
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+        [Display(Name = "User Id")]
+        public string ApplicationUserId { get; set; }
     }
 }
