@@ -14,7 +14,7 @@ namespace properTech.Models
         [Display(Name = "Property Name")]
         public string PropertyName { get; set; }
         public Address Address { get; set; }
-        [ForeignKey("ManagerId")]
+        [ForeignKey("Manager Id")]
         public int ManagerId { get; set; }
 
     }

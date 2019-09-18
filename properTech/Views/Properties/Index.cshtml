@@ -1,4 +1,4 @@
-﻿@model IEnumerable<properTech.Models.Building>
+﻿@model IEnumerable<properTech.Models.Property>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,11 +6,12 @@
 
 <h1>Index</h1>
 
+<a asp-action="Create" >Create New Property</a>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.BuildingName)
+                @Html.DisplayNameFor(model => model.PropertyName)
             </th>
             <th></th>
         </tr>
@@ -20,13 +21,13 @@
         {
             <tr>
                 <td>
-                    <a asp-action="Index" asp-route-id="@item.BuildingId">@item.BuildingName.</a>
+                    <a asp-controller="Buildings" asp-action="Index" asp-route-id="@item.PropertyId">@item.PropertyName.</a>
                 </td>
                 <td>
-                    <a asp-controller="Building" asp-action="Edit" asp-route-id="@item.BuildingId">Edit</a> |
-                    <a asp-controller="Building" asp-action="Details" asp-route-id="@item.BuildingId">Details</a> |
-                    <a asp-controller="Building" asp-action="Delete" asp-route-id="@item.BuildingId">Delete</a> |
-                    <a asp-controller="Building" asp-action="Create" asp-route-id="@item.PropertyId">Create New Building</a>
+                    <a asp-action="Edit" asp-route-id="@item.PropertyId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.PropertyId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.PropertyId">Delete</a> |
+                    <a asp-controller="Buildings" asp-action="Create" asp-route-id="@item.PropertyId">Create New Building</a>
                 </td>
             </tr>
         }

@@ -24,6 +24,25 @@ namespace properTech.Controllers
         {
             _context = context;
         }
+        //viewallresidents
+        //getoverdueaccounts
+        //modify resident
+        //
+
+        public IActionResult GetAllResidents(string id)
+        {
+            Manager manager = _context.Manager.Where(m => m.ApplicationUserId == id).Single();
+            var properties = _context.Property.Where(p => p.ManagerId == manager.ManagerId).ToList();
+            int propertyId = properties[0].PropertyId;
+            var buildings = _context.Building.Where(b => b.PropertyId == propertyId).ToList();
+            int buildingId = buildings[0].BuildingId;
+            var units = _context.Unit.Where(u => u.BuildingId == buildingId).ToList();
+            return View(units);
+            //foreach (Unit unit in units)
+            //{
+            //    return unit;
+            //}
+        }
 
 
         // GET: Managers
@@ -126,8 +145,7 @@ namespace properTech.Controllers
                 manager.ApplicationUserId = id;
                 _context.Add(manager);
                 await _context.SaveChangesAsync();
-                int managerToPass = manager.ManagerId;
-                return RedirectToAction("Create", "Properties", new { id = managerToPass });
+                return RedirectToAction("Index");
             }
             return View(manager);
         }

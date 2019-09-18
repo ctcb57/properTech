@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,9 +21,12 @@ namespace properTech.Controllers
         }
 
         // GET: Properties
-        public async Task<IActionResult> Index(int id)
+        public IActionResult Index()
         {
-            return View(await _context.Building.Where(b => b.PropertyId == id).ToListAsync());
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var manager = _context.Manager.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
+            var properties = _context.Property.Where(p => p.ManagerId == manager.ManagerId).ToList();
+            return View(properties);
         }
 
         // GET: Properties/Details/5
@@ -55,15 +59,16 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PropertyId,PropertyName,Address,ManagerId")] Property @property, int id)
+        public async Task<IActionResult> Create([Bind("PropertyId,PropertyName,Address,ManagerId")] Property @property)
         {
             if (ModelState.IsValid)
             {
-                Manager manager = _context.Manager.Where(m => m.ManagerId == id).Single();
+                var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                Manager manager = _context.Manager.Where(m => m.ApplicationUserId == currentUserId).Single();
                 property.ManagerId = manager.ManagerId;
                 _context.Add(@property);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "Buildings", new { id = property.PropertyId });
+                return RedirectToAction("Index");
             }
             return View(@property);
         }
@@ -114,7 +119,7 @@ namespace properTech.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
             return View(@property);
         }

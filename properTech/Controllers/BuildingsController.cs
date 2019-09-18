@@ -22,7 +22,8 @@ namespace properTech.Controllers
         // GET: Buildings
         public async Task<IActionResult> Index(int id)
         {
-            return View(await _context.Unit.Where(u => u.BuildingId == id).ToListAsync());
+
+            return View(await _context.Building.Where(u => u.PropertyId == id).ToListAsync());
         }
 
         // GET: Buildings/Details/5
@@ -55,15 +56,16 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BuildingId,BuildingName,Address,PropertyId")] Building building, int id)
+        public async Task<IActionResult> Create([Bind("ManagerId,BuildingId,BuildingName,Address,PropertyId")] Building building, int id)
         {
             if (ModelState.IsValid)
             {
                 Property property = _context.Property.Where(p => p.PropertyId == id).Single();
                 building.PropertyId = property.PropertyId;
+                building.ManagerId = property.ManagerId;
                 _context.Add(building);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "Units", new { id = building.BuildingId });
+                return RedirectToAction("Index", new { id = building.PropertyId });
             }
             return View(building);
         }
@@ -114,7 +116,7 @@ namespace properTech.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = building.PropertyId });
             }
             return View(building);
         }

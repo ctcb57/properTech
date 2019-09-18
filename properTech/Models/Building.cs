@@ -16,6 +16,7 @@ namespace properTech.Models
         public Address Address { get; set; }
         [ForeignKey("Property")]
         public int PropertyId { get; set; }
+
         [ForeignKey("ManagerId")]
         public int ManagerId { get; set; }
     }
