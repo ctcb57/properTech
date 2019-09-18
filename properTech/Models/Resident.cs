@@ -31,6 +31,7 @@ namespace properTech.Models
         public bool LatePayment { get; set; }
         [Display(Name = "Current Balance Due")]
         public double Balance { get; set; }
+        public int UnitNumber { get; set; }
 
         [ForeignKey("Unit")]
         public int UnitId { get; set; }
@@ -43,6 +44,5 @@ namespace properTech.Models
         public string Email { get; set; }
         [Display(Name = "Phone")]
         public string PhoneNumber { get; set; }
-
     }
 }

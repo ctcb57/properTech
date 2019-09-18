@@ -25,7 +25,8 @@ namespace properTech.Models
         public bool IsOccupied { get; set; }
         [ForeignKey ("Building Id")]
         public int BuildingId { get; set; }
-        [ForeignKey("Manager Id")]
+
+        [ForeignKey("ManagerId")]
         public int ManagerId { get; set; }
 
     }
