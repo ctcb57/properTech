@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "Maintenance";
+}
+
+<h1>Maintenance</h1>
+
+<form id="chat-form" class="simple-form">
+    <div class="container" ; style="color: gray">
+        <div class="row">
+            <h8>You said:</h8>
+            <div class="col-sm-4" , id="userResponse"></div>
+            <h8>Chad says:</h8>
+            <div class="col-sm-4" , id="chadResponse"></div>
+            <div class="col-sm-4"></div>
+        </div>
+    </div>
+</form>
+<br />
+<br />
+<div>
+    <h8>Talk to Chad Here:</h8>
+    <form id="my-form" class="simple-form">
+        <input type="text" name="userMessage" placeholder="You can use full sentences" />
+        <button type="button" id="button1" onclick="getUserInput()">Send Message</button>
+    </form>
+</div>
+<script src="~/js/Chad.js"></script>
