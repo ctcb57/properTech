@@ -1,0 +1,62 @@
+﻿@model properTech.Models.Resident
+
+@{
+    ViewData["Title"] = "EditResident";
+}
+
+<h1>EditResident</h1>
+
+<h4>Resident</h4>
+<hr />
+<div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+        <p>Resident: @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</p>
+    </div>
+    <div class="col-sm-3"></div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditResident">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ResidentId" />
+            <input type="hidden" asp-for="ApplicationUserId" />
+            <input type="hidden" asp-for="RenewedLease" />
+            <input type="hidden" asp-for="LatePayment" />
+            <input type="hidden" asp-for="Balance" />
+            <div class="form-group">
+                <label asp-for="LeaseStart" class="control-label"></label>
+                <input asp-for="LeaseStart" class="form-control" />
+                <span asp-validation-for="LeaseStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LeaseEnd" class="control-label"></label>
+                <input asp-for="LeaseEnd" class="form-control" />
+                <span asp-validation-for="LeaseEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentDueDate" class="control-label"></label>
+                <input asp-for="PaymentDueDate" class="form-control" />
+                <span asp-validation-for="PaymentDueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitNumber" class="control-label"></label>
+                <input asp-for="UnitNumber" class="form-control" />
+                <span asp-validation-for="UnitNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="isAssignedUnit" /> @Html.DisplayNameFor(model => model.isAssignedUnit)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

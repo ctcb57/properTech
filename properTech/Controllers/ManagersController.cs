@@ -18,7 +18,7 @@ namespace properTech.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        private readonly UserManager<IdentityUser> _userManager;
+        //private readonly UserManager<IdentityUser> _userManager;
 
         public ManagersController(ApplicationDbContext context)
         {
@@ -33,6 +33,60 @@ namespace properTech.Controllers
             var manager = _context.Manager.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
             return View(manager);
         }
+
+        // GET: Edit Residents
+        public IActionResult GetResidents()
+        {
+            List<Resident> residentList = new List<Resident>();
+            var residents = _context.Resident;
+            foreach(var resident in residents)
+            {
+                residentList.Add(resident);
+            }
+            return View(residentList);
+        }
+        // GET: Edit Single Resident
+        public async Task<IActionResult> EditResident(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var resident = await _context.Resident.FindAsync(id);
+            if (resident == null)
+            {
+                return NotFound();
+            }
+            return View(resident);
+        }
+        // POST: Manager/EditResident
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditResident(int id, [Bind("ResidentId,FirstName,LastName,LeaseStart,LeaseEnd,RenewedLease,PaymentDueDate,LatePayment,Balance,UnitId,ApplicationUserId,isAssignedUnit")] Resident resident)
+        {
+            if (id != resident.ResidentId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var unitToMatch = MatchUnit(resident);
+                resident.UnitId = unitToMatch.UnitId;
+                _context.Entry(resident).State = EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("GetResidents");
+            }
+            return View(resident);
+        }
+
+        public Unit MatchUnit(Resident resident)
+        {
+            var unitToMatch = _context.Unit.Where(u => u.UnitNumber == resident.UnitNumber).Single();
+            return unitToMatch;
+        }
+
 
         // GET: Managers/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -69,7 +123,6 @@ namespace properTech.Controllers
         {
             if (ModelState.IsValid)
             {
-                var idNumber = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
                 manager.ApplicationUserId = id;
                 _context.Add(manager);
                 await _context.SaveChangesAsync();
