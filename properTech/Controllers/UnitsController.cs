@@ -63,6 +63,7 @@ namespace properTech.Controllers
                 Building building = _context.Building.FirstOrDefault(b => b.BuildingId == id);
                 unit.BuildingId = building.BuildingId;
                 unit.ManagerId = building.ManagerId;
+                unit.Address = building.Address;
                 _context.Add(unit);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", new { id = unit.BuildingId });

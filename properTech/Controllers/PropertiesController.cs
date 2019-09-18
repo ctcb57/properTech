@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using properTech.Data;
 using properTech.Models;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace properTech.Controllers
 {
@@ -47,6 +49,21 @@ namespace properTech.Controllers
             return View(@property);
         }
 
+        public string ConvertAddressToGoogleFormat(Address address)
+        {
+            string googleFormatAddress = address.StreetAddress + "," + address.City + "," + address.State + "," + address.ZipCode + "," + address.Country;
+            return googleFormatAddress;
+        }
+
+        public GeoCode GeoLocate(string address)
+        {
+            var key = Keys.GoogleGeoCodeAPIKey;
+            var requestUrl = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
+            var result = new WebClient().DownloadString(requestUrl);
+            GeoCode geocode = JsonConvert.DeserializeObject<GeoCode>(result);
+            return geocode;
+        }
+
         // GET: Properties/Create
         public IActionResult Create()
         {
@@ -66,6 +83,14 @@ namespace properTech.Controllers
                 var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
                 Manager manager = _context.Manager.Where(m => m.ApplicationUserId == currentUserId).Single();
                 property.ManagerId = manager.ManagerId;
+                Address address = new Address();
+                address = property.Address;
+                address.Country = "USA";
+                string addressToConvert = ConvertAddressToGoogleFormat(address);
+                var geoLocate = GeoLocate(addressToConvert);
+                address.Longitude = geoLocate.results[0].geometry.location.lng;
+                address.Latitude = geoLocate.results[0].geometry.location.lat;
+                _context.Add(address);
                 _context.Add(@property);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
