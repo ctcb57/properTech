@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,8 @@ namespace properTech.Controllers
     {
         private readonly ApplicationDbContext _context;
 
+        private readonly UserManager<IdentityUser> _userManager;
+
         public ManagersController(ApplicationDbContext context)
         {
             _context = context;
@@ -26,7 +29,8 @@ namespace properTech.Controllers
         // GET: Managers
         public IActionResult Index()
         {
-            Manager manager = _context.Manager.Where(m => m.ApplicationUserId == User.FindFirst(ClaimTypes.NameIdentifier).ToString()).Single();
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var manager = _context.Manager.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
             return View(manager);
         }
 
@@ -61,11 +65,12 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManagerId,FirstName,LastName,ApplicationUserId")] Manager manager)
+        public async Task<IActionResult> Create([Bind("ManagerId,FirstName,LastName,ApplicationUserId")] Manager manager, string id)
         {
             if (ModelState.IsValid)
             {
-                manager.ApplicationUserId = User.FindFirst(ClaimTypes.NameIdentifier).ToString();
+                var idNumber = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                manager.ApplicationUserId = id;
                 _context.Add(manager);
                 await _context.SaveChangesAsync();
                 int managerToPass = manager.ManagerId;

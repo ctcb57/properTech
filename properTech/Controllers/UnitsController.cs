@@ -64,7 +64,8 @@ namespace properTech.Controllers
                 unit.BuildingId = building.BuildingId;
                 _context.Add(unit);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Managers", new { id = User.FindFirst(ClaimTypes.NameIdentifier).ToString() });
+                ClaimsPrincipal currentUser = this.User;
+                return RedirectToAction("Index", "Managers");
             }
             return View(unit);
         }
