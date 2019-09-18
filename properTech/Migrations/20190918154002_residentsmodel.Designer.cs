@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using properTech.Data;
 
 namespace properTech.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190918154002_residentsmodel")]
+    partial class residentsmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,7 +243,7 @@ namespace properTech.Migrations
 
                     b.HasKey("MaintenanceTechId");
 
-                    b.ToTable("MaintenanceRequest");
+                    b.ToTable("maintenanceTeches");
                 });
 
             modelBuilder.Entity("properTech.Models.Manager", b =>
