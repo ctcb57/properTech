@@ -1,18 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using properTech.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace properTech.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor)
             : base(options)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
-        DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
+        public DbSet<Manager> Manager { get; set; }
+
+        public DbSet<Resident> Resident { get; set; }
+
+        public DbSet<MaintenanceTech> MaintenanceRequest { get; set; }
+
+        public DbSet<properTech.Models.Property> Property { get; set; }
+
+        public DbSet<properTech.Models.Building> Building { get; set; }
+
+        public DbSet<properTech.Models.Unit> Unit { get; set; }
     }
 }

@@ -10,33 +10,39 @@ namespace properTech.Models
     public class Resident
     {
         [Key]
-        public int Id { get; set; }
+        public int ResidentId { get; set; }
         [Display(Name = "First Name")]
-        public string firstName { get; set; }
+        public string FirstName { get; set; }
         [Display(Name = "Last Name")]
-        public string lastName { get; set; }
+        public string LastName { get; set; }
         [Display(Name = "Lease Start Date")]
-        public DateTime leaseStart { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime LeaseStart { get; set; }
         [Display(Name = "Lease End Date")]
-        public DateTime leaseSEnd { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime LeaseEnd { get; set; }
         [Display(Name = "Lease Renewed")]
-        public bool renewedLease { get; set; }
-        [Display(Name = "Lease Agreement")]
-        public object leaseDocument { get; set; }
-        [Display(Name ="Payment Due Date")]
-        public DateTime paymentDueDate { get; set; }
-        [Display(Name = "Late Payment")]
-        public bool latePayment { get; set; }
-        [Display(Name = "Current Balance Due")]
-        public double balance { get; set; }
+        public bool RenewedLease { get; set; }
 
-        [ForeignKey("Users")]
-        public int userId { get; set; }
-        public ApplicationUser user { get; set; }
+        [Display(Name ="Payment Due Date")]
+        [DataType(DataType.Date)]
+        public DateTime PaymentDueDate { get; set; }
+        [Display(Name = "Late Payment")]
+        public bool LatePayment { get; set; }
+        [Display(Name = "Current Balance Due")]
+        public double Balance { get; set; }
+        public int UnitNumber { get; set; }
 
         [ForeignKey("Unit")]
-        public int unitId { get; set; }
+        public int UnitId { get; set; }
+        [ForeignKey("User Id")]
+        public string ApplicationUserId { get; set; }
 
-        public Unit unit { get; set; }
+        [Display(Name = "Assigned Unit?")]
+        public bool isAssignedUnit { get; set; }
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+        [Display(Name = "Phone")]
+        public string PhoneNumber { get; set; }
     }
 }

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<properTech.Models.Unit>
+
+@{
+    ViewData["Title"] = "Vacancies";
+}
+
+<h1>Vacancies</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BathroomCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SquareFootage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MonthlyRent)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BathroomCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SquareFootage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MonthlyRent)
+            </td>          
+            <td>
+                @Html.ActionLink("UnitDetails", "UnitDetails", new { id = item.UnitId})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

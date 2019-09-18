@@ -10,10 +10,14 @@ namespace properTech.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        [Display(Name = "Sales Person")]
-        public string Name { get; set; }
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
 
         [NotMapped]
         public bool isSuperAdmin { get; set; }
+        public string Role { get; internal set; }
+
     }
 }

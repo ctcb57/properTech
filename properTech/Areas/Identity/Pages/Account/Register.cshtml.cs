@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using properTech.Models;
 using properTech.Utility;
@@ -42,10 +43,16 @@ namespace properTech.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
+        public List<SelectListItem> UserRoles { get; private set; }
+
         public class InputModel
         {
             [Required]
-            public string Name { get; set; }
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
 
             [Required]
             [Display(Name = "Phone Number")]
@@ -54,8 +61,8 @@ namespace properTech.Areas.Identity.Pages.Account
             [Display(Name = "Super Admin")]
             public bool isSuperAdmin { get; set; }
 
-            [Display(Name = "Roles")]
-            public StaticDetails staticDetails { get; set; }
+            [Required]
+            public string Role { get; set; }
 
             [Required]
             [EmailAddress]
@@ -77,6 +84,12 @@ namespace properTech.Areas.Identity.Pages.Account
         public void OnGet(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+            UserRoles = new List<SelectListItem>()
+            {
+                new SelectListItem { Value = "Manager", Text = "Manager"},
+                new SelectListItem { Value = "Resident", Text = "Resident"},
+                new SelectListItem { Value = "MaintenanceTech", Text = "Maintenance Tech"},
+            };
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -84,7 +97,16 @@ namespace properTech.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Name = Input.Name, PhoneNumber = Input.PhoneNumber };
+                //var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Name = Input.Name, PhoneNumber = Input.PhoneNumber, Role = Input.Role};
+                var user = new ApplicationUser
+                {
+                    UserName = Input.Email,
+                    Role = Input.Role,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    Email = Input.Email,
+                    PhoneNumber = Input.PhoneNumber,
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -109,37 +131,57 @@ namespace properTech.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(StaticDetails.Resident));
                     }
 
-                    if (Input.isSuperAdmin)
+                    foreach (var error in result.Errors)
                     {
-                        await _userManager.AddToRoleAsync(user, StaticDetails.SuperAdminEndUser);
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
-                    else
-                    {
-                        await _userManager.AddToRoleAsync(user, StaticDetails.AdminEndUser);
-                    }
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code = code },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+                    if (user.Role == "Manager")
+                    {
+                        await _userManager.AddToRoleAsync(user, StaticDetails.Manager);
+                        var role = await _userManager.GetRolesAsync(user);
+                        return RedirectToAction("Create", "Managers", new { id = user.Id });
+                    }
+                    if(user.Role == "Resident")
+                    {
+                        await _userManager.AddToRoleAsync(user, StaticDetails.Resident);
+                        return RedirectToAction("Create", "Residents", new { id = user.Id });
+                    }
+                    if(user.Role == "MaintenanceTech")
+                    {
+                        await _userManager.AddToRoleAsync(user, StaticDetails.Maintenance);
+                        return RedirectToAction("Create", "MaintenanceTeches", new { id = user.Id });
+                    }
+
+
+                    //if (Input.isSuperAdmin)
+                    //{
+                    //    await _userManager.AddToRoleAsync(user, StaticDetails.SuperAdminEndUser);
+                    //}
+                    //else
+                    //{
+                    //    await _userManager.AddToRoleAsync(user, StaticDetails.Manager);
+                    //}
+                    //_logger.LogInformation("User created a new account with password.");
+
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var callbackUrl = Url.Page(
+                    //    "/Account/ConfirmEmail",
+                    //    pageHandler: null,
+                    //    values: new { userId = user.Id, code = code },
+                    //    protocol: Request.Scheme);
+
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    //return LocalRedirect(returnUrl);
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+
             }
 
             // If we got this far, something failed, redisplay form
-            return Page();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
