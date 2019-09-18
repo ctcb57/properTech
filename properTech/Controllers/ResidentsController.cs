@@ -21,9 +21,10 @@ namespace properTech.Controllers
         }
 
         // GET: Residents
-        public IActionResult Index(int id)
+        public IActionResult Index()
         {
-            Resident resident = _context.Resident.Where(m => m.ResidentId == id).Single();
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var resident = _context.Resident.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
             return View(resident);
         }
 
