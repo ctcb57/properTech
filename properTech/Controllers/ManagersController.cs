@@ -18,11 +18,30 @@ namespace properTech.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        private readonly UserManager<IdentityUser> _userManager;
+        //private readonly UserManager<IdentityUser> _userManager;
 
         public ManagersController(ApplicationDbContext context)
         {
             _context = context;
+        }
+        //viewallresidents
+        //getoverdueaccounts
+        //modify resident
+        //
+
+        public IActionResult GetAllResidents(string id)
+        {
+            Manager manager = _context.Manager.Where(m => m.ApplicationUserId == id).Single();
+            var properties = _context.Property.Where(p => p.ManagerId == manager.ManagerId).ToList();
+            int propertyId = properties[0].PropertyId;
+            var buildings = _context.Building.Where(b => b.PropertyId == propertyId).ToList();
+            int buildingId = buildings[0].BuildingId;
+            var units = _context.Unit.Where(u => u.BuildingId == buildingId).ToList();
+            return View(units);
+            //foreach (Unit unit in units)
+            //{
+            //    return unit;
+            //}
         }
 
 
@@ -33,6 +52,93 @@ namespace properTech.Controllers
             var manager = _context.Manager.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
             return View(manager);
         }
+
+        // GET: Edit Residents
+        public IActionResult GetResidents()
+        {
+            List<Resident> residentList = new List<Resident>();
+            var residents = _context.Resident;
+            foreach(var resident in residents)
+            {
+                residentList.Add(resident);
+            }
+            return View(residentList);
+        }
+        // GET: Edit Single Resident
+        public async Task<IActionResult> EditResident(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var resident = await _context.Resident.FindAsync(id);
+            if (resident == null)
+            {
+                return NotFound();
+            }
+            return View(resident);
+        }
+        // POST: Manager/EditResident
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditResident(int id, [Bind("ResidentId,FirstName,LastName,LeaseStart,LeaseEnd,RenewedLease,PaymentDueDate,LatePayment,Balance,UnitId,ApplicationUserId,isAssignedUnit,UnitNumber")] Resident resident)
+        {
+            if (id != resident.ResidentId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Entry(resident).State = EntityState.Modified;
+                _context.SaveChanges();
+                var unitToMatch = MatchUnit(resident);
+                unitToMatch.IsOccupied = true;
+                resident.UnitId = unitToMatch.UnitId;
+                _context.Entry(resident).State = EntityState.Modified;
+                _context.Entry(unitToMatch).State = EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("GetResidents");
+            }
+            return View(resident);
+        }
+
+        // GET: Managers/DeleteResidents
+        public async Task<IActionResult> DeleteResident(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var resident = await _context.Resident
+                .FirstOrDefaultAsync(m => m.ResidentId == id);
+            if (resident == null)
+            {
+                return NotFound();
+            }
+
+            return View(resident);
+        }
+
+        // POST: Managers/DeleteResdient/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResidentDeleteConfirmed(int id)
+        {
+            var resident = await _context.Resident.FindAsync(id);
+            _context.Resident.Remove(resident);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public Unit MatchUnit(Resident resident)
+        {
+            var unitToMatch = _context.Unit.FirstOrDefault(u => u.UnitNumber == resident.UnitNumber);
+            return unitToMatch;
+        }
+
 
         // GET: Managers/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -69,12 +175,10 @@ namespace properTech.Controllers
         {
             if (ModelState.IsValid)
             {
-                var idNumber = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
                 manager.ApplicationUserId = id;
                 _context.Add(manager);
                 await _context.SaveChangesAsync();
-                int managerToPass = manager.ManagerId;
-                return RedirectToAction("Create", "Properties", new { id = managerToPass });
+                return RedirectToAction("Index");
             }
             return View(manager);
         }

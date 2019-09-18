@@ -26,5 +26,8 @@ namespace properTech.Models
         [ForeignKey ("Building Id")]
         public int BuildingId { get; set; }
 
+        [ForeignKey("ManagerId")]
+        public int ManagerId { get; set; }
+
     }
 }

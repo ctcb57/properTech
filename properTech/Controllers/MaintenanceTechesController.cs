@@ -22,7 +22,7 @@ namespace properTech.Controllers
         // GET: MaintenanceTeches
         public async Task<IActionResult> Index()
         {
-            return View(await _context.maintenanceTeches.ToListAsync());
+            return View(await _context.MaintenanceRequest.ToListAsync());
         }
 
         // GET: MaintenanceTeches/Details/5
@@ -33,7 +33,7 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceTech = await _context.maintenanceTeches
+            var maintenanceTech = await _context.MaintenanceRequest
                 .FirstOrDefaultAsync(m => m.MaintenanceTechId == id);
             if (maintenanceTech == null)
             {
@@ -61,7 +61,7 @@ namespace properTech.Controllers
                 maintenanceTech.ApplicationUserId = id;
                 _context.Add(maintenanceTech);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "MaintenanceTeches");
             }
             return View(maintenanceTech);
         }
@@ -74,7 +74,7 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceTech = await _context.maintenanceTeches.FindAsync(id);
+            var maintenanceTech = await _context.MaintenanceRequest.FindAsync(id);
             if (maintenanceTech == null)
             {
                 return NotFound();
@@ -125,7 +125,7 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceTech = await _context.maintenanceTeches
+            var maintenanceTech = await _context.MaintenanceRequest
                 .FirstOrDefaultAsync(m => m.MaintenanceTechId == id);
             if (maintenanceTech == null)
             {
@@ -140,15 +140,15 @@ namespace properTech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var maintenanceTech = await _context.maintenanceTeches.FindAsync(id);
-            _context.maintenanceTeches.Remove(maintenanceTech);
+            var maintenanceTech = await _context.MaintenanceRequest.FindAsync(id);
+            _context.MaintenanceRequest.Remove(maintenanceTech);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MaintenanceTechExists(int id)
         {
-            return _context.maintenanceTeches.Any(e => e.MaintenanceTechId == id);
+            return _context.MaintenanceRequest.Any(e => e.MaintenanceTechId == id);
         }
     }
 }

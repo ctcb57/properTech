@@ -4,9 +4,46 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<p> Helle @Html.DisplayFor(model => model.FirstName)</p>
+<div class="container">
+    <br />
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <h1 style="text-align:center ; text-decoration:underline">Welcome @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h1>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-5">
+            <h5 style="text-align:center; text-decoration:underline">Account Details</h5>
+            <p>Current Balance: @Html.DisplayFor(model => model.Balance)</p>
+            <p class="text-danger">Due Date: @Html.DisplayFor(model => model.PaymentDueDate)</p>
+            <button type="button" class="btn btn-primary" asp-action="MakePayment" asp-route-id="@Model.ResidentId">Make Payment</button>
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-5">
+            <h5 style="text-align:center; text-decoration:underline">My Documents</h5>
+            <p>Lease:</p>
+            <p>Other Documents:</p>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-sm-5">
+            <h5 style="text-align:center; text-decoration:underline"> Maintenance</h5>
+            @Html.ActionLink("Chad", "Maintenance", "Residents")
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-5">
+            <h5 style="text-align:center; text-decoration:underline">Lease Details</h5>
+            <p>Start Date: @Html.DisplayFor(model => model.LeaseStart)</p>
+            <p>End Date: @Html.DisplayFor(model => model.LeaseEnd)</p>
+            <button type="button" class="btn btn-primary" asp-action="Index">Renew Lease</button>
+            <button type="button" class="btn btn-danger" asp-action="Index">Give Move-Out Notice</button>
+            <br />
+            <p class="text-danger">Note: You must give 60 days notice if you are planning to move out</p>
+        </div>
+    </div>
+</div>
