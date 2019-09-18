@@ -18,11 +18,7 @@
 
 
   <ItemGroup>
-<<<<<<< HEAD
     <Folder Include="wwwroot\videos\" />
-=======
-    <Folder Include="wwwroot\image\" />
->>>>>>> 3e0f39955da22264077947ef68ab9a556d02f319
   </ItemGroup>
 
 </Project>
