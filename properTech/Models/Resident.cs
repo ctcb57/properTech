@@ -25,6 +25,7 @@ namespace properTech.Models
         public bool RenewedLease { get; set; }
 
         [Display(Name ="Payment Due Date")]
+        [DataType(DataType.Date)]
         public DateTime PaymentDueDate { get; set; }
         [Display(Name = "Late Payment")]
         public bool LatePayment { get; set; }
@@ -36,7 +37,12 @@ namespace properTech.Models
         public int UnitId { get; set; }
         [ForeignKey("User Id")]
         public string ApplicationUserId { get; set; }
+
         [Display(Name = "Assigned Unit?")]
         public bool isAssignedUnit { get; set; }
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+        [Display(Name = "Phone")]
+        public string PhoneNumber { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace properTech.Data
 
         public DbSet<Resident> Resident { get; set; }
 
-        public DbSet<MaintenanceTech> maintenanceTeches { get; set; }
+        public DbSet<MaintenanceTech> MaintenanceRequest { get; set; }
 
         public DbSet<properTech.Models.Property> Property { get; set; }
 

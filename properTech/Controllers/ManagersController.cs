@@ -82,7 +82,7 @@ namespace properTech.Controllers
         // POST: Manager/EditResident
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditResident(int id, [Bind("ResidentId,FirstName,LastName,LeaseStart,LeaseEnd,RenewedLease,PaymentDueDate,LatePayment,Balance,UnitId,ApplicationUserId,isAssignedUnit")] Resident resident)
+        public async Task<IActionResult> EditResident(int id, [Bind("ResidentId,FirstName,LastName,LeaseStart,LeaseEnd,RenewedLease,PaymentDueDate,LatePayment,Balance,UnitId,ApplicationUserId,isAssignedUnit,UnitNumber")] Resident resident)
         {
             if (id != resident.ResidentId)
             {
@@ -91,18 +91,51 @@ namespace properTech.Controllers
 
             if (ModelState.IsValid)
             {
+                _context.Entry(resident).State = EntityState.Modified;
+                _context.SaveChanges();
                 var unitToMatch = MatchUnit(resident);
+                unitToMatch.IsOccupied = true;
                 resident.UnitId = unitToMatch.UnitId;
                 _context.Entry(resident).State = EntityState.Modified;
+                _context.Entry(unitToMatch).State = EntityState.Modified;
                 _context.SaveChanges();
                 return RedirectToAction("GetResidents");
             }
             return View(resident);
         }
 
+        // GET: Managers/DeleteResidents
+        public async Task<IActionResult> DeleteResident(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var resident = await _context.Resident
+                .FirstOrDefaultAsync(m => m.ResidentId == id);
+            if (resident == null)
+            {
+                return NotFound();
+            }
+
+            return View(resident);
+        }
+
+        // POST: Managers/DeleteResdient/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResidentDeleteConfirmed(int id)
+        {
+            var resident = await _context.Resident.FindAsync(id);
+            _context.Resident.Remove(resident);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         public Unit MatchUnit(Resident resident)
         {
-            var unitToMatch = _context.Unit.Where(u => u.UnitNumber == resident.UnitNumber).Single();
+            var unitToMatch = _context.Unit.FirstOrDefault(u => u.UnitNumber == resident.UnitNumber);
             return unitToMatch;
         }
 
