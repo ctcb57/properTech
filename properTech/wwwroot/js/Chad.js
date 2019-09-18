@@ -21,3 +21,4 @@ function getUserInput() {
     else if (userInput.includes("bears") && (userInput.includes("fan") || userInput.includes("like"))) {
         document.getElementById("chadResponse").innerHTML = "As a professional robot, I try my hardest not to be offensive. I guess that means I have THAT in common with the Bears."
     }
+}

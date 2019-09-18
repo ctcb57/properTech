@@ -9,62 +9,29 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-
-<div id="video-file"></div>
-
-<script>
-        function myFunction() {
-            var videoUpload = document.getElementByName("files")[0].value;
-            document.getElementById("video-file").innerHTML = videoUpload;
-        }
-</script>
-
-<form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="UploadFiles">
-    <div class="form-group">
-        <div class="col-md-10">
-            <p>Upload one or more files using this form:</p>
-            <input type="file" name="files" multiple />
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="submit" value="Upload" />
-        </div>
-    </div>
-</form>
-<br />
-
-
-<video width="640" height="360" controls="controls">
-    <source src=~/videos/IMG_1655[1]_1bae.MOV type="video/mp4" />
-</video>
-
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.DateOfRequest)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.dateOfRequest)
+                @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.estimatedCompletionDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.actualCompletionDate)
+                @Html.DisplayNameFor(model => model.ActualCompletionDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.isComplete)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.maintenanceStatus)
+                @Html.DisplayNameFor(model => model.MaintenanceStatus)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.feedbackMessage)
+                @Html.DisplayNameFor(model => model.FeedbackMessage)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.residentId)
+                @Html.DisplayNameFor(model => model.resident)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MaintanenceTechId)
@@ -73,42 +40,38 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dateOfRequest)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.estimatedCompletionDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.actualCompletionDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.isComplete)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.maintenanceStatus)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.feedbackMessage)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.residentId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaintanenceTechId)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfRequest)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstimatedCompletionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActualCompletionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isComplete)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaintenanceStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FeedbackMessage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.resident.ResidentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaintanenceTechId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RequestId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.RequestId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RequestId">Delete</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

@@ -31,5 +31,7 @@ namespace properTech.Data
         public DbSet<properTech.Models.Building> Building { get; set; }
 
         public DbSet<properTech.Models.Unit> Unit { get; set; }
+
+        public DbSet<properTech.Models.MaintenanceRequest> MaintenanceRequest_1 { get; set; }
     }
 }
