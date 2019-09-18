@@ -1,13 +1,11 @@
 ﻿@model IEnumerable<properTech.Models.Unit>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Vacancies";
 }
 
-<h1>Index</h1>
+<h1>Vacancies</h1>
 
-<p>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -25,9 +23,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MonthlyRent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsOccupied)
             </th>
             <th></th>
         </tr>
@@ -49,14 +44,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MonthlyRent)
-            </td>
+            </td>          
             <td>
-                @Html.DisplayFor(modelItem => item.IsOccupied)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UnitId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UnitId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UnitId">Delete</a>
+                @Html.ActionLink("UnitDetails", "UnitDetails", new { id = item.UnitId})
             </td>
         </tr>
 }

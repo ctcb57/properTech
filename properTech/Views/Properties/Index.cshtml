@@ -6,6 +6,7 @@
 
 <h1>Index</h1>
 
+<a asp-action="Create" >Create New Property</a>
 <table class="table">
     <thead>
         <tr>
@@ -20,13 +21,13 @@
         {
             <tr>
                 <td>
-                    <a asp-action="Index" asp-route-id="@item.PropertyId">@item.PropertyName.</a>
+                    <a asp-controller="Buildings" asp-action="Index" asp-route-id="@item.PropertyId">@item.PropertyName.</a>
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.PropertyId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.PropertyId">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.PropertyId">Delete</a> |
-                    <a asp-action="Create" asp-route-id="@item.ManagerId">Create New Property</a>
+                    <a asp-controller="Buildings" asp-action="Create" asp-route-id="@item.PropertyId">Create New Building</a>
                 </td>
             </tr>
         }

@@ -216,6 +216,8 @@ namespace properTech.Migrations
 
                     b.Property<string>("BuildingName");
 
+                    b.Property<int>("ManagerId");
+
                     b.Property<int>("PropertyId");
 
                     b.HasKey("BuildingId");
@@ -322,6 +324,8 @@ namespace properTech.Migrations
                     b.Property<int>("BuildingId");
 
                     b.Property<bool>("IsOccupied");
+
+                    b.Property<int>("ManagerId");
 
                     b.Property<double>("MonthlyRent");
 

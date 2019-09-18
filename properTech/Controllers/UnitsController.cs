@@ -23,7 +23,7 @@ namespace properTech.Controllers
         // GET: Units index should just go to details of that specific unit
         public async Task<IActionResult> Index(int id)
         {
-            return View(await _context.Unit.Where(u=> u.BuildingId == id).ToListAsync());
+            return View(_context.Unit.Where(u => u.BuildingId == id).ToList());
         }
 
         // GET: Units/Details/5
@@ -56,15 +56,16 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UnitId,UnitNumber,RoomCount,BathroomCount,SquareFootage,MonthlyRent,IsOccupied,BuildingId")] Unit unit, int id)
+        public async Task<IActionResult> Create([Bind("ManagerId,UnitId,UnitNumber,RoomCount,BathroomCount,SquareFootage,MonthlyRent,IsOccupied,BuildingId")] Unit unit, int id)
         {
             if (ModelState.IsValid)
             {
-                Building building = _context.Building.Where(b => b.BuildingId == id).Single();
+                Building building = _context.Building.FirstOrDefault(b => b.BuildingId == id);
                 unit.BuildingId = building.BuildingId;
+                unit.ManagerId = building.ManagerId;
                 _context.Add(unit);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = unit.BuildingId });
             }
             return View(unit);
         }
@@ -115,7 +116,7 @@ namespace properTech.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = unit.BuildingId });
             }
             return View(unit);
         }

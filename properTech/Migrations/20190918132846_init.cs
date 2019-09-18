@@ -128,7 +128,8 @@ namespace properTech.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     BuildingName = table.Column<string>(nullable: true),
                     AddressId = table.Column<int>(nullable: true),
-                    PropertyId = table.Column<int>(nullable: false)
+                    PropertyId = table.Column<int>(nullable: false),
+                    ManagerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -175,7 +176,8 @@ namespace properTech.Migrations
                     SquareFootage = table.Column<int>(nullable: false),
                     MonthlyRent = table.Column<double>(nullable: false),
                     IsOccupied = table.Column<bool>(nullable: false),
-                    BuildingId = table.Column<int>(nullable: false)
+                    BuildingId = table.Column<int>(nullable: false),
+                    ManagerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

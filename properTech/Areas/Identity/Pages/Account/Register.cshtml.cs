@@ -135,10 +135,11 @@ namespace properTech.Areas.Identity.Pages.Account
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
-
+                    await _signInManager.SignInAsync(user, isPersistent: false);
                     if (user.Role == "Manager")
                     {
                         await _userManager.AddToRoleAsync(user, StaticDetails.Manager);
+                        var role = await _userManager.GetRolesAsync(user);
                         return RedirectToAction("Create", "Managers", new { id = user.Id });
                     }
                     if(user.Role == "Resident")
@@ -151,7 +152,7 @@ namespace properTech.Areas.Identity.Pages.Account
                         await _userManager.AddToRoleAsync(user, StaticDetails.Maintenance);
                         return RedirectToAction("Create", "MaintenanceTeches", new { id = user.Id });
                     }
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+
 
                     //if (Input.isSuperAdmin)
                     //{
