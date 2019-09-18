@@ -227,6 +227,39 @@ namespace properTech.Migrations
                     b.ToTable("Building");
                 });
 
+            modelBuilder.Entity("properTech.Models.MaintenanceRequest", b =>
+                {
+                    b.Property<int>("RequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("ActualCompletionDate");
+
+                    b.Property<DateTime>("DateOfRequest");
+
+                    b.Property<DateTime>("EstimatedCompletionDate");
+
+                    b.Property<string>("FeedbackMessage");
+
+                    b.Property<int>("MaintanenceTechId");
+
+                    b.Property<string>("MaintenanceStatus");
+
+                    b.Property<bool>("isComplete");
+
+                    b.Property<int>("residentId");
+
+                    b.Property<int?>("techMaintenanceTechId");
+
+                    b.HasKey("RequestId");
+
+                    b.HasIndex("residentId");
+
+                    b.HasIndex("techMaintenanceTechId");
+
+                    b.ToTable("MaintenanceRequest_1");
+                });
+
             modelBuilder.Entity("properTech.Models.MaintenanceTech", b =>
                 {
                     b.Property<int>("MaintenanceTechId")
@@ -241,7 +274,7 @@ namespace properTech.Migrations
 
                     b.HasKey("MaintenanceTechId");
 
-                    b.ToTable("maintenanceTeches");
+                    b.ToTable("MaintenanceRequest");
                 });
 
             modelBuilder.Entity("properTech.Models.Manager", b =>
@@ -304,7 +337,7 @@ namespace properTech.Migrations
 
                     b.Property<DateTime>("PaymentDueDate");
 
-                    b.Property<int>("PhoneNumber");
+                    b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("RenewedLease");
 
@@ -413,6 +446,18 @@ namespace properTech.Migrations
                     b.HasOne("properTech.Models.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId");
+                });
+
+            modelBuilder.Entity("properTech.Models.MaintenanceRequest", b =>
+                {
+                    b.HasOne("properTech.Models.Resident", "resident")
+                        .WithMany()
+                        .HasForeignKey("residentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("properTech.Models.MaintenanceTech", "tech")
+                        .WithMany()
+                        .HasForeignKey("techMaintenanceTechId");
                 });
 
             modelBuilder.Entity("properTech.Models.Property", b =>

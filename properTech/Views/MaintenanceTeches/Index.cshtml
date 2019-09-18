@@ -1,4 +1,4 @@
-﻿@model IEnumerable<properTech.Models.MaintenanceTech>
+﻿@model IEnumerable<properTech.Models.MaintenanceRequest>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,16 +7,21 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayNameFor(model => model.resident.FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayNameFor(model => model.resident.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.resident.UnitId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.isComplete)
             </th>
             <th></th>
         </tr>
@@ -25,15 +30,21 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                @Html.DisplayFor(modelItem => item.resident.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                @Html.DisplayFor(modelItem => item.resident.LastName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MaintenanceTechId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaintenanceTechId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaintenanceTechId">Delete</a>
+                @Html.DisplayFor(modelItem => item.resident.UnitId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isComplete)
+            </td>
+            <td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.RequestId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RequestId">Delete</a>
             </td>
         </tr>
 }

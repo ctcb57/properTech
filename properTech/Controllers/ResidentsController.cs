@@ -58,11 +58,14 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ResidentId,FirstName,LastName,LeaseStart,LeaseEnd,RenewedLease,PaymentDueDate,LatePayment,Balance,UnitId,ApplicationUserId,isAssignedUnit")] Resident resident, string id)
+        public async Task<IActionResult> Create([Bind("ResidentId,FirstName,LastName,LeaseStart,LeaseEnd,RenewedLease,PaymentDueDate,LatePayment,Balance,UnitId,ApplicationUserId,Email,PhoneNumber,isAssignedUnit")] Resident resident, string id)
         {
             if (ModelState.IsValid)
             {
                 resident.ApplicationUserId = id ;
+                var currentUser = _context.Users.FirstOrDefault(u => u.Id == id);
+                resident.Email = currentUser.Email;
+                resident.PhoneNumber = currentUser.PhoneNumber;
                 resident.isAssignedUnit = false;
                 _context.Add(resident);
                 await _context.SaveChangesAsync();
@@ -154,6 +157,17 @@ namespace properTech.Controllers
         private bool ResidentExists(int id)
         {
             return _context.Resident.Any(e => e.ResidentId == id);
+        }
+
+        public IActionResult Overdue()
+        {
+            var overdueResidents = _context.Resident.Where(r => r.LatePayment == true).ToList();
+            return View(overdueResidents);
+        }
+
+        public IActionResult Maintenance()
+        {
+            return View();
         }
     }
 }

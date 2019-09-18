@@ -37,10 +37,12 @@ namespace properTech.Models
         public int UnitId { get; set; }
         [ForeignKey("User Id")]
         public string ApplicationUserId { get; set; }
+
         [Display(Name = "Assigned Unit?")]
         public bool isAssignedUnit { get; set; }
+        [Display(Name = "Email")]
         public string Email { get; set; }
-        [Display(Name = "Phone Number")]
-        public int PhoneNumber { get; set; }
+        [Display(Name = "Phone")]
+        public string PhoneNumber { get; set; }
     }
 }
