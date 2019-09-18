@@ -30,6 +30,8 @@ namespace properTech.Controllers
         //Get all information on Vacancies 
         public IActionResult Vacancies()
         {
+
+
             return View(_context.Unit.Where(u=> u.IsOccupied == false).ToList());
         }
 
