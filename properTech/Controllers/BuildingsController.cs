@@ -22,7 +22,7 @@ namespace properTech.Controllers
         // GET: Buildings
         public async Task<IActionResult> Index(int id)
         {
-            return View(await _context.Unit.Where(u => u.BuildingId == id).ToListAsync());
+            return View(await _context.Building.Where(u => u.PropertyId == id).ToListAsync());
         }
 
         // GET: Buildings/Details/5
@@ -63,7 +63,7 @@ namespace properTech.Controllers
                 building.PropertyId = property.PropertyId;
                 _context.Add(building);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "Units", new { id = building.BuildingId });
+                return RedirectToAction("Index", new { id = building.PropertyId });
             }
             return View(building);
         }

@@ -21,9 +21,9 @@ namespace properTech.Controllers
         }
 
         // GET: Units index should just go to details of that specific unit
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            return View(await _context.Unit.ToListAsync());
+            return View(await _context.Unit.Where(u=> u.BuildingId == id).ToListAsync());
         }
 
         // GET: Units/Details/5
@@ -64,7 +64,7 @@ namespace properTech.Controllers
                 unit.BuildingId = building.BuildingId;
                 _context.Add(unit);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Managers", new { id = User.FindFirst(ClaimTypes.NameIdentifier).ToString() });
+                return RedirectToAction("Index");
             }
             return View(unit);
         }

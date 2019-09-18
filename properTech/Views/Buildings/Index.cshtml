@@ -1,4 +1,4 @@
-﻿@model IEnumerable<properTech.Models.Unit>
+﻿@model IEnumerable<properTech.Models.Building>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,22 +10,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UnitNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BathroomCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SquareFootage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MonthlyRent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsOccupied)
+                @Html.DisplayNameFor(model => model.BuildingName)
             </th>
             <th></th>
         </tr>
@@ -35,28 +20,13 @@
         {
             <tr>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.UnitId">@item.UnitNumber.</a>
+                    <a asp-action="Index" asp-route-id="@item.BuildingId">@item.BuildingName.</a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RoomCount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BathroomCount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SquareFootage)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MonthlyRent)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsOccupied)
-                </td>
-                <td>
-                    <a asp-controller="Units" asp-action="Edit" asp-route-id="@item.UnitId">Edit</a> |
-                    <a asp-controller="Units" asp-action="Details" asp-route-id="@item.UnitId">Details</a> |
-                    <a asp-controller="Units" asp-action="Delete" asp-route-id="@item.UnitId">Delete</a> |
-                    <a asp-controller="Units" asp-action="Create" asp-route-id="@item.BuildingId">Create New Unit</a>
+                    <a asp-action="Edit" asp-route-id="@item.BuildingId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.BuildingId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.BuildingId">Delete</a> |
+                    <a asp-action="Create" asp-route-id="@item.PropertyId">Create New Building</a>
                 </td>
             </tr>
         }

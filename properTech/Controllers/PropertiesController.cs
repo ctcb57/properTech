@@ -22,7 +22,7 @@ namespace properTech.Controllers
         // GET: Properties
         public async Task<IActionResult> Index(int id)
         {
-            return View(await _context.Building.Where(b => b.PropertyId == id).ToListAsync());
+            return View(await _context.Property.Where(b => b.ManagerId == id).ToListAsync());
         }
 
         // GET: Properties/Details/5
