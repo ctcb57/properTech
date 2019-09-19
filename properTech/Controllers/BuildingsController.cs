@@ -52,48 +52,48 @@ namespace properTech.Controllers
             return googleFormatAddress;
         }
 
-        public GeoCode GeoLocate(string address)
-        {
-            var key = Keys.GoogleGeoCodeAPIKey;
-            var requestUrl = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
-            var result = new WebClient().DownloadString(requestUrl);
-            GeoCode geocode = JsonConvert.DeserializeObject<GeoCode>(result);
-            return geocode;
-        }
+        //public GeoCode GeoLocate(string address)
+        //{
+        //    //var key = Keys.GoogleGeoCodeAPIKey;
+        //    var requestUrl = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
+        //    var result = new WebClient().DownloadString(requestUrl);
+        //    GeoCode geocode = JsonConvert.DeserializeObject<GeoCode>(result);
+        //    return geocode;
+        //}
 
-        // GET: Buildings/Create
-        public IActionResult Create()
-        {
-            Building building = new Building();
-            return View(building);
-        }
+        //// GET: Buildings/Create
+        //public IActionResult Create()
+        //{
+        //    Building building = new Building();
+        //    return View(building);
+        //}
 
-        // POST: Buildings/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManagerId,BuildingId,BuildingName,Address,PropertyId")] Building building, int id)
-        {
-            if (ModelState.IsValid)
-            {
-                Property property = _context.Property.Where(p => p.PropertyId == id).Single();
-                building.PropertyId = property.PropertyId;
-                building.ManagerId = property.ManagerId;
-                Address address = new Address();
-                address = building.Address;
-                address.Country = "USA";
-                string addressToConvert = ConvertAddressToGoogleFormat(address);
-                var geoLocate = GeoLocate(addressToConvert);
-                address.Longitude = geoLocate.results[0].geometry.location.lng;
-                address.Latitude = geoLocate.results[0].geometry.location.lat;
-                _context.Add(address);
-                _context.Add(building);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", new { id = building.PropertyId });
-            }
-            return View(building);
-        }
+        //// POST: Buildings/Create
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("ManagerId,BuildingId,BuildingName,Address,PropertyId")] Building building, int id)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        Property property = _context.Property.Where(p => p.PropertyId == id).Single();
+        //        building.PropertyId = property.PropertyId;
+        //        building.ManagerId = property.ManagerId;
+        //        Address address = new Address();
+        //        address = building.Address;
+        //        address.Country = "USA";
+        //        string addressToConvert = ConvertAddressToGoogleFormat(address);
+        //        var geoLocate = GeoLocate(addressToConvert);
+        //        address.Longitude = geoLocate.results[0].geometry.location.lng;
+        //        address.Latitude = geoLocate.results[0].geometry.location.lat;
+        //        _context.Add(address);
+        //        _context.Add(building);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction("Index", new { id = building.PropertyId });
+        //    }
+        //    return View(building);
+        //}
 
         // GET: Buildings/Edit/5
         public async Task<IActionResult> Edit(int? id)

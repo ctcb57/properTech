@@ -12,45 +12,41 @@ namespace properTech.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
-        //private EmailAddress FromAndToEmailAddress;
-        //private IEmailService EmailService;
-
 
         public HomeController(ApplicationDbContext context)
         {
             _context = context;
-            //FromAndToEmailAddress = _fromAddress;
-            //EmailService = _emailService;
         }
 
-        //[HttpGet]
-        //public ViewResult Contact()
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        public ViewResult Contact()
+        {
+            return View();
+        }
 
-        //[HttpPost]
-        //public IActionResult Contact(ContactFormModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        EmailMessage msgToSend = new EmailMessage
-        //        {
-        //            FromAddresses = new List<ContactFormModel> { model },
-        //            //ToAddresses = new List<EmailAddress> { FromAndToEmailAddress },
-        //            Content = $"Message From {model.Name} \n" +
-        //            $"Email: {model.Email} \n" + $"Message: {model.Message}",
-        //            Subject = "Contact Form"
-        //        };
+        [HttpPost]
+        public IActionResult Contact(ContactFormModel model, EmailAddress information)
+        {
+            if (ModelState.IsValid)
+            {
+                MailKitEmailService emailService = new MailKitEmailService(new EmailServerConfiguration());
+                EmailMessage msgToSend = new EmailMessage
+                {
+                    FromAddresses = new List<ContactFormModel> { model },
+                    ToAddresses = new List<EmailAddress> { information },
+                    Content = $"Message From {model.Name} \n" +
+                    $"Email: {model.Email} \n" + $"Message: {model.Message}",
+                    Subject = "Contact Form"
+                };
 
-        //        //EmailService.Send(msgToSend);
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        return Contact();
-        //    }
-        //}
+                emailService.Send(msgToSend);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return Contact();
+            }
+        }
         public IActionResult Index()
         {
             return View();

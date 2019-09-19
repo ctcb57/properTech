@@ -30,22 +30,6 @@ namespace properTech
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //EmailServerConfiguration config = new EmailServerConfiguration
-            //{
-            //    SmtpPassword = Password.EmailServerPassword,
-            //    SmtpServer = "smtp.gmail.com",
-            //    SmtpUsername = "devcodecampsweepstakes@gmail.com"
-            //};
-
-            //EmailAddress ToEmailAddress = new EmailAddress
-            //{
-            //    Address = "spartanaceyang@yahoo.com",
-            //    Name = "ProperTech"
-            //};
-
-            //services.AddSingleton<EmailServerConfiguration>(config);
-            //services.AddTransient<IEmailService, MailKitEmailService>();
-            //services.AddSingleton<EmailAddress>(ToEmailAddress);
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -81,7 +65,6 @@ namespace properTech
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            //app.UseMvcWithDefaultRoute();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

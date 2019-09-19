@@ -55,14 +55,14 @@ namespace properTech.Controllers
             return googleFormatAddress;
         }
 
-        public GeoCode GeoLocate(string address)
-        {
-            var key = Keys.GoogleGeoCodeAPIKey;
-            var requestUrl = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
-            var result = new WebClient().DownloadString(requestUrl);
-            GeoCode geocode = JsonConvert.DeserializeObject<GeoCode>(result);
-            return geocode;
-        }
+        //public geocode geolocate(string address)
+        //{
+        //    //var key = keys.googlegeocodeapikey;
+        //    var requesturl = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
+        //    var result = new webclient().downloadstring(requesturl);
+        //    geocode geocode = jsonconvert.deserializeobject<geocode>(result);
+        //    return geocode;
+        //}
 
         // GET: Properties/Create
         public IActionResult Create()
@@ -74,29 +74,29 @@ namespace properTech.Controllers
         // POST: Properties/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PropertyId,PropertyName,Address,ManagerId")] Property @property)
-        {
-            if (ModelState.IsValid)
-            {
-                var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-                Manager manager = _context.Manager.Where(m => m.ApplicationUserId == currentUserId).Single();
-                property.ManagerId = manager.ManagerId;
-                Address address = new Address();
-                address = property.Address;
-                address.Country = "USA";
-                string addressToConvert = ConvertAddressToGoogleFormat(address);
-                var geoLocate = GeoLocate(addressToConvert);
-                address.Longitude = geoLocate.results[0].geometry.location.lng;
-                address.Latitude = geoLocate.results[0].geometry.location.lat;
-                _context.Add(address);
-                _context.Add(@property);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(@property);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("PropertyId,PropertyName,Address,ManagerId")] Property @property)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+        //        Manager manager = _context.Manager.Where(m => m.ApplicationUserId == currentUserId).Single();
+        //        property.ManagerId = manager.ManagerId;
+        //        Address address = new Address();
+        //        address = property.Address;
+        //        address.Country = "USA";
+        //        string addressToConvert = ConvertAddressToGoogleFormat(address);
+        //        //var geoLocate = GeoLocate(addressToConvert);
+        //        address.Longitude = geoLocate.results[0].geometry.location.lng;
+        //        address.Latitude = geoLocate.results[0].geometry.location.lat;
+        //        _context.Add(address);
+        //        _context.Add(@property);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(@property);
+        //}
 
         // GET: Properties/Edit/5
         public async Task<IActionResult> Edit(int? id)

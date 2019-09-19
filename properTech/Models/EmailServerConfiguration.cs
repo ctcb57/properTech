@@ -1,4 +1,5 @@
-﻿using System;
+﻿using properTech.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,10 +12,10 @@ namespace properTech.Models
         {
             SmtpPort = _smtpPort;
         }
-        public string SmtpServer { get; set; }
+        public string SmtpServer = "smtp.gmail.com";
         public int SmtpPort { get; }
-        public string SmtpUsername { get; set; }
-        public string SmtpPassword { get; set; }
+        public string SmtpUsername = "devcodecampsweepstakes@gmail.com";
+        public string SmtpPassword = Password.EmailServerPassword;
 
     }
 }
