@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using properTech.Data;
 using properTech.Models;
 
@@ -57,29 +58,31 @@ namespace properTech.Controllers
             return View();
         }
 
+        // GET: Property Neighborhood Information
+        public IActionResult PropertyInformation()
+        {
+            var propertyPortfolio = _context.Property.Include("Address").ToList();
+            return View(propertyPortfolio);
+        }
+
+        public IActionResult PropertyDetails(int id)
+        {
+            var propertyToShow = _context.Property.Include("Address").FirstOrDefault(p => p.PropertyId == id);
+            return View(propertyToShow);
+        }
+
         //Get all information on Vacancies 
         public IActionResult Vacancies()
         {
-
-
-            return View(_context.Unit.Where(u=> u.IsOccupied == false).ToList());
+            var unitVacancies = _context.Unit.Include("Address").ToList();
+            return View(unitVacancies);
         }
 
         //Get Details of Unit that is open
         public IActionResult UnitDetails(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var unit = _context.Unit.Find(id);
-            if (unit == null)
-            {
-                return NotFound();
-            }
-
-            return View(unit);
+            var unitToShow = _context.Unit.Include("Address").FirstOrDefault(p => p.UnitId == id);
+            return View(unitToShow);
         }
      
 
