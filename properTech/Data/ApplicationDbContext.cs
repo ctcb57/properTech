@@ -24,14 +24,15 @@ namespace properTech.Data
 
         public DbSet<Resident> Resident { get; set; }
 
-        public DbSet<MaintenanceTech> MaintenanceRequest { get; set; }
+        public DbSet<MaintenanceRequest> MaintenanceRequest { get; set; }
 
-        public DbSet<properTech.Models.Property> Property { get; set; }
+        public DbSet<Property> Property { get; set; }
 
-        public DbSet<properTech.Models.Building> Building { get; set; }
+        public DbSet<Building> Building { get; set; }
 
-        public DbSet<properTech.Models.Unit> Unit { get; set; }
+        public DbSet<Unit> Unit { get; set; }
 
-        public DbSet<properTech.Models.MaintenanceRequest> MaintenanceRequest_1 { get; set; }
+        public DbSet<MaintenanceTech> MaintenanceTech { get; set; }
+
     }
 }

@@ -22,7 +22,7 @@ namespace properTech.Controllers
         // GET: MaintenanceRequests
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.MaintenanceRequest_1.Include(m => m.resident);
+            var applicationDbContext = _context.MaintenanceRequest.Include(m => m.resident);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceRequest = await _context.MaintenanceRequest_1
+            var maintenanceRequest = await _context.MaintenanceRequest
                 .Include(m => m.resident)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
             if (maintenanceRequest == null)
@@ -77,7 +77,7 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceRequest = await _context.MaintenanceRequest_1.FindAsync(id);
+            var maintenanceRequest = await _context.MaintenanceRequest.FindAsync(id);
             if (maintenanceRequest == null)
             {
                 return NotFound();
@@ -130,7 +130,7 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceRequest = await _context.MaintenanceRequest_1
+            var maintenanceRequest = await _context.MaintenanceRequest
                 .Include(m => m.resident)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
             if (maintenanceRequest == null)
@@ -146,15 +146,15 @@ namespace properTech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var maintenanceRequest = await _context.MaintenanceRequest_1.FindAsync(id);
-            _context.MaintenanceRequest_1.Remove(maintenanceRequest);
+            var maintenanceRequest = await _context.MaintenanceRequest.FindAsync(id);
+            _context.MaintenanceRequest.Remove(maintenanceRequest);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MaintenanceRequestExists(int id)
         {
-            return _context.MaintenanceRequest_1.Any(e => e.RequestId == id);
+            return _context.MaintenanceRequest.Any(e => e.RequestId == id);
         }
     }
 }
