@@ -74,7 +74,7 @@ namespace properTech.Controllers
         //Get all information on Vacancies 
         public IActionResult Vacancies()
         {
-            var unitVacancies = _context.Unit.Include("Address").ToList();
+            var unitVacancies = _context.Unit.Where(u=> u.IsOccupied == false).Include("Address").ToList();
             return View(unitVacancies);
         }
 
