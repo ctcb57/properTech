@@ -28,7 +28,7 @@ namespace properTech.Controllers
                 var fullPath = Path.Combine(uploads, GetUniqueFileName(formFile.FileName));
                 formFile.CopyTo(new FileStream(fullPath, FileMode.Create));
             }
-
+            
             return Ok(new { count = files.Count, /*size, */filePath });
             //return files;
         }

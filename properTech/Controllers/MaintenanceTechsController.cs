@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,22 +11,24 @@ using properTech.Models;
 
 namespace properTech.Controllers
 {
-    public class MaintenanceTechesController : Controller
+    public class MaintenanceTechsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MaintenanceTechesController(ApplicationDbContext context)
+        public MaintenanceTechsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: MaintenanceTeches
+        // GET: MaintenanceTechs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MaintenanceRequest.ToListAsync());
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var maintenanceTech = _context.MaintenanceTech.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
+            return View(maintenanceTech);
         }
 
-        // GET: MaintenanceTeches/Details/5
+        // GET: MaintenanceTechs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,7 +36,7 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceTech = await _context.MaintenanceRequest
+            var maintenanceTech = await _context.MaintenanceTech
                 .FirstOrDefaultAsync(m => m.MaintenanceTechId == id);
             if (maintenanceTech == null)
             {
@@ -43,13 +46,14 @@ namespace properTech.Controllers
             return View(maintenanceTech);
         }
 
-        // GET: MaintenanceTeches/Create
-        public IActionResult Create(string id)
+        // GET: MaintenanceTechs/Create
+        public IActionResult Create()
         {
-            return View();
+            MaintenanceTech maintenanceTech = new MaintenanceTech();
+            return View(maintenanceTech);
         }
 
-        // POST: MaintenanceTeches/Create
+        // POST: MaintenanceTechs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -59,14 +63,15 @@ namespace properTech.Controllers
             if (ModelState.IsValid)
             {
                 maintenanceTech.ApplicationUserId = id;
+                var currentUser = _context.Users.FirstOrDefault(u => u.Id == id);
                 _context.Add(maintenanceTech);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "MaintenanceTeches");
+                return RedirectToAction("RequestsView", new { id = maintenanceTech.MaintenanceTechId });
             }
             return View(maintenanceTech);
         }
 
-        // GET: MaintenanceTeches/Edit/5
+        // GET: MaintenanceTechs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,7 +79,7 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceTech = await _context.MaintenanceRequest.FindAsync(id);
+            var maintenanceTech = await _context.MaintenanceTech.FindAsync(id);
             if (maintenanceTech == null)
             {
                 return NotFound();
@@ -82,12 +87,12 @@ namespace properTech.Controllers
             return View(maintenanceTech);
         }
 
-        // POST: MaintenanceTeches/Edit/5
+        // POST: MaintenanceTechs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaintenanceTechId,FirstName,LastName")] MaintenanceTech maintenanceTech)
+        public async Task<IActionResult> Edit(int id, [Bind("MaintenanceTechId,FirstName,LastName,ApplicationUserId")] MaintenanceTech maintenanceTech)
         {
             if (id != maintenanceTech.MaintenanceTechId)
             {
@@ -117,7 +122,7 @@ namespace properTech.Controllers
             return View(maintenanceTech);
         }
 
-        // GET: MaintenanceTeches/Delete/5
+        // GET: MaintenanceTechs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,7 +130,7 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceTech = await _context.MaintenanceRequest
+            var maintenanceTech = await _context.MaintenanceTech
                 .FirstOrDefaultAsync(m => m.MaintenanceTechId == id);
             if (maintenanceTech == null)
             {
@@ -135,20 +140,26 @@ namespace properTech.Controllers
             return View(maintenanceTech);
         }
 
-        // POST: MaintenanceTeches/Delete/5
+        // POST: MaintenanceTechs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var maintenanceTech = await _context.MaintenanceRequest.FindAsync(id);
-            _context.MaintenanceRequest.Remove(maintenanceTech);
+            var maintenanceTech = await _context.MaintenanceTech.FindAsync(id);
+            _context.MaintenanceTech.Remove(maintenanceTech);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MaintenanceTechExists(int id)
         {
-            return _context.MaintenanceRequest.Any(e => e.MaintenanceTechId == id);
+            return _context.MaintenanceTech.Any(e => e.MaintenanceTechId == id);
+        }
+
+        public IActionResult RequestsView()
+        {
+            var context = _context.MaintenanceRequest.ToList();
+            return View(context);
         }
     }
 }
