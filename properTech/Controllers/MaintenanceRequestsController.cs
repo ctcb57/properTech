@@ -58,9 +58,6 @@ namespace properTech.Controllers
             return View();
         }
 
-        // POST: MaintenanceRequests/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Message,Video,filePath,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
@@ -75,6 +72,55 @@ namespace properTech.Controllers
                 _context.Update(currentResident);
                 await _context.SaveChangesAsync();
                 return View("VideoUpload");
+            }
+            ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
+            return View(maintenanceRequest);
+        }
+         public IActionResult CompleteRequest(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var maintenanceRequest = _context.MaintenanceRequest.FindAsync(id);
+            if (maintenanceRequest == null)
+            {
+                return NotFound();
+            }
+            return View(maintenanceRequest);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CompleteRequest(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Video,FeedbackMessage,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        {
+            if (id != maintenanceRequest.RequestId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    maintenanceRequest.IsComplete = true;
+                    maintenanceRequest.ActualCompletionDate = DateTime.Now;
+                    _context.Update(maintenanceRequest);
+                    _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MaintenanceRequestExists(maintenanceRequest.RequestId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
             }
             ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
             return View(maintenanceRequest);

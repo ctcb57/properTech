@@ -29,19 +29,19 @@ namespace properTech.Controllers
         //modify resident
         //
 
-        public IActionResult GetAllResidents(string id)
+        public IActionResult GetLateResidents()
         {
-            Manager manager = _context.Manager.Where(m => m.ApplicationUserId == id).Single();
-            var properties = _context.Property.Where(p => p.ManagerId == manager.ManagerId).ToList();
-            int propertyId = properties[0].PropertyId;
-            var buildings = _context.Building.Where(b => b.PropertyId == propertyId).ToList();
-            int buildingId = buildings[0].BuildingId;
-            var units = _context.Unit.Where(u => u.BuildingId == buildingId).ToList();
-            return View(units);
-            //foreach (Unit unit in units)
-            //{
-            //    return unit;
-            //}
+            var yesterday = DateTime.Now.AddDays(-1).DayOfYear.ToString();
+            var paymentMissed = _context.Resident.Where(s => s.PaymentDueDate.ToString() == yesterday).ToList();
+            if (paymentMissed != null)
+            {
+                foreach (Resident resident in paymentMissed)
+                {
+                    resident.LatePayment = true;
+                }
+            }
+            var lateResidents = _context.Resident.Where(r => r.LatePayment == true).ToList();
+            return View(lateResidents);
         }
 
 

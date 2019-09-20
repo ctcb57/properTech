@@ -1,0 +1,49 @@
+﻿@model IEnumerable<properTech.Models.MaintenanceRequest>
+
+@{
+    ViewData["Title"] = "CompletedRequest";
+}
+
+<h1>Requests In Progress</h1>
+
+<p>
+    <a asp-controller="Resident" asp-action="CompletedRequest">Completed Request History</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.confirmationNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfRequest)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
+            </th>
+            <th>
+                Assigned Maintenance Tech Id
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.confirmationNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfRequest)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstimatedCompletionDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaintanenceTechId)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

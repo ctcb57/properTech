@@ -20,6 +20,7 @@ namespace properTech.Models
         [DataType(DataType.Date)]
         public DateTime EstimatedCompletionDate { get; set; }
         [Display(Name = "Actual Date of Completion")]
+        [DataType(DataType.Date)]
         public DateTime ActualCompletionDate { get; set; }
         [Display(Name ="Maintenance Complete")]
         public bool IsComplete { get; set; }
