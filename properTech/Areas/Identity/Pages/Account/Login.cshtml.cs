@@ -10,20 +10,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using properTech.Data;
+using System.Security.Claims;
 
 namespace properTech.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
+        //private readonly ApplicationDbContext _context;
         private readonly ApplicationDbContext _context;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, ApplicationDbContext context)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
         }
 
         [BindProperty]
@@ -79,7 +82,25 @@ namespace properTech.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+
+                    var currentUser = _context.Users.FirstOrDefault(u => u.Email == Input.Email);
+                    var currentUserRoleIdObject = _context.UserRoles.Where(u => u.UserId == currentUser.Id).Single();
+                    var managerRole = _context.Roles.FirstOrDefault(r => r.Name == "Manager");
+                    var residentRole = _context.Roles.FirstOrDefault(r => r.Name == "Resident");
+                    var maintenanceRole = _context.Roles.FirstOrDefault(r => r.Name == "Maintenance");
+                    if(currentUserRoleIdObject.RoleId == managerRole.Id)
+                    {
+                        return RedirectToAction("Index", "Managers");
+                    }
+                    else if(currentUserRoleIdObject.RoleId == residentRole.Id)
+                    {
+                        return RedirectToAction("Index", "Residents");
+                    }
+                    else if(currentUserRoleIdObject.RoleId == maintenanceRole.Id)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    //return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {

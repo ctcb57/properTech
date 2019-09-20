@@ -17,5 +17,8 @@ namespace properTech.Models
         [ForeignKey("Manager Id")]
         public int ManagerId { get; set; }
 
+        [NotMapped]
+        public List<PointOfInterest> PointsOfInterest { get; set; }
+
     }
 }

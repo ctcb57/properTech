@@ -1,0 +1,66 @@
+﻿@model properTech.Models.MaintenanceRequest
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>MaintenanceRequest</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RequestId" />
+            <div class="form-group">
+                <label asp-for="DateOfRequest" class="control-label"></label>
+                <input asp-for="DateOfRequest" class="form-control" />
+                <span asp-validation-for="DateOfRequest" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EstimatedCompletionDate" class="control-label"></label>
+                <input asp-for="EstimatedCompletionDate" class="form-control" />
+                <span asp-validation-for="EstimatedCompletionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualCompletionDate" class="control-label"></label>
+                <input asp-for="ActualCompletionDate" class="form-control" />
+                <span asp-validation-for="ActualCompletionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsComplete" /> @Html.DisplayNameFor(model => model.IsComplete)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaintenanceStatus" class="control-label"></label>
+                <input asp-for="MaintenanceStatus" class="form-control" />
+                <span asp-validation-for="MaintenanceStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message" class="control-label"></label>
+                <input asp-for="Message" class="form-control" />
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResidentId" class="control-label"></label>
+                <select asp-for="ResidentId" class="form-control" asp-items="ViewBag.residentId"></select>
+                <span asp-validation-for="ResidentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaintanenceTechId" class="control-label"></label>
+                <input asp-for="MaintanenceTechId" class="form-control" />
+                <span asp-validation-for="MaintanenceTechId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
