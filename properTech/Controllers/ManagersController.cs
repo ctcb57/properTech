@@ -268,5 +268,10 @@ namespace properTech.Controllers
         {
             return _context.Manager.Any(e => e.ManagerId == id);
         }
+        public IActionResult Data()
+        {
+            var data = _context;
+            return View(data);
+        }
     }
 }

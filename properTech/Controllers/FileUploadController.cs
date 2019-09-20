@@ -38,7 +38,6 @@ namespace properTech.Controllers
                 currentMaintenanceRequest.filePath = uniqueFileName;
                 _context.SaveChanges();
             }
-
             return Ok(new { count = files.Count, filePath });
         }
         private string GetUniqueFileName(string fileName)

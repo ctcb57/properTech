@@ -21,8 +21,23 @@ namespace properTech.Models
         [Display(Name = "Actual Date of Completion")]
         public DateTime ActualCompletionDate { get; set; }
         [Display(Name ="Maintenance Complete")]
-        public bool isComplete { get; set; }
+        public bool IsComplete { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Maintenance Accepted")]
+        public bool IsAccepted { get; set; }
+
+        //[NotMapped]
+        //public IFormFile Video { get; set; }
+
+        //public string FilePath { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Proximity to Estimated Completion Time")]
+        public string ProximityToEstimatedCompletionTime { get; set; }
+
         [Display(Name = "Current Maintenance Status")]
+
         public string MaintenanceStatus { get; set; }
         [Display(Name = "Messages")]
         public string Message { get; set; }

@@ -225,6 +225,7 @@ namespace properTech.Controllers
         private bool MaintenanceRequestExists(int id)
         {
             return _context.MaintenanceRequest.Any(e => e.RequestId == id);
+<<<<<<< HEAD
         }
 
         public IActionResult CompleteRequest(int? id)
@@ -276,6 +277,8 @@ namespace properTech.Controllers
             }
             ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
             return View(maintenanceRequest);
+=======
+>>>>>>> 8d264005f43f73e2df5788feab38ada6a215810b
         }
 
     }
