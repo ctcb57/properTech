@@ -12,5 +12,6 @@ namespace properTech.Utility
         public const string Manager = "Manager";
         public const string Maintenance = "Maintenance";
         public const string Resident = "Resident";
+        public const string UnassignedUser = "UnassignedUser";
     }
 }

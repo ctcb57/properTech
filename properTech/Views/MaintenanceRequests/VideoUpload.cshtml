@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "VideoUpload";
+}
+
+<h1>Video Upload</h1>
+<h6>For faster service times, please upload a 10 second video of you maintenance issues</h6>
+
+<form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="UploadFiles">
+        <div class="form-group">
+            <div class="col-md-10">
+                <p>Upload one or more files using this form:</p>
+                <input type="file" name="files" multiple />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Upload" />
+            </div>
+        </div>
+    </form>
+

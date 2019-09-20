@@ -4,13 +4,40 @@
     ViewData["Title"] = "PropertyDetails";
 }
 
-<h1>Property Details</h1>
-
+<h1 style="text-align:center; text-decoration:underline">Property Details</h1>
+<br />
 <div>
-    <h4>@Html.DisplayFor(model => model.PropertyName)</h4>
+    <h4 style="text-align:center">@Html.DisplayFor(model => model.PropertyName)</h4>
     <hr />
 
 </div>
+<div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6"><h4 style="text-align: center; text-decoration:underline">Property Amenities</h4></div>
+    <div class="col-sm-3"></div>
+</div>
+<br />
+<div class="row">
+    <div class="col-sm-4">
+        <div style="text-align:center">
+            <p>Local Pool</p>
+            <p>Washer/Dryer in each unit</p>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div style="text-align:center">
+            <p>Air Conditioning</p>
+            <p>FREE Google Fiber</p>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div style="text-align:center">
+            <p>Enclosed Parking Garage</p>
+            <p>Gym</p>
+        </div>
+    </div>
+</div>
+<br />
 <html>
 <head>
     <style>
@@ -26,19 +53,59 @@
     @*Div element for the map*@
     <div id="map"></div>
     <script>
-            function initMap() {
-                var location = { lat: @Html.DisplayFor(model => model.Address.Latitude), lng: @Html.DisplayFor(model => model.Address.Longitude) };
-                var map = new google.maps.Map(
-                    document.getElementById('map'), { zoom: 15, center: location });
-                var marker = new google.maps.Marker({ position: location, map: map });
-            }
+        function initMap() {
+            var location = { lat: @Html.DisplayFor(model => model.Address.Latitude), lng: @Html.DisplayFor(model => model.Address.Longitude) };
+            var map = new google.maps.Map(
+                document.getElementById('map'), { zoom: 15, center: location });
+            var marker = new google.maps.Marker({ position: location, map: map });
+        }
     </script>
     <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvNx58z28nAtRCUDGJU6xi2qisdrmE1dQ&callback=initMap">
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClyvpgjTpah8jJL_JJdO1u2ljnS9MDC-M&callback=initMap">
     </script>
 </body>
 </html>
 <br />
+<h3 style="text-align:center; text-decoration:underline">Nearby Points of Interest</h3>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <p>Name</p>
+                </th>
+                <th>
+                    <p>Address</p>
+                </th>
+                <th>
+                    <p>Phone Number</p>
+                </th>
+                <th>
+                    <p>Business Type</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.PointsOfInterest.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => Model.PointsOfInterest[i].Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => Model.PointsOfInterest[i].Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => Model.PointsOfInterest[i].PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => Model.PointsOfInterest[i].TypeOfBusiness)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 <div>
     @Html.ActionLink("Back to List", "PropertyInformation")
 </div>
