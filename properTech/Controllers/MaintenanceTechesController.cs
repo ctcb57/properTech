@@ -22,7 +22,7 @@ namespace properTech.Controllers
         // GET: MaintenanceTeches
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MaintenanceRequest.ToListAsync());
+            return View(await _context.MaintenanceRequest.Where(r=>r.isComplete == false && r.MaintenanceStatus == "Pending").ToListAsync());
         }
 
         // GET: MaintenanceTeches/Details/5
@@ -59,6 +59,8 @@ namespace properTech.Controllers
             if (ModelState.IsValid)
             {
                 maintenanceTech.ApplicationUserId = id;
+                maintenanceTech.TotalRequestCompletions = 0;
+                maintenanceTech.TotalTimeSpan = new TimeSpan(0, 0, 0, 0);
                 _context.Add(maintenanceTech);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "MaintenanceTeches");

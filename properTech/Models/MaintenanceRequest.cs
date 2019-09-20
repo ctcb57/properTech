@@ -12,7 +12,6 @@ namespace properTech.Models
     {
         [Key]
         public int RequestId { get; set; }
-        public int confirmationNumber { get; set; }
         [Display(Name ="Date of Request")]
         [DataType(DataType.Date)]
         public DateTime DateOfRequest { get; set; }
