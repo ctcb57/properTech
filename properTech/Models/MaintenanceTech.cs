@@ -16,5 +16,8 @@ namespace properTech.Models
         public string LastName { get; set; }
         [Display(Name = "User Id")]
         public string ApplicationUserId { get; set; }
+        public int TotalRequestCompletions { get; set; }
+        public TimeSpan TotalTimeSpan { get; set; }
+        public TimeSpan AvgTimeSpan { get; set; }
     }
 }

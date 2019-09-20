@@ -23,9 +23,7 @@ namespace properTech.Controllers
         // GET: MaintenanceTechs
         public async Task<IActionResult> Index()
         {
-            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-            var maintenanceTech = _context.MaintenanceTech.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
-            return View(maintenanceTech);
+            return View(await _context.MaintenanceRequest.Where(r => r.MaintenanceStatus == "Pending").ToListAsync());
         }
 
         // GET: MaintenanceTechs/Details/5
@@ -58,11 +56,13 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaintenanceTechId,FirstName,LastName,ApplicationUserId")] MaintenanceTech maintenanceTech, string id)
+        public async Task<IActionResult> Create([Bind("MaintenanceTechId,FirstName,LastName,ApplicationUserId,AverageDeviation")] MaintenanceTech maintenanceTech, string id)
         {
             if (ModelState.IsValid)
             {
                 maintenanceTech.ApplicationUserId = id;
+                maintenanceTech.TotalRequestCompletions = 0;
+                maintenanceTech.TotalTimeSpan = new TimeSpan(0, 0, 0, 0);
                 var currentUser = _context.Users.FirstOrDefault(u => u.Id == id);
                 _context.Add(maintenanceTech);
                 await _context.SaveChangesAsync();

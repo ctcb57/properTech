@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using properTech.Data;
 using properTech.Models;
+using properTech.Utility;
 
 namespace properTech.Controllers
 {
@@ -54,6 +55,7 @@ namespace properTech.Controllers
         {
             return View();
         }
+
 
         public IActionResult Privacy()
         {

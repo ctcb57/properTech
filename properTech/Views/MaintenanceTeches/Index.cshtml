@@ -1,0 +1,52 @@
+﻿@model IEnumerable<properTech.Models.MaintenanceRequest>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.resident.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.resident.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.resident.UnitId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaintenanceStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.resident.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.resident.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.resident.UnitId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaintenanceStatus)
+            </td>
+            <td>
+            <td>
+                <a asp-action="Accept" asp-route-id="@item.RequestId">Accept Request</a> |
+                <a asp-action="Details" asp-route-id="@item.RequestId">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

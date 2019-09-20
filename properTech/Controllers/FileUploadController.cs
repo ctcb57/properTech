@@ -35,9 +35,7 @@ namespace properTech.Controllers
                 var uniqueFileName = GetUniqueFileName(formFile.FileName);
                 var fullPath = Path.Combine(uploads, uniqueFileName);
                 formFile.CopyTo(new FileStream(fullPath, FileMode.Create));
-                currentMaintenanceRequest.filePath = $"~/videos/{uniqueFileName}";
                 currentMaintenanceRequest.filePath = uniqueFileName;
-                _context.Update(currentMaintenanceRequest);
                 _context.SaveChanges();
             }
             return Ok(new { count = files.Count, filePath });
