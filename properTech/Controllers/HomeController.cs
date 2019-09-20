@@ -55,6 +55,7 @@ namespace properTech.Controllers
             return View();
         }
 
+
         public IActionResult Privacy()
         {
             return View();
