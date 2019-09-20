@@ -239,25 +239,31 @@ namespace properTech.Migrations
 
                     b.Property<DateTime>("EstimatedCompletionDate");
 
-                    b.Property<string>("FeedbackMessage");
-
                     b.Property<int>("MaintanenceTechId");
 
                     b.Property<string>("MaintenanceStatus");
 
-                    b.Property<bool>("isComplete");
+                    b.Property<string>("Message");
 
-                    b.Property<int>("residentId");
+                    b.Property<int>("ResidentId");
+
+                    b.Property<int?>("ResidentId1");
+
+                    b.Property<int>("confirmationNumber");
+
+                    b.Property<string>("filePath");
+
+                    b.Property<bool>("isComplete");
 
                     b.Property<int?>("techMaintenanceTechId");
 
                     b.HasKey("RequestId");
 
-                    b.HasIndex("residentId");
+                    b.HasIndex("ResidentId1");
 
                     b.HasIndex("techMaintenanceTechId");
 
-                    b.ToTable("MaintenanceRequest_1");
+                    b.ToTable("MaintenanceRequest");
                 });
 
             modelBuilder.Entity("properTech.Models.MaintenanceTech", b =>
@@ -274,7 +280,7 @@ namespace properTech.Migrations
 
                     b.HasKey("MaintenanceTechId");
 
-                    b.ToTable("MaintenanceRequest");
+                    b.ToTable("MaintenanceTech");
                 });
 
             modelBuilder.Entity("properTech.Models.Manager", b =>
@@ -346,6 +352,8 @@ namespace properTech.Migrations
                     b.Property<int>("UnitNumber");
 
                     b.Property<bool>("isAssignedUnit");
+
+                    b.Property<int>("maintenanceRequestId");
 
                     b.HasKey("ResidentId");
 
@@ -452,8 +460,7 @@ namespace properTech.Migrations
                 {
                     b.HasOne("properTech.Models.Resident", "resident")
                         .WithMany()
-                        .HasForeignKey("residentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ResidentId1");
 
                     b.HasOne("properTech.Models.MaintenanceTech", "tech")
                         .WithMany()

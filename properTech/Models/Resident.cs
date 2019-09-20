@@ -23,7 +23,6 @@ namespace properTech.Models
         public DateTime LeaseEnd { get; set; }
         [Display(Name = "Lease Renewed")]
         public bool RenewedLease { get; set; }
-
         [Display(Name ="Payment Due Date")]
         [DataType(DataType.Date)]
         public DateTime PaymentDueDate { get; set; }
@@ -32,6 +31,7 @@ namespace properTech.Models
         [Display(Name = "Current Balance Due")]
         public double Balance { get; set; }
         public int UnitNumber { get; set; }
+        public int maintenanceRequestId { get; set; }
 
         [ForeignKey("Unit")]
         public int UnitId { get; set; }

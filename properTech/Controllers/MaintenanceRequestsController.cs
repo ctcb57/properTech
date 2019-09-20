@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,16 +17,18 @@ namespace properTech.Controllers
     public class MaintenanceRequestsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHostingEnvironment hostingEnvironment;
 
         public MaintenanceRequestsController(ApplicationDbContext context)
         {
             _context = context;
+            
         }
 
         // GET: MaintenanceRequests
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.MaintenanceRequest_1.Include(m => m.resident);
+            var applicationDbContext = _context.MaintenanceRequest.Include(m => m.resident);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -34,7 +40,7 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceRequest = await _context.MaintenanceRequest_1
+            var maintenanceRequest = await _context.MaintenanceRequest
                 .Include(m => m.resident)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
             if (maintenanceRequest == null)
@@ -57,15 +63,31 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,FeedbackMessage,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public async Task<IActionResult> Create([Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Message,Video,filePath,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
         {
             if (ModelState.IsValid)
             {
+                //List<IFormFile> files = new List<IFormFile>();
+                //files.Add(maintenanceRequest.Video);
+                //var filePath = Path.GetTempFileName();
+                //string fullPath = "";
+                //foreach (var formFile in files)
+                //{
+                //    var uploads = Path.Combine(hostingEnvironment.WebRootPath, "videos");
+                //    fullPath = Path.Combine(uploads, GetUniqueFileName(formFile.FileName));
+                //    formFile.CopyTo(new FileStream(fullPath, FileMode.Create));
+                //}
+                //maintenanceRequest.filePath = fullPath;
+                var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var currentResident = _context.Resident.Where(c => c.ApplicationUserId == currentUserId).FirstOrDefault();
                 _context.Add(maintenanceRequest);
+                currentResident.maintenanceRequestId = maintenanceRequest.RequestId;
+                maintenanceRequest.confirmationNumber = maintenanceRequest.RequestId;
+                _context.Update(currentResident);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View("VideoUpload");
             }
-            ViewData["residentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.residentId);
+            ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
             return View(maintenanceRequest);
         }
 
@@ -77,12 +99,12 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceRequest = await _context.MaintenanceRequest_1.FindAsync(id);
+            var maintenanceRequest = await _context.MaintenanceRequest.FindAsync(id);
             if (maintenanceRequest == null)
             {
                 return NotFound();
             }
-            ViewData["residentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.residentId);
+            ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
             return View(maintenanceRequest);
         }
 
@@ -91,7 +113,7 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,FeedbackMessage,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public async Task<IActionResult> Edit(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Video,FeedbackMessage,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
         {
             if (id != maintenanceRequest.RequestId)
             {
@@ -118,7 +140,7 @@ namespace properTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["residentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.residentId);
+            ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
             return View(maintenanceRequest);
         }
 
@@ -130,7 +152,7 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceRequest = await _context.MaintenanceRequest_1
+            var maintenanceRequest = await _context.MaintenanceRequest
                 .Include(m => m.resident)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
             if (maintenanceRequest == null)
@@ -146,15 +168,24 @@ namespace properTech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var maintenanceRequest = await _context.MaintenanceRequest_1.FindAsync(id);
-            _context.MaintenanceRequest_1.Remove(maintenanceRequest);
+            var maintenanceRequest = await _context.MaintenanceRequest.FindAsync(id);
+            _context.MaintenanceRequest.Remove(maintenanceRequest);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MaintenanceRequestExists(int id)
         {
-            return _context.MaintenanceRequest_1.Any(e => e.RequestId == id);
+            return _context.MaintenanceRequest.Any(e => e.RequestId == id);
+        }
+
+        private string GetUniqueFileName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+            return Path.GetFileNameWithoutExtension(fileName)
+                      + "_"
+                      + Guid.NewGuid().ToString().Substring(0, 4)
+                      + Path.GetExtension(fileName);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace properTech.Controllers
             }
 
             var maintenanceTech = await _context.MaintenanceRequest
-                .FirstOrDefaultAsync(m => m.MaintenanceTechId == id);
+                .FirstOrDefaultAsync(m => m.RequestId == id);
             if (maintenanceTech == null)
             {
                 return NotFound();
@@ -126,7 +126,7 @@ namespace properTech.Controllers
             }
 
             var maintenanceTech = await _context.MaintenanceRequest
-                .FirstOrDefaultAsync(m => m.MaintenanceTechId == id);
+                .FirstOrDefaultAsync(m => m.RequestId == id);
             if (maintenanceTech == null)
             {
                 return NotFound();
@@ -148,7 +148,7 @@ namespace properTech.Controllers
 
         private bool MaintenanceTechExists(int id)
         {
-            return _context.MaintenanceRequest.Any(e => e.MaintenanceTechId == id);
+            return _context.MaintenanceRequest.Any(e => e.RequestId == id);
         }
     }
 }
