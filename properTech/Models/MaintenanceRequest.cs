@@ -12,7 +12,6 @@ namespace properTech.Models
     {
         [Key]
         public int RequestId { get; set; }
-        public int confirmationNumber { get; set; }
         [Display(Name ="Date of Request")]
         [DataType(DataType.Date)]
         public DateTime DateOfRequest { get; set; }
@@ -22,21 +21,11 @@ namespace properTech.Models
         [Display(Name = "Actual Date of Completion")]
         [DataType(DataType.Date)]
         public DateTime ActualCompletionDate { get; set; }
-        [Display(Name ="Maintenance Complete")]
-        public bool IsComplete { get; set; }
-
-        [NotMapped]
-        [Display(Name = "Maintenance Accepted")]
-        public bool IsAccepted { get; set; }
 
         //[NotMapped]
         //public IFormFile Video { get; set; }
 
         //public string FilePath { get; set; }
-
-        [NotMapped]
-        [Display(Name = "Proximity to Estimated Completion Time")]
-        public string ProximityToEstimatedCompletionTime { get; set; }
 
         [Display(Name = "Current Maintenance Status")]
 

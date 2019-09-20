@@ -171,6 +171,21 @@ namespace properTech.Controllers
             return View();
         }
 
+        public IActionResult CompletedRequests()
+        {
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var resident = _context.Resident.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
+            var completedRequests = _context.MaintenanceRequest.Where(m => m.ResidentId == resident.ResidentId && m.MaintenanceStatus == "Complete").ToList();
+            return View(completedRequests);
+        }
+
+        public IActionResult PendingRequests()
+        {
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var resident = _context.Resident.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
+            var pendingRequests = _context.MaintenanceRequest.Where(m => m.ResidentId == resident.ResidentId && m.MaintenanceStatus == "In Progress").ToList();
+            return View(pendingRequests);
+        }
         public IActionResult Payment()
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
@@ -207,22 +222,6 @@ namespace properTech.Controllers
         public IActionResult Error()
         {
             return View();
-        }
-
-        public IActionResult CompletedRequests()
-        {
-            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-            var resident = _context.Resident.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
-            var completedRequests = _context.MaintenanceRequest.Where(m => m.ResidentId == resident.ResidentId && m.MaintenanceStatus == "Complete").ToList();
-            return View(completedRequests);
-        }
-
-        public IActionResult PendingRequests()
-        {
-            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-            var resident = _context.Resident.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
-            var pendingRequests = _context.MaintenanceRequest.Where(m => m.ResidentId == resident.ResidentId && m.MaintenanceStatus == "In Progress").ToList();
-            return View(pendingRequests);
         }
     }
 }

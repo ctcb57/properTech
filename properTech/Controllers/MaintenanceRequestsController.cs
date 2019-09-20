@@ -28,8 +28,17 @@ namespace properTech.Controllers
         // GET: MaintenanceRequests
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.MaintenanceRequest.Include(m => m.resident);
-            return View(await applicationDbContext.ToListAsync());
+                var applicationDbContext = _context.MaintenanceRequest.Include(m => m.resident);
+                return View(await applicationDbContext.ToListAsync());
+
+        }
+
+        public IActionResult ViewMaintenanceRequests()
+        {
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var currentTech = _context.MaintenanceTech.Where(m => m.ApplicationUserId == currentUserId).FirstOrDefault();
+            var currentTechRequests = _context.MaintenanceRequest.Where(r => r.MaintanenceTechId == currentTech.MaintenanceTechId && r.MaintenanceStatus == "In Progress").ToList();
+            return View(currentTechRequests);
         }
 
         // GET: MaintenanceRequests/Details/5
@@ -66,61 +75,13 @@ namespace properTech.Controllers
             {
                 var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
                 var currentResident = _context.Resident.Where(c => c.ApplicationUserId == currentUserId).FirstOrDefault();
+                maintenanceRequest.MaintenanceStatus = "Pending";
                 _context.Add(maintenanceRequest);
+                _context.SaveChanges();
                 currentResident.maintenanceRequestId = maintenanceRequest.RequestId;
-                maintenanceRequest.confirmationNumber = maintenanceRequest.RequestId;
                 _context.Update(currentResident);
                 await _context.SaveChangesAsync();
                 return View("VideoUpload");
-            }
-            ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
-            return View(maintenanceRequest);
-        }
-         public IActionResult CompleteRequest(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var maintenanceRequest = _context.MaintenanceRequest.FindAsync(id);
-            if (maintenanceRequest == null)
-            {
-                return NotFound();
-            }
-            return View(maintenanceRequest);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CompleteRequest(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Video,FeedbackMessage,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
-        {
-            if (id != maintenanceRequest.RequestId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    maintenanceRequest.IsComplete = true;
-                    maintenanceRequest.ActualCompletionDate = DateTime.Now;
-                    _context.Update(maintenanceRequest);
-                    _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MaintenanceRequestExists(maintenanceRequest.RequestId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
             return View(maintenanceRequest);
@@ -148,7 +109,7 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Video,FeedbackMessage,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public async Task<IActionResult> Edit(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Message,filePath,Video,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
         {
             if (id != maintenanceRequest.RequestId)
             {
@@ -159,6 +120,55 @@ namespace properTech.Controllers
             {
                 try
                 {
+                    _context.Update(maintenanceRequest);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MaintenanceRequestExists(maintenanceRequest.RequestId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
+            return View(maintenanceRequest);
+        }
+
+        public IActionResult Accept(int id)
+        {
+
+            var maintenanceRequest = _context.MaintenanceRequest.FindAsync(id);
+            if (maintenanceRequest == null)
+            {
+                return NotFound();
+            }
+            //ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
+            return View(maintenanceRequest);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Accept(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Message,filePath,Video,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        {
+            if (id != maintenanceRequest.RequestId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                    var currentTech = _context.MaintenanceTech.Where(m => m.ApplicationUserId == currentUserId).FirstOrDefault();
+                    maintenanceRequest.MaintanenceTechId = currentTech.MaintenanceTechId;
+                    maintenanceRequest.MaintenanceStatus = "In Progress";
                     _context.Update(maintenanceRequest);
                     await _context.SaveChangesAsync();
                 }
@@ -213,5 +223,56 @@ namespace properTech.Controllers
         {
             return _context.MaintenanceRequest.Any(e => e.RequestId == id);
         }
+
+        public IActionResult CompleteRequest(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var maintenanceRequest = _context.MaintenanceRequest.FindAsync(id);
+            if (maintenanceRequest == null)
+            {
+                return NotFound();
+            }
+            return View(maintenanceRequest);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CompleteRequest(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Video,FeedbackMessage,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        {
+            if (id != maintenanceRequest.RequestId)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    maintenanceRequest.ActualCompletionDate = DateTime.Now;
+                    maintenanceRequest.MaintenanceStatus = "Complete";
+                    maintenanceRequest.tech.TotalRequestCompletions++;
+                    maintenanceRequest.tech.TotalTimeSpan += maintenanceRequest.ActualCompletionDate - maintenanceRequest.EstimatedCompletionDate;
+                    maintenanceRequest.tech.AvgTimeSpan = maintenanceRequest.tech.TotalTimeSpan / maintenanceRequest.tech.TotalRequestCompletions;
+                    _context.Update(maintenanceRequest);
+                    _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MaintenanceRequestExists(maintenanceRequest.RequestId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
+            return View(maintenanceRequest);
+        }
+
     }
 }

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<properTech.Models.MaintenanceRequest>
+
+@{
+    ViewData["Title"] = "ViewMaintenanceRequests";
+}
+
+<h1>Your Maintenance Requests</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.resident.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.resident.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Message)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaintenanceStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstimatedCompletionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.resident.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.resident.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaintenanceStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RequestId">Update</a> |
+                <a asp-action="Details" asp-route-id="@item.RequestId">Details</a> |
+                <a asp-action="CompleteRequest" asp-route-id="@item.RequestId">Complete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
