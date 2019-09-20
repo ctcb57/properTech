@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +17,12 @@ namespace properTech.Controllers
     public class MaintenanceRequestsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHostingEnvironment hostingEnvironment;
 
         public MaintenanceRequestsController(ApplicationDbContext context)
         {
             _context = context;
+            
         }
 
         // GET: MaintenanceRequests
@@ -57,15 +63,20 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,FeedbackMessage,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public async Task<IActionResult> Create([Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Message,Video,filePath,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
         {
             if (ModelState.IsValid)
             {
+                var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+                var currentResident = _context.Resident.Where(c => c.ApplicationUserId == currentUserId).FirstOrDefault();
                 _context.Add(maintenanceRequest);
+                currentResident.maintenanceRequestId = maintenanceRequest.RequestId;
+                maintenanceRequest.confirmationNumber = maintenanceRequest.RequestId;
+                _context.Update(currentResident);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View("VideoUpload");
             }
-            ViewData["residentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.residentId);
+            ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
             return View(maintenanceRequest);
         }
 
@@ -82,7 +93,7 @@ namespace properTech.Controllers
             {
                 return NotFound();
             }
-            ViewData["residentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.residentId);
+            ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
             return View(maintenanceRequest);
         }
 
@@ -91,7 +102,7 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,FeedbackMessage,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public async Task<IActionResult> Edit(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Video,FeedbackMessage,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
         {
             if (id != maintenanceRequest.RequestId)
             {
@@ -118,7 +129,7 @@ namespace properTech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["residentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.residentId);
+            ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
             return View(maintenanceRequest);
         }
 

@@ -6,7 +6,7 @@
 
 <h1>Create</h1>
 
-<h4>MaintenanceRequest</h4>
+<h4>Submit A Maintenance Request</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,39 +18,48 @@
                 <span asp-validation-for="DateOfRequest" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EstimatedCompletionDate" class="control-label"></label>
-                <input asp-for="EstimatedCompletionDate" class="form-control" />
-                <span asp-validation-for="EstimatedCompletionDate" class="text-danger"></span>
+                <label asp-for="Message" class="control-label"></label>
+                <input asp-for="Message" class="form-control" />
+                <span asp-validation-for="Message" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ActualCompletionDate" class="control-label"></label>
-                <input asp-for="ActualCompletionDate" class="form-control" />
-                <span asp-validation-for="ActualCompletionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="isComplete" /> @Html.DisplayNameFor(model => model.isComplete)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="MaintenanceStatus" class="control-label"></label>
-                <input asp-for="MaintenanceStatus" class="form-control" />
-                <span asp-validation-for="MaintenanceStatus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FeedbackMessage" class="control-label"></label>
-                <input asp-for="FeedbackMessage" class="form-control" />
-                <span asp-validation-for="FeedbackMessage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="residentId" class="control-label"></label>
-                <select asp-for="residentId" class ="form-control" asp-items="ViewBag.residentId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="MaintanenceTechId" class="control-label"></label>
-                <input asp-for="MaintanenceTechId" class="form-control" />
-                <span asp-validation-for="MaintanenceTechId" class="text-danger"></span>
-            </div>
+            @*<div class="form-group">
+            <label asp-for="ActualCompletionDate" class="control-label"></label>
+            <input asp-for="ActualCompletionDate" class="form-control" />
+            <span asp-validation-for="ActualCompletionDate" class="text-danger"></span>
+        </div>*@
+            @*<div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="isComplete" /> @Html.DisplayNameFor(model => model.isComplete)
+            </label>
+        </div>*@
+            @*<div class="form-group">
+                <label asp-for="Video" class="control-label"></label>
+                <input type="file" name="files" asp-for="Video" asp-controller="MaintenanceRequest" asp-action="Create" class="form-control" />
+                <span asp-validation-for="Video" class="text-danger"></span>
+            </div>*@
+            @*<form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="UploadFiles">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <p>Upload one or more files using this form:</p>
+                        <input type="file" name="files" multiple />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <input type="submit" value="Upload" />
+                    </div>
+                </div>
+            </form>*@
+
+            @*<div class="form-group">
+            <label asp-for="resident Id" class="control-label"></label>
+            <select asp-for="residentId" class ="form-control" asp-items="ViewBag.residentId"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="MaintanenceTechId" class="control-label"></label>
+            <input asp-for="MaintanenceTechId" class="form-control" />
+            <span asp-validation-for="MaintanenceTechId" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

@@ -88,7 +88,7 @@ namespace properTech.Areas.Identity.Pages.Account
             {
                 new SelectListItem { Value = "Manager", Text = "Manager"},
                 new SelectListItem { Value = "Resident", Text = "Resident"},
-                new SelectListItem { Value = "MaintenanceTech", Text = "Maintenance Tech"},
+                new SelectListItem { Value = "Maintenance", Text = "Maintenance"},
                 //new SelectListItem { Value = "UnassignedUser", Text = "UnassignedUser"},
             };
         }
@@ -152,10 +152,10 @@ namespace properTech.Areas.Identity.Pages.Account
                         await _userManager.AddToRoleAsync(user, StaticDetails.Resident);
                         return RedirectToAction("Create", "Residents", new { id = user.Id });
                     }
-                    if (user.Role == "MaintenanceTech")
+                    if(user.Role == "Maintenance")
                     {
                         await _userManager.AddToRoleAsync(user, StaticDetails.Maintenance);
-                        return RedirectToAction("Create", "MaintenanceTeches", new { id = user.Id });
+                        return RedirectToAction("Create", "MaintenanceTechs", new { id = user.Id });
                     }
                     //else
                     //{
