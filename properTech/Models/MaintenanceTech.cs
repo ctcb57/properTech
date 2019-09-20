@@ -17,5 +17,7 @@ namespace properTech.Models
         public string LastName { get; set; }
         [Display(Name = "User Id")]
         public string ApplicationUserId { get; set; }
+        [Display(Name = "Average Deviation")]
+        public int AverageDeviation { get; set; }
     }
 }
