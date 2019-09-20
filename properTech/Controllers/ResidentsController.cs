@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using properTech.Data;
 using properTech.Models;
+using Stripe;
 
 namespace properTech.Controllers
 {
@@ -62,7 +63,7 @@ namespace properTech.Controllers
         {
             if (ModelState.IsValid)
             {
-                resident.ApplicationUserId = id ;
+                resident.ApplicationUserId = id;
                 var currentUser = _context.Users.FirstOrDefault(u => u.Id == id);
                 resident.Email = currentUser.Email;
                 resident.PhoneNumber = currentUser.PhoneNumber;
@@ -166,6 +167,44 @@ namespace properTech.Controllers
         }
 
         public IActionResult Maintenance()
+        {
+            return View();
+        }
+
+        public IActionResult Payment()
+        {
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var resident = _context.Resident.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
+            return View(resident);
+        }
+
+        [HttpPost]
+        public IActionResult Charge(string stripeEmail, string stripeToken)
+        {
+            var customers = new CustomerService();
+            var charges = new ChargeService();
+            var customer = customers.Create(new CustomerCreateOptions
+            {
+                Email = stripeEmail,
+                Source = stripeToken
+            });
+
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var resident = _context.Resident.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
+
+            var charge = charges.Create(new ChargeCreateOptions
+            {
+                Amount = Convert.ToInt64(resident.Balance),
+                Description = "Sample Charge",
+                Currency = "usd",
+                CustomerId = customer.Id
+            });
+            resident.Balance = 0;
+            _context.SaveChanges();
+            return View();
+        }
+
+        public IActionResult Error()
         {
             return View();
         }
