@@ -41,7 +41,8 @@
                 @Html.DisplayFor(modelItem => item.Address.State)
             </td>
             <td>
-                <a asp-action="PropertyDetails" asp-route-id="@item.PropertyId">Details</a> 
+                <a asp-action="PropertyDetails" asp-route-id="@item.PropertyId">Details</a>   |
+                <a asp-area="" asp-controller="Properties" asp-action="ReturnLocations" asp-route-id="@item.PropertyId">Location</a>
             </td>
         </tr>
 }

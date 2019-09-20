@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using properTech.Data;
 using properTech.Models;
 
@@ -58,6 +60,35 @@ namespace properTech.Controllers
             return View();
         }
 
+        public MapQuestLocationData ReturnLocations(int id)
+        {
+            var property = _context.Property.Include("Address").FirstOrDefault(p => p.PropertyId == id);
+            var key = Keys.MapQuestAPIKey;
+            var lat = property.Address.Latitude;
+            var lng = property.Address.Longitude;
+            var requestUrl = $"http://www.mapquestapi.com/search/v2/radius?key={key}&maxMatches=10&origin={lat},{lng}&radius=15&units=wmin";
+            var result = new WebClient().DownloadString(requestUrl);
+            MapQuestLocationData placesData = JsonConvert.DeserializeObject<MapQuestLocationData>(result);
+            return placesData;
+        }
+
+        public List<PointOfInterest> GetListOfPointsOfInterest(int id)
+        {
+            List<PointOfInterest> pointsOfInterest = new List<PointOfInterest>();
+            MapQuestLocationData mapQuestJson = ReturnLocations(id);
+            var result = mapQuestJson.searchResults;
+            foreach (var item in result)
+            {
+                PointOfInterest point = new PointOfInterest();
+                point.Address = item.fields.address;
+                point.Name = item.name;
+                point.PhoneNumber = item.fields.phone;
+                point.TypeOfBusiness = item.fields.group_sic_code_name;
+                pointsOfInterest.Add(point);
+            }
+            return pointsOfInterest;
+        }
+
         // GET: Property Neighborhood Information
         public IActionResult PropertyInformation()
         {
@@ -67,8 +98,16 @@ namespace properTech.Controllers
 
         public IActionResult PropertyDetails(int id)
         {
-            var propertyToShow = _context.Property.Include("Address").FirstOrDefault(p => p.PropertyId == id);
-            return View(propertyToShow);
+            var property = _context.Property.Include(p => p.Address).FirstOrDefault(p => p.PropertyId == id);
+            property.PointsOfInterest = GetListOfPointsOfInterest(id);
+            return View(property);
+        }
+
+        public IActionResult LocalPointsOfInterest(int id)
+        {
+            var property = _context.Property.FirstOrDefault(p => p.PropertyId == id);
+            property.PointsOfInterest = GetListOfPointsOfInterest(id);
+            return View(property);
         }
 
         //Get all information on Vacancies 

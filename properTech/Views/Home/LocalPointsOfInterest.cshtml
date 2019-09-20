@@ -1,0 +1,49 @@
+﻿@model properTech.Models.Property
+
+@{
+    ViewData["Title"] = "LocalPointsOfInterest";
+}
+
+<h1>Local Points Of Interest</h1>
+
+
+<div>
+    @Html.DisplayFor(Model => Model.PointsOfInterest)
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <p>Name</p>
+                </th>
+                <th>
+                    <p>Address</p>
+                </th>
+                <th>
+                    <p>Phone Number</p>
+                </th>
+                <th>
+                    <p>Business Type</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Model.PointsOfInterest.Count; i++)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => Model.PointsOfInterest[i].Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.PointsOfInterest[i].Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.PointsOfInterest[i].PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => Model.PointsOfInterest[i].TypeOfBusiness)
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
