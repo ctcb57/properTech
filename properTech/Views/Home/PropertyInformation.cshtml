@@ -1,0 +1,50 @@
+﻿@model IEnumerable<properTech.Models.Property>
+
+@{
+    ViewData["Title"] = "PropertyInformation";
+}
+
+<h1>Our Properties</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PropertyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address.StreetAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address.State)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PropertyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address.StreetAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address.State)
+            </td>
+            <td>
+                <a asp-action="PropertyDetails" asp-route-id="@item.PropertyId">Details</a>   |
+                <a asp-area="" asp-controller="Properties" asp-action="ReturnLocations" asp-route-id="@item.PropertyId">Location</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

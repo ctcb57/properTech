@@ -18,12 +18,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.BathroomCount)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SquareFootage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MonthlyRent)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -38,15 +32,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BathroomCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SquareFootage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MonthlyRent)
             </td>          
             <td>
-                @Html.ActionLink("UnitDetails", "UnitDetails", new { id = item.UnitId})
+                @Html.ActionLink("Unit Details", "UnitDetails", new { id = item.UnitId})
             </td>
         </tr>
 }

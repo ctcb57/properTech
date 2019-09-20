@@ -11,9 +11,7 @@ namespace properTech.Models
     {
         [Key]
         public int AddressId { get; set; }
-        [NotMapped]
         public double Longitude { get; set; }
-        [NotMapped]
         public double  Latitude { get; set; }
         [Display(Name ="Street Address")]
         public string StreetAddress { get; set; }

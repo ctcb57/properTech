@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using properTech.Data;
 using properTech.Models;
+using System.Net;
+using Newtonsoft.Json;
+using properTech.Utility;
 
 namespace properTech.Controllers
 {
@@ -47,25 +50,77 @@ namespace properTech.Controllers
             return View(@property);
         }
 
+        public string ConvertAddressToGoogleFormat(Address address)
+        {
+            string googleFormatAddress = address.StreetAddress + "," + address.City + "," + address.State + "," + address.ZipCode + "," + address.Country;
+            return googleFormatAddress;
+        }
+
+        public GeoCode GeoLocate(string address)
+        {
+            var key = Keys.GoogleGeoCodeAPIKey;
+            var requestUrl = $"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
+            var result = new WebClient().DownloadString(requestUrl);
+            GeoCode geocode = JsonConvert.DeserializeObject<GeoCode>(result);
+            return geocode;
+        }
+
+        public MapQuestLocationData ReturnLocations(int id)
+        {
+            var property = _context.Property.Include("Address").FirstOrDefault(p => p.PropertyId == id);
+            var key = Keys.MapQuestAPIKey;
+            var lat = property.Address.Latitude;
+            var lng = property.Address.Longitude;
+            var requestUrl = $"http://www.mapquestapi.com/search/v2/radius?key={key}&maxMatches=10&origin={lat},{lng}&radius=15&units=wmin";
+            var result = new WebClient().DownloadString(requestUrl);
+            MapQuestLocationData placesData = JsonConvert.DeserializeObject<MapQuestLocationData>(result);          
+            return placesData;
+        }
+
+        public List<PointOfInterest> GetListOfPointsOfInterest(int id)
+        {
+            List<PointOfInterest> pointsOfInterest = new List<PointOfInterest>();
+            MapQuestLocationData mapQuestJson = ReturnLocations(id);
+            var result = mapQuestJson.searchResults;
+            foreach (var item in result)
+            {
+                PointOfInterest point = new PointOfInterest();
+                point.Address = item.fields.address;
+                point.Name = item.name;
+                point.PhoneNumber = item.fields.phone;
+                point.TypeOfBusiness = item.fields.group_sic_code_name;
+                pointsOfInterest.Add(point);
+            }
+            return pointsOfInterest;
+        }
+
         // GET: Properties/Create
-        public IActionResult Create()
+            public IActionResult Create()
         {
             Property property = new Property();
             return View(property);
         }
 
-        // POST: Properties/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //POST: Properties/Create
+        //To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PropertyId,PropertyName,Address,ManagerId")] Property @property)
+        public async Task<IActionResult> Create([Bind("PropertyId,PropertyName,Address,ManagerId,PointsOfInterest")] Property @property)
         {
             if (ModelState.IsValid)
             {
                 var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
                 Manager manager = _context.Manager.Where(m => m.ApplicationUserId == currentUserId).Single();
                 property.ManagerId = manager.ManagerId;
+                Address address = new Address();
+                address = property.Address;
+                address.Country = "USA";
+                string addressToConvert = ConvertAddressToGoogleFormat(address);
+                var geoLocate = GeoLocate(addressToConvert);
+                address.Longitude = geoLocate.results[0].geometry.location.lng;
+                address.Latitude = geoLocate.results[0].geometry.location.lat;
+                _context.Add(address);
                 _context.Add(@property);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");

@@ -21,7 +21,7 @@ namespace properTech.Controllers
         }
 
         // GET: Units index should just go to details of that specific unit
-        public async Task<IActionResult> Index(int id)
+        public IActionResult Index(int id)
         {
             return View(_context.Unit.Where(u => u.BuildingId == id).ToList());
         }
@@ -56,13 +56,14 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManagerId,UnitId,UnitNumber,RoomCount,BathroomCount,SquareFootage,MonthlyRent,IsOccupied,BuildingId")] Unit unit, int id)
+        public async Task<IActionResult> Create([Bind("ManagerId,UnitId,UnitNumber,RoomCount,BathroomCount,SquareFootage,MonthlyRent,IsOccupied,BuildingId,Address")] Unit unit, int id)
         {
             if (ModelState.IsValid)
             {
-                Building building = _context.Building.FirstOrDefault(b => b.BuildingId == id);
+                Building building = _context.Building.Include("Address").FirstOrDefault(b => b.BuildingId == id);
                 unit.BuildingId = building.BuildingId;
                 unit.ManagerId = building.ManagerId;
+                unit.Address = building.Address;
                 _context.Add(unit);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", new { id = unit.BuildingId });
