@@ -177,6 +177,7 @@ namespace properTech.Controllers
         private bool MaintenanceRequestExists(int id)
         {
             return _context.MaintenanceRequest.Any(e => e.RequestId == id);
+<<<<<<< HEAD
         }
 
         private string GetUniqueFileName(string fileName)
@@ -186,6 +187,8 @@ namespace properTech.Controllers
                       + "_"
                       + Guid.NewGuid().ToString().Substring(0, 4)
                       + Path.GetExtension(fileName);
+=======
+>>>>>>> 00dce890123a628e65dcb353589d35760d136b3b
         }
     }
 }

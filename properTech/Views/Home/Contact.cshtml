@@ -1,0 +1,26 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model properTech.Models.ContactFormModel
+
+<h3>CONTACT FORM</h3>
+<form asp-action="Contact" asp-controller="Home" method="post" onsubmit="buttonSubmit()">
+    <div>
+        <label asp-for="Name">Please enter your name:</label>
+        <input type="text" asp-for="Name" />
+    </div>
+    <div>
+        <label asp-for="Email">Please enter your email:</label>
+        <input type="text" asp-for="Email" />
+    </div>
+    <div>
+        <label asp-for="Message">Please enter a message:</label>
+        <textarea asp-for="Message"></textarea>
+    </div>
+    <input type="submit" value="Send Message" />
+
+    <script>
+    function buttonSubmit() {
+    alert("Message Sent!");
+    }
+    </script>
+</form>
+
