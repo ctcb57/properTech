@@ -22,7 +22,7 @@ function getUserInput() {
         document.getElementById("chadResponse").innerHTML = "As a professional robot, I try my hardest not to be offensive. I guess that means I have THAT in common with the Bears."
     }
     else if (userInput.includes("maintenance") && userInput.includes("request")) {
-        document.getElementById("chadResponse").innerHTML = "<span>Aboslutely! You can submit a request for maintenance with this link: <a href = 'http://localhost:55337/maintenancerequests/create'  target= '_blank'>click here to check it out!</a></span>"; /*"I know of a great video about that. Would you like to watch it? \n <a href = 'https://www.youtube.com/watch?v=KQJALywkB4U'></a>"*/
+        document.getElementById("chadResponse").innerHTML = "<span>Aboslutely! You can submit a request for maintenance with this link: <a href = 'http://localhost:54950/maintenancerequests/create'  target= '_blank'>click here to check it out!</a></span>"; /*"I know of a great video about that. Would you like to watch it? \n <a href = 'https://www.youtube.com/watch?v=KQJALywkB4U'></a>"*/
     }
    
 }

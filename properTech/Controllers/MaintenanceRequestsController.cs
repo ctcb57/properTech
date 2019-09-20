@@ -63,15 +63,15 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Message,Video,filePath,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public async Task<IActionResult> Create([Bind("RequestId,confirmationNumber,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,IsComplete,MaintenanceStatus,Message,Video,filePath,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
         {
             if (ModelState.IsValid)
             {
                 var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
                 var currentResident = _context.Resident.Where(c => c.ApplicationUserId == currentUserId).FirstOrDefault();
                 _context.Add(maintenanceRequest);
+                await _context.SaveChangesAsync();
                 currentResident.maintenanceRequestId = maintenanceRequest.RequestId;
-                maintenanceRequest.confirmationNumber = maintenanceRequest.RequestId;
                 _context.Update(currentResident);
                 await _context.SaveChangesAsync();
                 return View("VideoUpload");
@@ -102,7 +102,7 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Video,FeedbackMessage,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public async Task<IActionResult> Edit(int id, [Bind("RequestId,confirmationNumber,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,IsComplete,MaintenanceStatus,Message,Video,filePath,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
         {
             if (id != maintenanceRequest.RequestId)
             {

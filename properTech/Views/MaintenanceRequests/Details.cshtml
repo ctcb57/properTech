@@ -11,11 +11,8 @@
     <hr />
     <dl class="row">
         <h3>Resident Information</h3>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.resident)
-        </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.resident.ResidentId)
+            @Html.DisplayFor(model => model.resident.PhoneNumber)
         </dd>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.resident.FirstName)
@@ -28,51 +25,53 @@
         </dd>
         <br />
         <h3>Maintenance Request Details</h3>
-        <dt class="col-sm-2">
+        <dd class="col-sm-6">
             @Html.DisplayNameFor(model => model.DateOfRequest)
-        </dt>
-        <dd class="col-sm-10">
+        </dd>
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.DateOfRequest)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.EstimatedCompletionDate)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             @Html.DisplayNameFor(model => model.ActualCompletionDate)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.ActualCompletionDate)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             @Html.DisplayNameFor(model => model.IsComplete)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.IsComplete)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             @Html.DisplayNameFor(model => model.MaintenanceStatus)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.MaintenanceStatus)
         </dd>
+    </dl>
         <br />
         <h3>Current Communication</h3>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Message)
-        </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.Message)
         </dd>
         @*<dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MaintanenceTechId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MaintanenceTechId)
-        </dd>*@
-    </dl>
+                @Html.DisplayNameFor(model => model.MaintanenceTechId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MaintanenceTechId)
+            </dd>*@
+    <h3>Video</h3>
+    <video width="640" height="360" controls="controls">
+        <source src=~/videos/@Model.filePath type="video/mp4" />
+    </video>
+    <br />
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.RequestId">Edit</a> |

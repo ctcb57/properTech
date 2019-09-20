@@ -27,14 +27,17 @@ namespace properTech.Controllers
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
             var resident = _context.Resident.Where(r => r.ApplicationUserId == currentUserId).FirstOrDefault();
-            var currentMaintenanceRequest = _context.MaintenanceRequest.Where(m=> m.confirmationNumber == resident.maintenanceRequestId).FirstOrDefault();
+            var currentMaintenanceRequest = _context.MaintenanceRequest.Where(m=> m.RequestId == resident.maintenanceRequestId).FirstOrDefault();
             var filePath = Path.GetTempFileName();
             foreach (var formFile in files)
             {
                 var uploads = Path.Combine(hostingEnvironment.WebRootPath, "videos");
-                var fullPath = Path.Combine(uploads, GetUniqueFileName(formFile.FileName));
+                var uniqueFileName = GetUniqueFileName(formFile.FileName);
+                var fullPath = Path.Combine(uploads, uniqueFileName);
                 formFile.CopyTo(new FileStream(fullPath, FileMode.Create));
-                currentMaintenanceRequest.filePath = fullPath;
+                currentMaintenanceRequest.filePath = $"~/videos/{uniqueFileName}";
+                currentMaintenanceRequest.filePath = uniqueFileName;
+                _context.Update(currentMaintenanceRequest);
                 _context.SaveChanges();
             }
             return Ok(new { count = files.Count, filePath });
