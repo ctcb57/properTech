@@ -28,7 +28,7 @@ namespace properTech.Controllers
         // GET: MaintenanceRequests
         public async Task<IActionResult> Index()
         {
-                var applicationDbContext = _context.MaintenanceRequest.Include(m => m.resident);
+                var applicationDbContext = _context.MaintenanceRequest.Where(m => m.MaintenanceStatus == "Pending");
                 return View(await applicationDbContext.ToListAsync());
 
         }
@@ -79,6 +79,7 @@ namespace properTech.Controllers
                 var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
                 var currentResident = _context.Resident.Where(c => c.ApplicationUserId == currentUserId).FirstOrDefault();
                 maintenanceRequest.MaintenanceStatus = "Pending";
+                maintenanceRequest.ResidentId = currentResident.ResidentId;
                 _context.Add(maintenanceRequest);
                 _context.SaveChanges();
                 currentResident.maintenanceRequestId = maintenanceRequest.RequestId;
@@ -98,7 +99,7 @@ namespace properTech.Controllers
                 return NotFound();
             }
 
-            var maintenanceRequest = await _context.MaintenanceRequest.FindAsync(id);
+            var maintenanceRequest = _context.MaintenanceRequest.Where(m=>m.RequestId == id).FirstOrDefault();
             if (maintenanceRequest == null)
             {
                 return NotFound();
@@ -112,8 +113,9 @@ namespace properTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Message,filePath,Video,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public async Task<IActionResult> Edit(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Message,filePath,Video,ResidentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
         {
+            maintenanceRequest.RequestId = id;
             if (id != maintenanceRequest.RequestId)
             {
                 return NotFound();
@@ -137,7 +139,7 @@ namespace properTech.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("MyRequests", "MaintenanceTechs");
             }
             ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
             return View(maintenanceRequest);
@@ -146,7 +148,7 @@ namespace properTech.Controllers
         public IActionResult Accept(int id)
         {
 
-            var maintenanceRequest = _context.MaintenanceRequest.FindAsync(id);
+            var maintenanceRequest = _context.MaintenanceRequest.Where(m=>m.RequestId == id).FirstOrDefault();
             if (maintenanceRequest == null)
             {
                 return NotFound();
@@ -157,7 +159,7 @@ namespace properTech.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Accept(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Message,filePath,Video,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public async Task<IActionResult> Accept(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,MaintenanceStatus,Message,filePath,Video,ResidentId,tech,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
         {
             if (id != maintenanceRequest.RequestId)
             {
@@ -170,6 +172,7 @@ namespace properTech.Controllers
                 {
                     var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
                     var currentTech = _context.MaintenanceTech.Where(m => m.ApplicationUserId == currentUserId).FirstOrDefault();
+                    maintenanceRequest.tech = currentTech;
                     maintenanceRequest.MaintanenceTechId = currentTech.MaintenanceTechId;
                     maintenanceRequest.MaintenanceStatus = "In Progress";
                     _context.Update(maintenanceRequest);
@@ -186,7 +189,7 @@ namespace properTech.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Requests", "MaintenanceTechs");
             }
             ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
             return View(maintenanceRequest);
@@ -225,7 +228,7 @@ namespace properTech.Controllers
         private bool MaintenanceRequestExists(int id)
         {
             return _context.MaintenanceRequest.Any(e => e.RequestId == id);
-<<<<<<< HEAD
+
         }
 
         public IActionResult CompleteRequest(int? id)
@@ -234,7 +237,7 @@ namespace properTech.Controllers
             {
                 return NotFound();
             }
-            var maintenanceRequest = _context.MaintenanceRequest.FindAsync(id);
+            var maintenanceRequest = _context.MaintenanceRequest.Where(m=>m.RequestId == id).FirstOrDefault();
             if (maintenanceRequest == null)
             {
                 return NotFound();
@@ -243,7 +246,7 @@ namespace properTech.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CompleteRequest(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Video,FeedbackMessage,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public IActionResult CompleteRequest(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Video,FeedbackMessage,ResidentId,tech,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
         {
             if (id != maintenanceRequest.RequestId)
             {
@@ -253,14 +256,15 @@ namespace properTech.Controllers
             {
                 try
                 {
-                    maintenanceRequest.isComplete = true;
+                    var currentTech = _context.MaintenanceTech.Where(m => m.MaintenanceTechId == maintenanceRequest.MaintanenceTechId).FirstOrDefault();
+                    maintenanceRequest.IsComplete = true;
                     maintenanceRequest.ActualCompletionDate = DateTime.Now;
                     maintenanceRequest.MaintenanceStatus = "Complete";
-                    maintenanceRequest.tech.TotalRequestCompletions++;
-                    maintenanceRequest.tech.TotalTimeSpan += maintenanceRequest.ActualCompletionDate - maintenanceRequest.EstimatedCompletionDate;
-                    maintenanceRequest.tech.AvgTimeSpan = maintenanceRequest.tech.TotalTimeSpan / maintenanceRequest.tech.TotalRequestCompletions;
+                    currentTech.TotalRequestCompletions++;
+                    //currentTech.TotalTimeSpan += (maintenanceRequest.ActualCompletionDate - maintenanceRequest.EstimatedCompletionDate);
+                    //currentTech.AvgTimeSpan = currentTech.TotalTimeSpan / currentTech.TotalRequestCompletions;
                     _context.Update(maintenanceRequest);
-                    _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -273,12 +277,10 @@ namespace properTech.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("MyRequests", "MaintenanceTechs");
             }
             ViewData["ResidentId"] = new SelectList(_context.Resident, "ResidentId", "ResidentId", maintenanceRequest.ResidentId);
             return View(maintenanceRequest);
-=======
->>>>>>> 8d264005f43f73e2df5788feab38ada6a215810b
         }
 
     }

@@ -1,0 +1,51 @@
+﻿@model properTech.Models.MaintenanceRequest
+
+@{
+    ViewData["Title"] = "Complete";
+}
+
+<h1>View</h1>
+
+<h3>Are you sure you want to close this ticket?</h3>
+<div>
+    <h4>Maintenance Request</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfRequest)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOfRequest)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EstimatedCompletionDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaintanenceTechId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaintanenceTechId)
+        </dd>
+    </dl>
+
+    <form asp-action="CompleteRequest">
+        <input type="hidden" asp-for="ResidentId" />
+        <input type="hidden" asp-for="tech" />
+        <input type="hidden" asp-for="MaintanenceTechId" />
+        <input type="hidden" asp-for="RequestId" />
+        <input type="hidden" asp-for="MaintenanceStatus" />
+        <input type="hidden" asp-for="DateOfRequest" />
+        <input type="hidden" asp-for="EstimatedCompletionDate" />
+        <input type="submit" value="Confirm" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

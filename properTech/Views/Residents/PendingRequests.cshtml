@@ -4,7 +4,7 @@
 }
 <h1>Requests In Progress</h1>
 <p>
-    <a asp-controller="Resident" asp-action="CompletedRequest">Completed Request History</a>
+    <a asp-controller="Residents" asp-action="CompletedRequests">Completed Request History</a>
 </p>
 <table class="table">
     <thead>
@@ -14,9 +14,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
-            </th>
-            <th>
-                Assigned Maintenance Tech Id
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Message)
@@ -33,9 +30,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EstimatedCompletionDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.tech.FirstName + " " + item.tech.LastName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Message)
