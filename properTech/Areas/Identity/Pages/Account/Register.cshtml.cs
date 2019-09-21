@@ -87,9 +87,9 @@ namespace properTech.Areas.Identity.Pages.Account
             UserRoles = new List<SelectListItem>()
             {
                 new SelectListItem { Value = "Manager", Text = "Manager"},
-                new SelectListItem { Value = "Resident", Text = "Resident"},
-                new SelectListItem { Value = "Maintenance", Text = "Maintenance"},
-                //new SelectListItem { Value = "UnassignedUser", Text = "UnassignedUser"},
+                //new SelectListItem { Value = "Resident", Text = "Resident"},
+                //new SelectListItem { Value = "Maintenance", Text = "Maintenance"},
+                new SelectListItem { Value = "UnassignedUser", Text = "UnassignedUser"},
             };
         }
 
@@ -131,10 +131,10 @@ namespace properTech.Areas.Identity.Pages.Account
                     {
                         await _roleManager.CreateAsync(new IdentityRole(StaticDetails.Resident));
                     }
-                    //if (!await _roleManager.RoleExistsAsync(StaticDetails.UnassignedUser))
-                    //{
-                    //    await _roleManager.CreateAsync(new IdentityRole(StaticDetails.UnassignedUser));
-                    //}
+                    if (!await _roleManager.RoleExistsAsync(StaticDetails.UnassignedUser))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(StaticDetails.UnassignedUser));
+                    }
 
                     foreach (var error in result.Errors)
                     {
@@ -147,22 +147,22 @@ namespace properTech.Areas.Identity.Pages.Account
                         var role = await _userManager.GetRolesAsync(user);
                         return RedirectToAction("Create", "Managers", new { id = user.Id });
                     }
-                    if (user.Role == "Resident")
-                    {
-                        await _userManager.AddToRoleAsync(user, StaticDetails.Resident);
-                        return RedirectToAction("Create", "Residents", new { id = user.Id });
-                    }
-                    if(user.Role == "Maintenance")
-                    {
-                        await _userManager.AddToRoleAsync(user, StaticDetails.Maintenance);
-                        return RedirectToAction("Create", "MaintenanceTechs", new { id = user.Id });
-                    }
-                    //else
+                    //if (user.Role == "Resident")
                     //{
-                    //    await _userManager.AddToRoleAsync(user, StaticDetails.UnassignedUser);
-                    //    var role = await _userManager.GetRolesAsync(user);
-                    //    return RedirectToAction("UserIndex", "Home", new { id = user.Id });
+                    //    await _userManager.AddToRoleAsync(user, StaticDetails.Resident);
+                    //    return RedirectToAction("Create", "Residents", new { id = user.Id });
                     //}
+                    //if(user.Role == "Maintenance")
+                    //{
+                    //    await _userManager.AddToRoleAsync(user, StaticDetails.Maintenance);
+                    //    return RedirectToAction("Create", "MaintenanceTechs", new { id = user.Id });
+                    //}
+                    if(user.Role == "UnassignedUser")
+                    {
+                        await _userManager.AddToRoleAsync(user, StaticDetails.UnassignedUser);
+                        var role = await _userManager.GetRolesAsync(user);
+                        return RedirectToAction("UserIndex", "Home", new { id = user.Id });
+                    }
 
 
                     //if (Input.isSuperAdmin)

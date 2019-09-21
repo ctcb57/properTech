@@ -1,19 +1,73 @@
 @model properTech.Models.Manager
-
+<br />
+<br />
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Home Page</h1>
-
-<h3>Welcome @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h3>
-
+<h1 style="text-align:center">Welcome @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h1>
+<br />
 <div class="container">
     <div class="row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-8">
-            <img src="https://ar.rdcpix.com/170984055/af6bda9ff49eb2683dba587a1b4d96c2c-f0xd-w480_h480_q80.jpg" alt="apartment" />
+        <div class="col-sm-6">
+            <div>    
+                <h4 style="text-align:center; text-decoration:underline">Account Management</h4>
+            </div>
+            <br />
+            <div style="background-color:#3bb871">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#assignAccount">Assign</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#updateAccount">Update</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#overdueAccount">Overdue</a>
+                    </li>
+                </ul>
+                <div id="myTabContent" class="tab-content" style="background-color:#79D480">
+                    <div class="tab-pane fade" id="assignAccount">
+                        <br />
+                        <p style="font-size:15px">Assign registered users to accounts by clicking the button below</p>
+                        <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("AssignUsers", "Managers")'">Assign Users</button>
+                    </div>
+                    <div class="tab-pane fade" id="updateAccount">
+                        <br />
+                        <p style="font-size:15px">Update resident information by clicking the button below</p>
+                        <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("GetResidents", "Managers")'">Update Residents</button>
+                    </div>
+                    <div class="tab-pane fade" id="overdueAccount">
+                        <br />
+                        <p style="font-size:15px">View overdue accounts by clicking the button below</p>
+                        <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Overdue", "Residents")'">Overdue Accounts</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-2"></div>
+        <div class="col-sm-6">
+            <h4 style="text-align:center; text-decoration:underline">Property Management</h4>
+            <br />
+            <p style="font-size: 15px; text-align:center">Click the button below to edit properties</p>
+            <center><button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Properties")'">Edit Properties</button></center>
+        </div>
     </div>
 </div>
+<br />
+<br />
+<br />
+<div class="row">
+    <div class="col-sm-6">
+        <h4 style="text-align:center; text-decoration:underline">Data Analytics</h4>
+        <br />
+        <p style="font-size: 15px; text-align:center">Click the button below to view data analytics</p>
+        <center><button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Data", "Managers")'">View Data</button></center>
+    </div>
+    <div class="col-sm-6">
+        <h4 style="text-align:center; text-decoration:underline">Maintenance</h4>
+        <br />
+        <p style="font-size: 15px; text-align:center">Click the button below to view maintenance information</p>
+        <center><button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Managers")'">Maintenance</button></center>
+    </div>
+</div>
+

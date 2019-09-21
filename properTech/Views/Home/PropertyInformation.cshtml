@@ -4,33 +4,36 @@
     ViewData["Title"] = "PropertyInformation";
 }
 
-<h1>Our Properties</h1>
+<br />
+<br />
 
-
-<table class="table">
+<h1 style="text-align:center; text-decoration:underline">Our Properties</h1>
+<br />
+<br />
+<table class="table table-hover">
     <thead>
-        <tr>
-            <th>
+        <tr class="table" style="background-color: #3bb871">
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.PropertyName)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Address.StreetAddress)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Address.City)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Address.State)
             </th>
-            <th></th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
+        <tr class="table-success">
+            <th scope="row" style="background-color: #79D480">
                 @Html.DisplayFor(modelItem => item.PropertyName)
-            </td>
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.Address.StreetAddress)
             </td>
@@ -41,8 +44,7 @@
                 @Html.DisplayFor(modelItem => item.Address.State)
             </td>
             <td>
-                <a asp-action="PropertyDetails" asp-route-id="@item.PropertyId">Details</a>   |
-                <a asp-area="" asp-controller="Properties" asp-action="ReturnLocations" asp-route-id="@item.PropertyId">Location</a>
+                <a asp-action="PropertyDetails" asp-route-id="@item.PropertyId">Details</a>   
             </td>
         </tr>
 }

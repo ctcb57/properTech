@@ -19,7 +19,5 @@ namespace properTech.Models
         public int TotalRequestCompletions { get; set; }
         public TimeSpan TotalTimeSpan { get; set; }
         public TimeSpan AvgTimeSpan { get; set; }
-        [Display(Name = "Average Deviation")]
-        public int AverageDeviation { get; set; }
     }
 }

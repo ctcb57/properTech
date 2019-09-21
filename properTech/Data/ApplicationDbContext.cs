@@ -34,6 +34,7 @@ namespace properTech.Data
         public DbSet<MonthlyRevenue> MonthlyRevenue { get; set; }
         public DbSet<OccupancyPercent> OccupancyPercent { get; set; }
         public DbSet<QuarterlyEarnings> QuarterlyEarnings { get; set; }
+        public DbSet<UnassignedUsers> UnassignedUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -67,12 +67,9 @@ namespace properTech.Controllers
             return View();
         }
 
-        // POST: MaintenanceRequests/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Message,Video,filePath,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public async Task<IActionResult> Create([Bind("RequestId,confirmationNumber,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,IsComplete,MaintenanceStatus,Message,Video,filePath,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
         {
             if (ModelState.IsValid)
             {
@@ -81,7 +78,7 @@ namespace properTech.Controllers
                 maintenanceRequest.MaintenanceStatus = "Pending";
                 maintenanceRequest.ResidentId = currentResident.ResidentId;
                 _context.Add(maintenanceRequest);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 currentResident.maintenanceRequestId = maintenanceRequest.RequestId;
                 _context.Update(currentResident);
                 await _context.SaveChangesAsync();
@@ -228,7 +225,6 @@ namespace properTech.Controllers
         private bool MaintenanceRequestExists(int id)
         {
             return _context.MaintenanceRequest.Any(e => e.RequestId == id);
-
         }
 
         public IActionResult CompleteRequest(int? id)
@@ -257,7 +253,6 @@ namespace properTech.Controllers
                 try
                 {
                     var currentTech = _context.MaintenanceTech.Where(m => m.MaintenanceTechId == maintenanceRequest.MaintanenceTechId).FirstOrDefault();
-                    maintenanceRequest.IsComplete = true;
                     maintenanceRequest.ActualCompletionDate = DateTime.Now;
                     maintenanceRequest.MaintenanceStatus = "Complete";
                     currentTech.TotalRequestCompletions++;

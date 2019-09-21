@@ -25,42 +25,47 @@
         </dd>
         <br />
         <h3>Maintenance Request Details</h3>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
+            @Html.DisplayNameFor(model => model.DateOfRequest)
+        </dd>
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.DateOfRequest)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.EstimatedCompletionDate)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             @Html.DisplayNameFor(model => model.ActualCompletionDate)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.ActualCompletionDate)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MaintenanceStatus)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.MaintenanceStatus)
         </dd>
+    </dl>
         <br />
         <h3>Current Communication</h3>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Message)
-        </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.Message)
         </dd>
         @*<dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MaintanenceTechId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MaintanenceTechId)
-        </dd>*@
-    </dl>
+                @Html.DisplayNameFor(model => model.MaintanenceTechId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MaintanenceTechId)
+            </dd>*@
+    <h3>Video</h3>
+    <video width="640" height="360" controls="controls">
+        <source src=~/videos/@Model.filePath type="video/mp4" />
+    </video>
+    <br />
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.RequestId">Edit</a> |

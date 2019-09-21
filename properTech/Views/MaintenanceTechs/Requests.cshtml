@@ -59,8 +59,14 @@
                 @Html.DisplayFor(modelItem => item.MaintanenceTechId)
             </td>
             <td>
+<<<<<<< HEAD:properTech/Views/MaintenanceTechs/Requests.cshtml
                 <a asp-controller="MaintenanceRequests" asp-action="Accept" asp-route-id="@item.RequestId">Accept</a> |
                 <a asp-controller="MaintenanceRequests" asp-action="Details" asp-route-id="@item.RequestId">Details</a> |
+=======
+                <a asp-action="Edit" asp-controller="MaintenanceRequests"asp-route-id="@item.RequestId">Edit</a> |
+                <a asp-action="Details" asp-controller="MaintenanceRequests" asp-route-id="@item.RequestId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.RequestId">Delete</a> |
+>>>>>>> fb8799f75944dc78676f41cbcdac397282e033c3:properTech/Views/MaintenanceTechs/RequestsView.cshtml
             </td>
         </tr>
 }

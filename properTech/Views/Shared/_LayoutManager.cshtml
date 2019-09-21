@@ -26,21 +26,12 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarColor01">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav mr-sm-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" asp-area="" asp-controller="Managers" asp-action="GetResidents">Tenants</a>
+                            <a class="nav-link" asp-area="" asp-controller="Managers" asp-action="Index">Home Portal</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" asp-area="" asp-controller="Residents" asp-action="Overdue">Overdue</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" asp-area="" asp-controller="Properties" asp-action="Index" >Edit Property</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" asp-area="" asp-controller="Managers" asp-action="Data">Data Analytics</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" asp-area="" asp-controller="Managers" asp-action="Index">Maintenance</a>
+                            <a class="nav-link" asp-area="" asp-controller="Properties" asp-action="Index">Edit Property</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

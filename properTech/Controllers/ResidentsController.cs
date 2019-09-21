@@ -170,6 +170,7 @@ namespace properTech.Controllers
         {
             return View();
         }
+
         public IActionResult CompletedRequests()
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();

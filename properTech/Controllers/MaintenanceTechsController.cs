@@ -24,7 +24,6 @@ namespace properTech.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.MaintenanceRequest.Where(r=> r.MaintenanceStatus == "Pending").ToListAsync());
-
         }
 
         // GET: MaintenanceTechs/Details/5

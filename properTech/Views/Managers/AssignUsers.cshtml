@@ -1,0 +1,36 @@
+﻿@model IEnumerable<properTech.Models.UnassignedUsers>
+
+@{
+    ViewData["Title"] = "AssignUsers";
+}
+
+<h1>Pending Users</h1>
+
+<table class="table">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a asp-action="AssignResident" asp-route-id="@item.UnassignedId">Assign as Resident</a> 
+                </td>
+                <td>
+                    <a asp-action="AssignMaintenance" asp-route-id="@item.UnassignedId">Assign as Maintenance</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
