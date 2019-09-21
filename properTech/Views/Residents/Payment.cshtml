@@ -8,7 +8,7 @@
 
 <form action="/Residents/Charge" method="POST">
     @{ 
-        var balance = Model.Balance / 100;
+        var balance = Model.Balance * 1;
     }
     <article>
         <label>Amount: @balance.ToString("C", CultureInfo.CurrentCulture)</label>

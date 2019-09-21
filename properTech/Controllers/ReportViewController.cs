@@ -71,17 +71,18 @@ namespace properTech.Controllers
                 });
             return View(occupancies);
         }
-        //public IActionResult TechEfficiency()
-        //{
-        //    var techs = _context.MaintenanceTech;
-        //    var efficiency = new List<ReportView>();
-        //    foreach (MaintenanceTech tech in techs)
-        //        efficiency.Add(new ReportView
-        //        {
-        //            DimensionOne = tech.FirstName + tech.LastName,
-        //            Quantity = tech.AverageDeviation
-        //        });
-        //}
+        public IActionResult TechEfficiency()
+        {
+            var techs = _context.MaintenanceTech;
+            var efficiency = new List<ReportView>();
+            foreach (MaintenanceTech tech in techs)
+                efficiency.Add(new ReportView
+                {
+                    DimensionOne = tech.FirstName + tech.LastName,
+                    Quantity = tech.AvgTimeSpan.Days
+                }) ;
+            return View(efficiency);
+        }
 
         public IActionResult ProjectedVacancies()
         {

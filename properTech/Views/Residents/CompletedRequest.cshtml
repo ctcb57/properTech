@@ -1,0 +1,51 @@
+﻿@model IEnumerable<properTech.Models.MaintenanceRequest>
+
+@{
+    ViewData["Title"] = "CompletedRequest";
+}
+
+<h1>CompletedRequest</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfRequest)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActualCompletionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaintenanceStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaintanenceTechId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfRequest)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstimatedCompletionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActualCompletionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaintenanceStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaintanenceTechId)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
