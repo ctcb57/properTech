@@ -1,19 +1,46 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model properTech.Models.ContactFormModel
 
-<h3>CONTACT FORM</h3>
+<br />
+<br />
+<h3 style="text-decoration: underline">CONTACT FORM</h3>
+<br />
 <form asp-action="Contact" asp-controller="Home" method="post" onsubmit="buttonSubmit()">
+    <fieldset>
+        <div class="form-group">
+            <label asp-for="Name">Name</label>
+            <input type="text" asp-for="Name" class="form-control" placeholder="Enter Name" style="width:50%" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Email">Email</label>
+            <input type="text" asp-for="Email" class="form-control" placeholder="Enter Email" style="width:50%" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Message">Message</label>
+            <textarea class="form-control" rows="3" asp-for="Message" style="width:50%" placeholder="Enter Message Here"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+
+        <script>
+            function buttonSubmit() {
+                alert("Message Sent!");
+            }
+        </script>
+    </fieldset>
+</form>
+
+@*<form asp-action="Contact" asp-controller="Home" method="post" onsubmit="buttonSubmit()">
     <div>
-        <label asp-for="Name">Please enter your name:</label>
-        <input type="text" asp-for="Name" />
+        <label asp-for="">Please enter your name:</label>
+        <input type="text" asp-for="" />
     </div>
     <div>
-        <label asp-for="Email">Please enter your email:</label>
-        <input type="text" asp-for="Email" />
+        <label asp-for="">Please enter your email:</label>
+        <input type="text" asp-for=""" />
     </div>
     <div>
-        <label asp-for="Message">Please enter a message:</label>
-        <textarea asp-for="Message"></textarea>
+        <label asp-for="s">Please enter a message:</label>
+        <textarea asp-for="se"></textarea>
     </div>
     <input type="submit" value="Send Message" />
 
@@ -22,5 +49,5 @@
     alert("Message Sent!");
     }
     </script>
-</form>
+</form>*@
 

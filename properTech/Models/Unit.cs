@@ -20,7 +20,7 @@ namespace properTech.Models
         public int BathroomCount { get; set; }
         [Display(Name = "Unit Size (ft2)")]
         public int SquareFootage { get; set; }
-        [Display(Name ="Monthly Rent Charge")]
+        [Display(Name ="Monthly Rent")]
         public double MonthlyRent { get; set; }
         public bool IsOccupied { get; set; }
         [ForeignKey ("Building Id")]
