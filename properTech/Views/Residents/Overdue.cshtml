@@ -3,23 +3,21 @@
 @{
     ViewData["Title"] = "Overdue";
 }
-
-<h1>Index</h1>
-
-<table class="table">
+<br />
+<br />
+<h1 style="text-align:center; text-decoration:underline">Overdue Resident Accounts</h1>
+<br />
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table" style="background-color: #3bb871">
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                Due Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentDueDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Balance)
+                Balance
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
@@ -28,7 +26,7 @@
                 @Html.DisplayNameFor(model => model.PhoneNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LatePayment)
+                Update Payment
             </th>
             <th></th>
         </tr>
@@ -36,13 +34,10 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
+        <tr class="table-success">
+            <th scope="row" style="background-color: #79D480">
+                @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.PaymentDueDate)
             </td>

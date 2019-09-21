@@ -3,12 +3,14 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
-
-<table class="table">
+<br />
+<br />
+<h1 style="text-align:center; text-decoration:underline">Buildings Listing</h1>
+<br />
+<br />
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table" style="background-color: #3bb871">
             <th>
                 @Html.DisplayNameFor(model => model.BuildingName)
             </th>
@@ -18,10 +20,10 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <a asp-controller="Units" asp-action="Index" asp-route-id="@item.BuildingId">@item.BuildingName.</a>
-                </td>
+            <tr class="table-success">
+                <th scope="row" style="background-color: #79D480">
+                    <a asp-controller="Units" asp-action="Index" asp-route-id="@item.BuildingId">@item.BuildingName</a>
+                </th>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.BuildingId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.BuildingId">Details</a> |

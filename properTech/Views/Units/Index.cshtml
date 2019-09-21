@@ -3,61 +3,62 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
-
-<p>
-</p>
-<table class="table">
+<br />
+<br />
+<h1 style="text-align:center; text-decoration:underline">Unit Listing</h1>
+<br />
+<br />
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table" style="background-color: #3bb871">
             <th>
-                @Html.DisplayNameFor(model => model.UnitNumber)
+                Unit Number
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RoomCount)
+                Bedrooms
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BathroomCount)
+                Bathrooms
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SquareFootage)
+                Size (sq ft)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MonthlyRent)
+                Rent
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsOccupied)
+                Occupied
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BathroomCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SquareFootage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MonthlyRent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsOccupied)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.UnitId">Details</a> 
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr class="table-success">
+                <th scope="row" style="background-color: #79D480">
+                    @Html.DisplayFor(modelItem => item.UnitNumber)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoomCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BathroomCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SquareFootage)
+                </td>
+                <td>
+                    $@Html.DisplayFor(modelItem => item.MonthlyRent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsOccupied)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.UnitId">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 

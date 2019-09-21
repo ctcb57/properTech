@@ -3,13 +3,15 @@
 @{
     ViewData["Title"] = "AssignUsers";
 }
+<br />
+<br />
+<h1 style="text-align:center; text-decoration:underline">Pending Users</h1>
+<br />
 
-<h1>Pending Users</h1>
-
-<table class="table">
+<table class="table table-hover">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <thead>
-        <tr>
+        <tr class="table" style="background-color: #3bb871">
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
@@ -20,10 +22,10 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
+            <tr class="table-success">
+                <th scope="row" style="background-color: #79D480">
                     @Html.DisplayFor(modelItem => item.Email)
-                </td>
+                </th>
                 <td>
                     <a asp-action="AssignResident" asp-route-id="@item.UnassignedId">Assign as Resident</a> 
                 </td>
