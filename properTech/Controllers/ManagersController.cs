@@ -24,10 +24,7 @@ namespace properTech.Controllers
         {
             _context = context;
         }
-        //viewallresidents
-        //getoverdueaccounts
-        //modify resident
-        //
+
 
         public IActionResult GetAllResidents(string id)
         {
@@ -64,6 +61,72 @@ namespace properTech.Controllers
             }
             return View(residentList);
         }
+        // GET: Assign Users
+        public IActionResult AssignUsers()
+        {
+            var unassignedUserRoleObject = _context.Roles.FirstOrDefault(r => r.Name == "UnassignedUser");
+            var unassignedUserAppUserIds = _context.UserRoles.Where(u => u.RoleId == unassignedUserRoleObject.Id).ToList();
+            foreach(var user in unassignedUserAppUserIds)
+            {
+                var userObject = _context.Users.FirstOrDefault(u => u.Id == user.UserId);
+                UnassignedUsers unassignedUser = new UnassignedUsers();
+                unassignedUser.Email = userObject.Email;
+                unassignedUser.ApplicationUserId = userObject.Id;
+                _context.Add(unassignedUser);
+                _context.SaveChanges();
+            }
+            var unassignedUsers = GetUnassignedUsers();
+            return View(unassignedUsers);
+        }
+
+        // GET: AssignResident
+        public IActionResult AssignResident(int id)
+        {
+            var residentToAssign = _context.UnassignedUsers.FirstOrDefault(u => u.UnassignedId == id);
+            var user = _context.UserRoles.FirstOrDefault(u => u.UserId == residentToAssign.ApplicationUserId);
+            var residentRoleObject = _context.Roles.FirstOrDefault(r => r.Name == "Resident");
+            _context.UserRoles.Remove(user);
+            _context.SaveChanges();
+            user.RoleId = residentRoleObject.Id;
+            user.UserId = residentToAssign.ApplicationUserId;
+            _context.Add(user);
+            _context.SaveChanges();
+            Resident resident = new Resident();
+            resident.ApplicationUserId = residentToAssign.ApplicationUserId;
+            _context.Add(resident);
+            _context.SaveChanges();
+            var unassignedUserToRemove = _context.UnassignedUsers.FirstOrDefault(u => u.ApplicationUserId == resident.ApplicationUserId);
+            _context.UnassignedUsers.Remove(unassignedUserToRemove);
+            _context.SaveChanges();
+            return RedirectToAction("EditResident", "Managers", new { id = resident.ResidentId });
+        }
+
+        public IActionResult AssignMaintenance(int id)
+        {
+            var residentToAssign = _context.UnassignedUsers.FirstOrDefault(u => u.UnassignedId == id);
+            var user = _context.UserRoles.FirstOrDefault(u => u.UserId == residentToAssign.ApplicationUserId);
+            var residentRoleObject = _context.Roles.FirstOrDefault(r => r.Name == "Maintenance");
+            _context.UserRoles.Remove(user);
+            _context.SaveChanges();
+            user.RoleId = residentRoleObject.Id;
+            user.UserId = residentToAssign.ApplicationUserId;
+            _context.Add(user);
+            _context.SaveChanges();
+            MaintenanceTech tech = new MaintenanceTech();
+            tech.ApplicationUserId = residentToAssign.ApplicationUserId;
+            _context.Add(tech);
+            _context.SaveChanges();
+            var unassignedUserToRemove = _context.UnassignedUsers.FirstOrDefault(u => u.ApplicationUserId == tech.ApplicationUserId);
+            _context.UnassignedUsers.Remove(unassignedUserToRemove);
+            _context.SaveChanges();
+            return RedirectToAction("EditMaintenance", "Managers", new { id = tech.MaintenanceTechId });
+        }
+
+        public List<UnassignedUsers> GetUnassignedUsers()
+        {
+            var unassignedUsers = _context.UnassignedUsers.ToList();
+            return unassignedUsers;
+        }
         // GET: Edit Single Resident
         public async Task<IActionResult> EditResident(int? id)
         {
@@ -82,7 +145,7 @@ namespace properTech.Controllers
         // POST: Manager/EditResident
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditResident(int id, [Bind("ResidentId,FirstName,LastName,LeaseStart,LeaseEnd,RenewedLease,PaymentDueDate,LatePayment,Balance,UnitId,ApplicationUserId,isAssignedUnit,UnitNumber")] Resident resident)
+        public async Task<IActionResult> EditResident(int id, [Bind("ResidentId,FirstName,LastName,LeaseStart,LeaseEnd,RenewedLease,PaymentDueDate,LatePayment,Balance,UnitId,ApplicationUserId,isAssignedUnit,UnitNumber,Email,PhoneNumber")] Resident resident)
         {
             if (id != resident.ResidentId)
             {
@@ -102,6 +165,39 @@ namespace properTech.Controllers
                 return RedirectToAction("GetResidents");
             }
             return View(resident);
+        }
+        // GET: EditMaintenance
+        public async Task<IActionResult> EditMaintenance(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var maintenanceTech = await _context.MaintenanceTech.FindAsync(id);
+            if (maintenanceTech == null)
+            {
+                return NotFound();
+            }
+            return View(maintenanceTech);
+        }
+        // POST: EditMaintenance
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditMaintenance(int id, [Bind("MaintenanceTechId,FirstName,LastName,ApplicationUserId,AverageDeviation")] MaintenanceTech maintenanceTech)
+        {
+            if (id != maintenanceTech.MaintenanceTechId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Entry(maintenanceTech).State = EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(maintenanceTech);
         }
 
         // GET: Managers/DeleteResidents

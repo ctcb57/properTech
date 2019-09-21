@@ -1,0 +1,17 @@
+﻿@model properTech.Models.UnassignedUsers
+
+@{
+    ViewData["Title"] = "AssignResident";
+}
+
+<h1>Assign Resident</h1>
+
+<p>Click confirm button if you want to assign this user to the resident role</p>
+
+<input type="hidden" asp-for="ApplicationUserId" />
+<form asp-action="AssignResident">
+    <div>
+        @Html.ActionLink("Submtit", "PostResident", "Managers", new { userId= @Model})
+    </div>
+</form>
+

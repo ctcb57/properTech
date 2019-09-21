@@ -88,17 +88,22 @@ namespace properTech.Areas.Identity.Pages.Account
                     var managerRole = _context.Roles.FirstOrDefault(r => r.Name == "Manager");
                     var residentRole = _context.Roles.FirstOrDefault(r => r.Name == "Resident");
                     var maintenanceRole = _context.Roles.FirstOrDefault(r => r.Name == "Maintenance");
-                    if(currentUserRoleIdObject.RoleId == managerRole.Id)
+                    var unassignedUserRole = _context.Roles.FirstOrDefault(r => r.Name == "UnassignedUser");
+                    if (currentUserRoleIdObject.RoleId == managerRole.Id)
                     {
                         return RedirectToAction("Index", "Managers");
                     }
-                    else if(currentUserRoleIdObject.RoleId == residentRole.Id)
+                    else if (currentUserRoleIdObject.RoleId == residentRole.Id)
                     {
                         return RedirectToAction("Index", "Residents");
                     }
-                    else if(currentUserRoleIdObject.RoleId == maintenanceRole.Id)
+                    else if (currentUserRoleIdObject.RoleId == maintenanceRole.Id)
                     {
                         return RedirectToAction("Index", "Home");
+                    }
+                    else if (currentUserRoleIdObject.RoleId == unassignedUserRole.Id)
+                    {
+                        return RedirectToAction("UserIndex", "Home");
                     }
                     //return LocalRedirect(returnUrl);
                 }
