@@ -4,15 +4,22 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Message the Resident</h1>
 
-<h4>MaintenanceRequest</h4>
+<h4>Messages</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="RequestId" />
+<<<<<<< HEAD
+            <input type="hidden" asp-for="MaintenanceStatus" />
+            <input type="hidden" asp-for="filePath" />
+            <input type="hidden" asp-for="ResidentId" />
+            <input type="hidden" asp-for="MaintanenceTechId" />
+            <input type="hidden" asp-for="DateOfRequest" />
+            <input type="hidden" asp-for="EstimatedCompletionDate" />
+=======
             <input type="hidden" asp-for="filePath" />
             <div class="form-group">
                 <label asp-for="DateOfRequest" class="control-label"></label>
@@ -34,10 +41,16 @@
                 <input asp-for="MaintenanceStatus" class="form-control" />
                 <span asp-validation-for="MaintenanceStatus" class="text-danger"></span>
             </div>
+>>>>>>> fb8799f75944dc78676f41cbcdac397282e033c3
             <div class="form-group">
                 <label asp-for="Message" class="control-label"></label>
                 <input asp-for="Message" class="form-control" />
                 <span asp-validation-for="Message" class="text-danger"></span>
+<<<<<<< HEAD
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+=======
             </div>
             <div class="form-group">
                 <label asp-for="ResidentId" class="control-label"></label>
@@ -52,6 +65,7 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+>>>>>>> fb8799f75944dc78676f41cbcdac397282e033c3
         </form>
     </div>
 </div>

@@ -1,13 +1,6 @@
-﻿
+﻿@model IEnumerable<properTech.Models.MaintenanceRequest>
 @{
     ViewData["Title"] = "CompletedRequests";
-}
-
-<h1>CompletedRequests</h1>
-
-@model IEnumerable<properTech.Models.MaintenanceRequest>
-@{
-    ViewData["Title"] = "CompletedRequest";
 }
 <h1>CompletedRequest</h1>
 <table class="table">
@@ -24,9 +17,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MaintenanceStatus)
-            </th>
-            <th>
-                <h4>Assigned Maintenance Tech</h4>
             </th>
             <th></th>
         </tr>
@@ -48,10 +38,7 @@
                 @Html.DisplayFor(modelItem => item.MaintenanceStatus)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.tech.FirstName + " " + item.tech.LastName)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.RequestId">Details</a>
+                <a asp-controller="MaintenanceRequests" asp-action="Details" asp-route-id="@item.RequestId">Details</a>
             </td>
         </tr>
         }

@@ -23,7 +23,7 @@ namespace properTech.Controllers
         // GET: MaintenanceTechs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MaintenanceRequest.Where(r => r.MaintenanceStatus == "Pending").ToListAsync());
+            return View(await _context.MaintenanceRequest.Where(r=> r.MaintenanceStatus == "Pending").ToListAsync());
         }
 
         // GET: MaintenanceTechs/Details/5
@@ -156,9 +156,24 @@ namespace properTech.Controllers
             return _context.MaintenanceTech.Any(e => e.MaintenanceTechId == id);
         }
 
-        public IActionResult RequestsView()
+        public IActionResult Requests()
         {
-            var context = _context.MaintenanceRequest.ToList();
+            var context = _context.MaintenanceRequest.Where(m=>m.MaintenanceStatus == "Pending").ToList();
+            return View(context);
+        }
+
+        public IActionResult MyRequests()
+        {
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var currentUser = _context.MaintenanceTech.FirstOrDefault(u => u.ApplicationUserId == currentUserId);
+            var myRequests = _context.MaintenanceRequest.Where(r => r.MaintenanceStatus == "In Progress" && r.MaintanenceTechId == currentUser.MaintenanceTechId);
+            return View(myRequests);
+        }
+        public IActionResult CompletedRequests()
+        {
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            var currentUser = _context.MaintenanceTech.FirstOrDefault(u => u.ApplicationUserId == currentUserId);
+            var context = _context.MaintenanceRequest.Where(m => m.MaintenanceStatus == "Complete" && m.MaintanenceTechId == currentUser.MaintenanceTechId).ToList();
             return View(context);
         }
     }

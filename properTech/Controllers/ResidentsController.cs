@@ -182,10 +182,11 @@ namespace properTech.Controllers
         public IActionResult PendingRequests()
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
-            var resident = _context.Resident.FirstOrDefault(m => m.ApplicationUserId == currentUserId);
-            var pendingRequests = _context.MaintenanceRequest.Where(m => m.ResidentId == resident.ResidentId && m.MaintenanceStatus == "In Progress").ToList();
+            var resident = _context.Resident.Where(m => m.ApplicationUserId == currentUserId).FirstOrDefault();
+            var pendingRequests = _context.MaintenanceRequest.Where(m => m.ResidentId == resident.ResidentId && (m.MaintenanceStatus == "Pending" || m.MaintenanceStatus == "In Progress")).ToList();
             return View(pendingRequests);
         }
+
         public IActionResult Payment()
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
