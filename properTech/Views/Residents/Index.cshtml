@@ -17,9 +17,13 @@
     <div class="row">
         <div class="col-sm-5">
             <h5 style="text-align:center; text-decoration:underline">Account Details</h5>
-            <p>Current Balance: @Html.DisplayFor(model => model.Balance)</p>
+            <p>Current Balance: $@Html.DisplayFor(model => model.Balance)</p>
             <p class="text-danger">Due Date: @Html.DisplayFor(model => model.PaymentDueDate)</p>
+<<<<<<< HEAD
             <button type="button" value="AssignResident" onclick>Make Payment</button>
+=======
+            <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Payment", "Residents")'">Make Payment</button>
+>>>>>>> 0a890c43f50a06dfb0c8b87b31ec326b7bd30301
         </div>
         <div class="col-sm-2"></div>
         <div class="col-sm-5">
@@ -33,7 +37,7 @@
     <div class="row">
         <div class="col-sm-5">
             <h5 style="text-align:center; text-decoration:underline"> Maintenance</h5>
-            @Html.ActionLink("Maintenance Information", "Maintenance", "Residents")
+            <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Maintenance", "Residents")'">Maintenance Information</button>
         </div>
         <div class="col-sm-2"></div>
         <div class="col-sm-5">

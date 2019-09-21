@@ -243,8 +243,6 @@ namespace properTech.Migrations
 
                     b.Property<DateTime>("EstimatedCompletionDate");
 
-                    b.Property<bool>("IsComplete");
-
                     b.Property<int>("MaintanenceTechId");
 
                     b.Property<string>("MaintenanceStatus");
@@ -254,8 +252,6 @@ namespace properTech.Migrations
                     b.Property<int>("ResidentId");
 
                     b.Property<int?>("ResidentId1");
-
-                    b.Property<int>("confirmationNumber");
 
                     b.Property<string>("filePath");
 
@@ -278,11 +274,15 @@ namespace properTech.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
-                    b.Property<int>("AverageDeviation");
+                    b.Property<TimeSpan>("AvgTimeSpan");
 
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
+
+                    b.Property<int>("TotalRequestCompletions");
+
+                    b.Property<TimeSpan>("TotalTimeSpan");
 
                     b.HasKey("MaintenanceTechId");
 

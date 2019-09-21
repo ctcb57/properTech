@@ -20,9 +20,6 @@
                 @Html.DisplayNameFor(model => model.ActualCompletionDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsComplete)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.MaintenanceStatus)
             </th>
             <th>
@@ -50,9 +47,6 @@
                 @Html.DisplayFor(modelItem => item.ActualCompletionDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsComplete)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.MaintenanceStatus)
             </td>
             <td>
@@ -65,8 +59,8 @@
                 @Html.DisplayFor(modelItem => item.MaintanenceTechId)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.RequestId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RequestId">Details</a> |
+                <a asp-action="Edit" asp-controller="MaintenanceRequests"asp-route-id="@item.RequestId">Edit</a> |
+                <a asp-action="Details" asp-controller="MaintenanceRequests" asp-route-id="@item.RequestId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.RequestId">Delete</a> |
             </td>
         </tr>

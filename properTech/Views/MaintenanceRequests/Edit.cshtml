@@ -13,6 +13,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="RequestId" />
+            <input type="hidden" asp-for="filePath" />
             <div class="form-group">
                 <label asp-for="DateOfRequest" class="control-label"></label>
                 <input asp-for="DateOfRequest" class="form-control" />
@@ -27,11 +28,6 @@
                 <label asp-for="ActualCompletionDate" class="control-label"></label>
                 <input asp-for="ActualCompletionDate" class="form-control" />
                 <span asp-validation-for="ActualCompletionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsComplete" /> @Html.DisplayNameFor(model => model.IsComplete)
-                </label>
             </div>
             <div class="form-group">
                 <label asp-for="MaintenanceStatus" class="control-label"></label>
@@ -50,7 +46,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="MaintanenceTechId" class="control-label"></label>
-                <input asp-for="MaintanenceTechId" class="form-control" />
+                <select asp-for="MaintanenceTechId" class="form-control" asp-items="ViewBag.MaintenanceTechId"></select>
                 <span asp-validation-for="MaintanenceTechId" class="text-danger"></span>
             </div>
             <div class="form-group">
