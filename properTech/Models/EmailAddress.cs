@@ -8,6 +8,6 @@ namespace properTech.Models
     public class EmailAddress
     {
         public string Name = "ProperTech";
-        public string Address = "spartanaceyang@yahoo.com";
+        public string Address = "properTechManagement@gmail.com";
     }
 }
