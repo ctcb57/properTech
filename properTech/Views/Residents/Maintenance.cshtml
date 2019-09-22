@@ -5,8 +5,24 @@
 
 <h1>Maintenance</h1>
 
-<form id="chat-form" class="simple-form">
-    <div class="container" ; style="color: black"; style="background-color: gray">
+<form id="chat-form" class="simple-form";>
+    <div class="jumbotron" ; style="opacity:0.8;">
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <img src=https://storybird.s3.amazonaws.com/artwork/andymcnally/full/happy-bot.jpeg ; height="100" ; style="position:center" />
+            </div>
+            <div class="col-sm-4"></div>
+            <br />
+            <br />
+        </div>
+        <div class="row">
+            <h4>Hi! I am Chad! I am here to help you solve basic Maintenance issues. If at any time you believe that I cannot assist, you can ask me to submit a maintenance request and I will notify a Maintenance Tech. You can track your maintenance status by either asking me or using the Navigation bar.</h4>
+        </div>
+    </div>
+</form>
+<form>
+    <div class="jumbotron" ; style="opacity: 0.8;">
         <div class="row">
             <h8>You said:</h8>
             <div class="col-sm-4" , id="userResponse"></div>
@@ -16,12 +32,12 @@
         </div>
     </div>
 </form>
+
 <br />
 <br />
 <div>
-    <h8>Talk to Chad Here:</h8>
     <form id="my-form" class="simple-form">
-        <input type="text" name="userMessage" placeholder="You can use full sentences" />
+        <input type="text" name="userMessage" placeholder="Talk to Chad here" />
         <button type="button" id="button1" onclick="getUserInput()">Send Message</button>
     </form>
 </div>
