@@ -3,71 +3,28 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
-
-<div>
-    <h4>Maintenance Request</h4>
-    <hr />
-    <dl class="row">
-        <h3>Resident Information</h3>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.resident.FirstName)
-        </dd>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.resident.LastName)
-        </dd>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.resident.PhoneNumber)
-        </dd>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.resident.UnitNumber)
-        </dd>
-        <br />
-        <h3>Maintenance Request Details</h3>
-        <dd class="col-sm-6">
-            @Html.DisplayNameFor(model => model.DateOfRequest)
-        </dd>
-        <dd class="col-sm-6">
-            @Html.DisplayFor(model => model.DateOfRequest)
-        </dd>
-        <dt class="col-sm-6">
-            @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
-        </dt>
-        <dd class="col-sm-6">
-            @Html.DisplayFor(model => model.EstimatedCompletionDate)
-        </dd>
-        <dt class="col-sm-6">
-            @Html.DisplayNameFor(model => model.ActualCompletionDate)
-        </dt>
-        <dd class="col-sm-6">
-            @Html.DisplayFor(model => model.ActualCompletionDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MaintenanceStatus)
-        </dt>
-        <dd class="col-sm-6">
-            @Html.DisplayFor(model => model.MaintenanceStatus)
-        </dd>
-    </dl>
-        <br />
-        <h3>Current Communication</h3>
-        <dd class="col-sm-6">
-            @Html.DisplayFor(model => model.Message)
-        </dd>
-        @*<dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MaintanenceTechId)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MaintanenceTechId)
-            </dd>*@
-    <h3>Video</h3>
+<br />
+<br />
+<h1 style="text-align:center; text-decoration:underline">Maintenance Request Details</h1>
+<br />
+<center><div class="card text-white bg-success mb-3" style="max-width:50rem;">
+    <div class="card-header" style="font-size:30px">Request Information</div>
+    <div class="card-body">
+        <h5 class="card-text" style="text-align:left">Resident: @Html.DisplayFor(model => model.resident)</h5>
+        <h5 class="card-text" style="text-align:left">@Html.DisplayNameFor(model => model.Unit): @Html.DisplayFor(model => model.Unit)</h5>
+        <h5 class="card-text" style="text-align:left">Request Date: @Html.DisplayFor(model => model.DateOfRequest)</h5>
+        <h5 class="card-text" style="text-align:left">Estimated Completion: @Html.DisplayFor(model => model.EstimatedCompletionDate)</h5>
+        <h5 class="card-text" style="text-align:left">Completion: @Html.DisplayFor(model => model.ActualCompletionDate)</h5>
+        <h5 class="card-text" style="text-align:left">Status:  @Html.DisplayFor(model => model.MaintenanceStatus)</h5>
+        <h5 class="card-text" style="text-align:left">Last Message:  @Html.DisplayFor(model => model.Message)</h5>
+    </div>
+</div></center>
+<br />
+<center><div>
+    <h2 style="text-align:center; text-decoration:underline">Video</h2>
     <video width="640" height="360" controls="controls">
         <source src=~/videos/@Model.filePath type="video/mp4" />
     </video>
     <br />
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.RequestId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+</div></center>
+

@@ -38,10 +38,11 @@ namespace properTech.Models
 
         [ForeignKey("Resident")]
         public int ResidentId { get; set; }
-        public Resident resident { get; set; }
+        public string resident { get; set; }
 
         [ForeignKey("MaintenanceTech")]
         public int MaintanenceTechId { get; set; }
-        public MaintenanceTech tech { get; set; }
+        public string tech { get; set; }
+        public int Unit { get; set; }
     }
 }

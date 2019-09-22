@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<br />
 <div class="container">
     <br />
     <div class="row">
@@ -16,14 +16,14 @@
     <br />
     <div class="row">
         <div class="col-sm-5">
-            <h5 style="text-align:center; text-decoration:underline">Account Details</h5>
+            <h3 style="text-align:center; text-decoration:underline">Account Details</h3>
             <p>Current Balance: $@Html.DisplayFor(model => model.Balance)</p>
             <p class="text-danger">Due Date: @Html.DisplayFor(model => model.PaymentDueDate)</p>
             <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Payment", "Residents")'">Make Payment</button>
         </div>
         <div class="col-sm-2"></div>
         <div class="col-sm-5">
-            <h5 style="text-align:center; text-decoration:underline">My Documents</h5>
+            <h3 style="text-align:center; text-decoration:underline">My Documents</h3>
             <p>Lease:</p>
             <p>Other Documents:</p>
         </div>
@@ -32,12 +32,12 @@
     <br />
     <div class="row">
         <div class="col-sm-5">
-            <h5 style="text-align:center; text-decoration:underline"> Maintenance</h5>
+            <h3 style="text-align:center; text-decoration:underline"> Maintenance</h3>
             <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Maintenance", "Residents")'">Maintenance Information</button>
         </div>
         <div class="col-sm-2"></div>
         <div class="col-sm-5">
-            <h5 style="text-align:center; text-decoration:underline">Lease Details</h5>
+            <h3 style="text-align:center; text-decoration:underline">Lease Details</h3>
             <p>Start Date: @Html.DisplayFor(model => model.LeaseStart)</p>
             <p>End Date: @Html.DisplayFor(model => model.LeaseEnd)</p>
             <button type="button" class="btn btn-primary" asp-action="Index">Renew Lease</button>

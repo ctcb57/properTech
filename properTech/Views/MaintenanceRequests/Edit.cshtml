@@ -3,13 +3,12 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Message the Resident</h1>
-
-<h4>Messages</h4>
-<hr />
+<br />
+<br />
+<h1 style="text-decoration:underline">Message the Resident</h1>
+<br />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-10">
         <form asp-action="Edit">
             <input type="hidden" asp-for="RequestId" />
             <input type="hidden" asp-for="MaintenanceStatus" />
@@ -18,13 +17,19 @@
             <input type="hidden" asp-for="MaintanenceTechId" />
             <input type="hidden" asp-for="DateOfRequest" />
             <input type="hidden" asp-for="EstimatedCompletionDate" />
+            <input type="hidden" asp-for="resident" />
+            <input type="hidden" asp-for="tech" />
+            <input type="hidden" asp-for="DateOfRequest" />
+            <input type="hidden" asp-for="ActualCompletionDate" />
+            <input type="hidden" asp-for="Unit" />
             <div class="form-group">
                 <label asp-for="Message" class="control-label"></label>
-                <input asp-for="Message" class="form-control" />
+                <textarea asp-for="Message" class="form-control" rows="5" style="width:75%"></textarea>
                 <span asp-validation-for="Message" class="text-danger"></span>
-                <div class="form-group">
+                <div class="form-group" style="margin-top:5px">
                     <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
+            </div>
         </form>
     </div>
 </div>

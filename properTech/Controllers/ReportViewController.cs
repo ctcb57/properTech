@@ -79,7 +79,7 @@ namespace properTech.Controllers
                 efficiency.Add(new ReportView
                 {
                     DimensionOne = tech.FirstName + tech.LastName,
-                    Quantity = tech.AvgTimeSpan.Days
+                    Quantity = tech.TotalRequestCompletions
                 }) ;
             return View(efficiency);
         }

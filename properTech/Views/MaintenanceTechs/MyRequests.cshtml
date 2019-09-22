@@ -3,45 +3,59 @@
 @{
     ViewData["Title"] = "ViewMaintenanceRequests";
 }
+<br />
+<br />
+<h1 style="text-align:center; text-decoration:underline">Your Maintenance Requests</h1>
+<br />
+<br />
 
-<h1>Your Maintenance Requests</h1>
-
-
-<table class="table">
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table" style="background-color: #3bb871">
             <th>
-                @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
+                Request Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.resident.FirstName)
+                Estimated Completion
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.resident.FirstName)
+                @Html.DisplayNameFor(model => model.resident)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Message)
+                @Html.DisplayNameFor(model => model.Unit)
+            </th>
+            <th>
+                Last Message
+            </th>
+            <th>
+                Status
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="table-success">
+            <th scope="row" style="background-color: #79D480">
+                @Html.DisplayFor(modelItem => item.DateOfRequest)
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.EstimatedCompletionDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.resident.FirstName)
+                @Html.DisplayFor(modelItem => item.resident)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.resident.LastName)
+                @Html.DisplayFor(modelItem => item.Unit)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Message)
             </td>
             <td>
-                <a asp-controller="MaintenanceRequests" asp-action="Edit" asp-route-id="@item.RequestId">Message Resident</a> |
+                @Html.DisplayFor(modelItem => item.MaintenanceStatus)
+            </td>
+            <td>
+                <a asp-controller="MaintenanceRequests" asp-action="Edit" asp-route-id="@item.RequestId">Message Resident</a> 
                 <a asp-controller="MaintenanceRequests" asp-action="Details" asp-route-id="@item.RequestId">Details</a> |
                 <a asp-controller="MaintenanceRequests" asp-action="CompleteRequest" asp-route-id="@item.RequestId">Complete</a>
             </td>

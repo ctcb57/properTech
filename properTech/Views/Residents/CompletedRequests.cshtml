@@ -2,21 +2,28 @@
 @{
     ViewData["Title"] = "CompletedRequests";
 }
-<h1>CompletedRequest</h1>
-<table class="table">
+<br />
+<br />
+<h1 style="text-decoration:underline">Completed Maintenance Requests</h1>
+<br />
+<br />
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table" style="background-color: #3bb871">
             <th>
-                @Html.DisplayNameFor(model => model.DateOfRequest)
+                Request Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
+                Estimated Completion
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ActualCompletionDate)
+                Completion
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaintenanceStatus)
+                @Html.DisplayNameFor(model => model.tech)
+            </th>
+            <th>
+                Status
             </th>
             <th></th>
         </tr>
@@ -24,15 +31,18 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
+        <tr class="table-success">
+            <th scope="row" style="background-color: #79D480">
                 @Html.DisplayFor(modelItem => item.DateOfRequest)
-            </td>
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.EstimatedCompletionDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ActualCompletionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tech)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MaintenanceStatus)

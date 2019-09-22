@@ -3,40 +3,24 @@
 @{
     ViewData["Title"] = "Complete";
 }
-
-<h1>View</h1>
-
+<br />
+<br />
+<h1 style="text-decoration:underline">Complete Request</h1>
+<br />
 <h3>Are you sure you want to close this ticket?</h3>
+<br />
+<div class="card text-white bg-success mb-3" style="max-width: 50rem">
+    <div class="card-header" style="font-size:20px">Request Details</div>
+    <div class="card-body">
+        <h5 class="card-text" style="text-align:left">Resident: @Html.DisplayFor(model => model.resident)</h5>
+        <h5 class="card-text" style="text-align:left">@Html.DisplayNameFor(model => model.Unit): @Html.DisplayFor(model => model.Unit)</h5>
+        <h5 class="card-text" style="text-align:left">Tech: @Html.DisplayFor(model => model.tech)</h5>
+        <h5 class="card-text" style="text-align:left">Request Date: @Html.DisplayFor(model => model.DateOfRequest)</h5>
+        <h5 class="card-text" style="text-align:left">Estimated Completion: @Html.DisplayFor(model => model.EstimatedCompletionDate)</h5>
+        <h5 class="card-text" style="text-align:left">Last Message: @Html.DisplayFor(model => model.Message)</h5>
+    </div>
+</div>
 <div>
-    <h4>Maintenance Request</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfRequest)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfRequest)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EstimatedCompletionDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Message)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Message)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaintanenceTechId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaintanenceTechId)
-        </dd>
-    </dl>
-
     <form asp-action="CompleteRequest">
         <input type="hidden" asp-for="ResidentId" />
         <input type="hidden" asp-for="tech" />
@@ -45,7 +29,11 @@
         <input type="hidden" asp-for="MaintenanceStatus" />
         <input type="hidden" asp-for="DateOfRequest" />
         <input type="hidden" asp-for="EstimatedCompletionDate" />
-        <input type="submit" value="Confirm" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="hidden" asp-for="Unit" />
+        <input type="hidden" asp-for="resident" />
+        <input type="hidden" asp-for="DateOfRequest" />
+        <input type="hidden" asp-for="ActualCompletionDate" />
+        <input type="hidden" asp-for="Message" />
+        <input type="submit" value="Confirm" class="btn btn-primary" />
     </form>
 </div>

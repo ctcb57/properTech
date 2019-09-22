@@ -3,40 +3,45 @@
 @{
     ViewData["Title"] = "CompletedRequests";
 }
+<br />
+<br />
+<h1 style="text-decoration:underline">Completed Requests</h1>
+<br />
+<br />
 
-<h1>Completed Requests</h1>
-
-
-<table class="table">
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table" style="background-color: #3bb871">
             <th>
-                @Html.DisplayNameFor(model => model.DateOfRequest)
+                Request Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
+                Estimated Completion
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ActualCompletionDate)
+                Completion
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaintenanceStatus)
+                @Html.DisplayNameFor(model => model.resident)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ResidentId)
+                @Html.DisplayNameFor(model => model.Unit)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaintanenceTechId)
+                Status
+            </th>
+            <th>
+                Message
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
+        <tr class="table-success">
+            <th scope="row" style="background-color: #79D480">
                 @Html.DisplayFor(modelItem => item.DateOfRequest)
-            </td>
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.EstimatedCompletionDate)
             </td>
@@ -44,16 +49,16 @@
                 @Html.DisplayFor(modelItem => item.ActualCompletionDate)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.resident)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Unit)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.MaintenanceStatus)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Message)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ResidentId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaintanenceTechId)
             </td>
             <td>
                 <a asp-controller="MaintenanceRequests" asp-action="Details" asp-route-id="@item.RequestId">Details</a> 
