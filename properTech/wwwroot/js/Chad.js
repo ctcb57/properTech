@@ -22,9 +22,9 @@ function getUserInput() {
         document.getElementById("chadResponse").innerHTML = "As a professional robot, I try my hardest not to be offensive. I guess that means I have THAT in common with the Bears."
     }
     else if (userInput.includes("maintenance") && userInput.includes("request")) {
-        document.getElementById("chadResponse").innerHTML = "<span>Aboslutely! You can submit a request for maintenance with this link: <a href = 'http://localhost:55337/maintenancerequests/create'  target= '_blank'>click here to check it out!</a></span>";
+        document.getElementById("chadResponse").innerHTML = "<span>Aboslutely! You can submit a request for maintenance with this link: <a href = 'http://localhost:57076/maintenancerequests/create'  target= '_blank'>click here to check it out!</a></span>";
     }
     else if (userInput.includes("maintenance") && userInput.includes("status")) {
-        document.getElementById("chadResponse").innerHTML = "<span>The current status of your maintenance request can be found here: <a href = 'http://localhost:55337/Residents/PendingRequests'  target= '_blank'>click here to check it out!</a> If you do not see your request listed there, then your status has not yet been assigned to a tech, but rest assured your request will be assigned to a tech and handled as soon as possible!</span>";;
+        document.getElementById("chadResponse").innerHTML = "<span>The current status of your maintenance request can be found here: <a href = 'http://localhost:57076/Residents/PendingRequests'  target= '_blank'>click here to check it out!</a> If you do not see your request listed there, then your status has not yet been assigned to a tech, but rest assured your request will be assigned to a tech and handled as soon as possible!</span>";;
     }
 }

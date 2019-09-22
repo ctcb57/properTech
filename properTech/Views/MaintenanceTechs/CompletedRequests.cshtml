@@ -20,13 +20,16 @@
                 @Html.DisplayNameFor(model => model.ActualCompletionDate)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.resident)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Unit)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.MaintenanceStatus)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ResidentId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaintanenceTechId)
+                @Html.DisplayNameFor(model => model.Message)
             </th>
             <th></th>
         </tr>
@@ -44,16 +47,16 @@
                 @Html.DisplayFor(modelItem => item.ActualCompletionDate)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.resident)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Unit)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.MaintenanceStatus)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Message)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ResidentId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaintanenceTechId)
             </td>
             <td>
                 <a asp-controller="MaintenanceRequests" asp-action="Details" asp-route-id="@item.RequestId">Details</a> 

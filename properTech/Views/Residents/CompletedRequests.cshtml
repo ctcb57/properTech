@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.ActualCompletionDate)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.tech)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.MaintenanceStatus)
             </th>
             <th></th>
@@ -33,6 +36,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ActualCompletionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tech)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MaintenanceStatus)

@@ -50,7 +50,6 @@ namespace properTech.Controllers
             }
 
             var maintenanceRequest = await _context.MaintenanceRequest
-                .Include(m => m.resident)
                 .FirstOrDefaultAsync(m => m.RequestId == id);
             if (maintenanceRequest == null)
             {
@@ -69,7 +68,7 @@ namespace properTech.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RequestId,confirmationNumber,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,IsComplete,MaintenanceStatus,Message,Video,filePath,residentId,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public async Task<IActionResult> Create([Bind("Unit,RequestId,resident,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,IsComplete,MaintenanceStatus,Message,Video,filePath,ResidentId,MaintanenceTechId,tech")] MaintenanceRequest maintenanceRequest)
         {
             if (ModelState.IsValid)
             {
@@ -77,6 +76,9 @@ namespace properTech.Controllers
                 var currentResident = _context.Resident.Where(c => c.ApplicationUserId == currentUserId).FirstOrDefault();
                 maintenanceRequest.MaintenanceStatus = "Pending";
                 maintenanceRequest.ResidentId = currentResident.ResidentId;
+                string resident = currentResident.FirstName + " " + currentResident.LastName;
+                maintenanceRequest.resident = resident;
+                maintenanceRequest.Unit = currentResident.UnitNumber;
                 _context.Add(maintenanceRequest);
                 await _context.SaveChangesAsync();
                 currentResident.maintenanceRequestId = maintenanceRequest.RequestId;
@@ -156,7 +158,7 @@ namespace properTech.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Accept(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,MaintenanceStatus,Message,filePath,Video,ResidentId,tech,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public async Task<IActionResult> Accept(int id, [Bind("Unit,RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,MaintenanceStatus,Message,filePath,Video,ResidentId,tech,MaintanenceTechId,resident")] MaintenanceRequest maintenanceRequest)
         {
             if (id != maintenanceRequest.RequestId)
             {
@@ -169,7 +171,8 @@ namespace properTech.Controllers
                 {
                     var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
                     var currentTech = _context.MaintenanceTech.Where(m => m.ApplicationUserId == currentUserId).FirstOrDefault();
-                    maintenanceRequest.tech = currentTech;
+                    string tech = currentTech.FirstName + " " + currentTech.LastName;
+                    maintenanceRequest.tech = tech;
                     maintenanceRequest.MaintanenceTechId = currentTech.MaintenanceTechId;
                     maintenanceRequest.MaintenanceStatus = "In Progress";
                     _context.Update(maintenanceRequest);
@@ -242,7 +245,7 @@ namespace properTech.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CompleteRequest(int id, [Bind("RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,isComplete,MaintenanceStatus,Video,FeedbackMessage,ResidentId,tech,MaintanenceTechId")] MaintenanceRequest maintenanceRequest)
+        public IActionResult CompleteRequest(int id, [Bind("Unit,RequestId,DateOfRequest,EstimatedCompletionDate,ActualCompletionDate,MaintenanceStatus,Message,filePath,Video,ResidentId,tech,MaintanenceTechId,resident")] MaintenanceRequest maintenanceRequest)
         {
             if (id != maintenanceRequest.RequestId)
             {

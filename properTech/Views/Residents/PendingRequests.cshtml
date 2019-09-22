@@ -16,6 +16,12 @@
                 @Html.DisplayNameFor(model => model.EstimatedCompletionDate)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.tech)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaintenanceStatus)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Message)
             </th>
             <th></th>
@@ -30,6 +36,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EstimatedCompletionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tech)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaintenanceStatus)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Message)

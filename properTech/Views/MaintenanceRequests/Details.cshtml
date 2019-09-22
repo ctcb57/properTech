@@ -10,21 +10,21 @@
     <h4>Maintenance Request</h4>
     <hr />
     <dl class="row">
-        <h3>Resident Information</h3>
+        <h3>Request Information</h3>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.resident.FirstName)
+            Resident
         </dd>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.resident.LastName)
+            @Html.DisplayFor(model => model.resident)
         </dd>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.resident.PhoneNumber)
+            @Html.DisplayNameFor(model => model.Unit)
         </dd>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.resident.UnitNumber)
+            @Html.DisplayFor(model => model.Unit)
         </dd>
         <br />
-        <h3>Maintenance Request Details</h3>
+        <br />
         <dd class="col-sm-6">
             @Html.DisplayNameFor(model => model.DateOfRequest)
         </dd>
@@ -43,7 +43,7 @@
         <dd class="col-sm-6">
             @Html.DisplayFor(model => model.ActualCompletionDate)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-6">
             @Html.DisplayNameFor(model => model.MaintenanceStatus)
         </dt>
         <dd class="col-sm-6">
