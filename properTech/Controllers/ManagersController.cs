@@ -159,6 +159,7 @@ namespace properTech.Controllers
                 var unitToMatch = MatchUnit(resident);
                 unitToMatch.IsOccupied = true;
                 resident.UnitId = unitToMatch.UnitId;
+                resident.Balance = unitToMatch.MonthlyRent;
                 _context.Entry(resident).State = EntityState.Modified;
                 _context.Entry(unitToMatch).State = EntityState.Modified;
                 _context.SaveChanges();
