@@ -25,10 +25,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.PhoneNumber)
             </th>
-            <th>
-                Update Payment
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -50,16 +46,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
-            <td>
-                <div class="form-group">
-                    @Html.LabelFor(modelItem => item.LatePayment, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(modelItem => item.LatePayment, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(modelItem => item.LatePayment, "", new { @class = "text-danger" })
-                    </div>
-                    </div>
-            </td>
-
         </tr>
         }
     </tbody>

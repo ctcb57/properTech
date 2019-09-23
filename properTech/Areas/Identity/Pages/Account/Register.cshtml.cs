@@ -86,7 +86,7 @@ namespace properTech.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
             UserRoles = new List<SelectListItem>()
             {
-                new SelectListItem { Value = "Manager", Text = "Manager"},
+                //new SelectListItem { Value = "Manager", Text = "Manager"},
                 //new SelectListItem { Value = "Resident", Text = "Resident"},
                 //new SelectListItem { Value = "Maintenance", Text = "Maintenance"},
                 new SelectListItem { Value = "UnassignedUser", Text = "UnassignedUser"},
@@ -98,7 +98,6 @@ namespace properTech.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                //var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Name = Input.Name, PhoneNumber = Input.PhoneNumber, Role = Input.Role};
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
@@ -141,12 +140,12 @@ namespace properTech.Areas.Identity.Pages.Account
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    if (user.Role == "Manager")
-                    {
-                        await _userManager.AddToRoleAsync(user, StaticDetails.Manager);
-                        var role = await _userManager.GetRolesAsync(user);
-                        return RedirectToAction("Create", "Managers", new { id = user.Id });
-                    }
+                    //if (user.Role == "Manager")
+                    //{
+                    //    await _userManager.AddToRoleAsync(user, StaticDetails.Manager);
+                    //    var role = await _userManager.GetRolesAsync(user);
+                    //    return RedirectToAction("Create", "Managers", new { id = user.Id });
+                    //}
                     //if (user.Role == "Resident")
                     //{
                     //    await _userManager.AddToRoleAsync(user, StaticDetails.Resident);
@@ -163,30 +162,6 @@ namespace properTech.Areas.Identity.Pages.Account
                         var role = await _userManager.GetRolesAsync(user);
                         return RedirectToAction("UserIndex", "Home", new { id = user.Id });
                     }
-
-
-                    //if (Input.isSuperAdmin)
-                    //{
-                    //    await _userManager.AddToRoleAsync(user, StaticDetails.SuperAdminEndUser);
-                    //}
-                    //else
-                    //{
-                    //    await _userManager.AddToRoleAsync(user, StaticDetails.Manager);
-                    //}
-                    //_logger.LogInformation("User created a new account with password.");
-
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Page(
-                    //    "/Account/ConfirmEmail",
-                    //    pageHandler: null,
-                    //    values: new { userId = user.Id, code = code },
-                    //    protocol: Request.Scheme);
-
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    //await _signInManager.SignInAsync(user, isPersistent: false);
-                    //return LocalRedirect(returnUrl);
                 }
 
             }

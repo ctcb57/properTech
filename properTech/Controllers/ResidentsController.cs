@@ -162,8 +162,8 @@ namespace properTech.Controllers
 
         public IActionResult Overdue()
         {
-            var overdueResidents = _context.Resident.Where(r => r.LatePayment == true).ToList();
-            return View(overdueResidents);
+            var overdueAccounts = _context.Resident.Where(r => r.PaymentDueDate < DateTime.Now.Date && r.Balance > 0.00).ToList();
+            return View(overdueAccounts);
         }
 
         public IActionResult Maintenance()

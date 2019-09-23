@@ -127,6 +127,14 @@ namespace properTech.Controllers
             var unassignedUsers = _context.UnassignedUsers.ToList();
             return unassignedUsers;
         }
+
+        // GET: All Maintenance Requests
+        public IActionResult GetMaintenanceHistory()
+        {
+            var maintenanceHistory = _context.MaintenanceRequest.ToList();
+            return View(maintenanceHistory);
+        }
+
         // GET: Edit Single Resident
         public async Task<IActionResult> EditResident(int? id)
         {
